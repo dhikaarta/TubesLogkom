@@ -14,10 +14,9 @@
 createMap :-
     asserta(lengthMap(16)),
     asserta(widthMap(19)),
-    createEmptyTile(0, 0),
+    createEmptyMap(0, 0),
     createMarketplaceTile(10, 12),
-    createMarketplaceTile(10, 12),
-    createRanchTile(10, 4),
+    createRanchTile(10, 5),
     createHouseTile(7, 6),
     createQuestTile(7, 3),
     createWaterTile(5, 8),
@@ -31,61 +30,78 @@ createMap :-
     createWaterTile(5, 10),
     createWaterTile(6, 10),
     createWaterTile(7, 10),
-    createPlayerTile(8, 7).
+    createPlayerTile(8, 7),
+    createNormalTile(0, 0).
 
-createEmptyTile(X, Y) :-
+createEmptyMap(X, Y) :-
     lengthMap(P),
     widthMap(L),
     X =:= (P - 1),
     Y =:= (L - 1),
-    createBaseTile(X, Y), !.
+    createFenceTile(X, Y), !.
 
-createEmptyTile(X, Y) :-
+createEmptyMap(X, Y) :-
     lengthMap(P),
     widthMap(L),
     (X =\= (P - 1); Y =\= (L - 1)),
-    createBaseTile(X, Y),
+    createFenceTile(X, Y),
     nextTile(X, Y, XNew, YNew), !,
-    createEmptyTile(XNew, YNew).
+    createEmptyMap(XNew, YNew).
 
-createBaseTile(X, Y) :-
+createFenceTile(X, Y) :-
     lengthMap(P),
     widthMap(L),
-    X =\= 0, X =\= (P - 1), Y =\= 0, Y =\= (L - 1),
-    asserta(normalTile(X, Y)).
+    X =\= 0, X =\= (P - 1), Y =\= 0, Y =\= (L - 1), !.
 
-createBaseTile(X, Y) :-
+createFenceTile(X, Y) :-
     lengthMap(P),
     widthMap(L),
-    (X =:= 0; X =:= (P - 1); Y =:= 0; Y =:= (L - 1)),
+    (X =:= 0; X =:= (P - 1); Y =:= 0; Y =:= (L - 1)), !,
     asserta(fenceTile(X, Y)).
 
 createMarketplaceTile(X, Y) :-
-    /*retract(normalTile(X, Y)),*/
     asserta(marketplaceTile(X, Y)).
 
 createRanchTile(X, Y) :-
-    /*retract(normalTile(X, Y)),*/
     asserta(ranchTile(X, Y)).
 
 createHouseTile(X, Y) :-
-    /*retract(normalTile(X, Y)),*/
     asserta(houseTile(X, Y)).
 
 createQuestTile(X, Y) :-
-    /*retract(normalTile(X, Y)),*/
     asserta(questTile(X, Y)).
 
 createWaterTile(X, Y) :-
-    /*retract(normalTile(X, Y)),*/
     asserta(waterTile(X, Y)).
 
 createDiggedTile(X, Y) :-
-    /*retract(normalTile(X, Y)),*/
     asserta(diggedTile(X, Y)).
 
 createPlayerTile(X, Y) :-
     asserta(playerTile(X, Y)).
+
+createNormalTile(X, Y) :-
+    lengthMap(P),
+    widthMap(L),
+    X =:= (P - 1),
+    Y =:= (L - 1), !.
+
+createNormalTile(X, Y) :-
+    \+ (fenceTile(X, Y)),
+    \+ (marketplaceTile(X, Y)),
+    \+ (ranchTile(X, Y)),
+    \+ (houseTile(X, Y)),
+    \+ (questTile(X, Y)),
+    \+ (waterTile(X, Y)),
+    \+ (diggedTile(X, Y)),
+    asserta(normalTile(X, Y)),
+    nextTile(X, Y, XNew, YNew), !,
+    createNormalTile(XNew, YNew).
+
+createNormalTile(X, Y) :-
+    (fenceTile(X, Y); marketplaceTile(X, Y); ranchTile(X, Y); houseTile(X, Y); questTile(X, Y); waterTile(X, Y); diggedTile(X, Y)),
+    nextTile(X, Y, XNew, YNew), !,
+    createNormalTile(XNew, YNew).
 
 /* INCREMENT */
 nextTile(X, Y, XNew, YNew) :-
@@ -96,6 +112,7 @@ nextTile(X, Y, XNew, YNew) :-
 /* OUTPUT */
 printMap(X, Y) :-
     normalTile(X, Y),
+    \+ (playerTile(X, Y)),
     write('-'),
     nextTile(X, Y, XNew, YNew),
     printMap(XNew, YNew).
@@ -105,7 +122,7 @@ printMap(X, Y) :-
     lengthMap(P),
     X =\= (P - 1),
     write('#'),
-    nextTile(X, Y, XNew, YNew),
+    nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
@@ -115,7 +132,7 @@ printMap(X, Y) :-
     X =:= (P - 1),
     Y =\= (L - 1),
     write('#'), nl,
-    nextTile(X, Y, XNew, YNew),
+    nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
@@ -124,48 +141,48 @@ printMap(X, Y) :-
     widthMap(L),
     X =:= (P - 1),
     Y =:= (L - 1),
-    write('#'), nl.
+    write('#'), nl, !.
 
 printMap(X, Y) :-
     marketplaceTile(X, Y),
     write('M'),
-    nextTile(X, Y, XNew, YNew),
+    nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     ranchTile(X, Y),
     write('R'),
-    nextTile(X, Y, XNew, YNew),
+    nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     houseTile(X, Y),
     write('H'),
-    nextTile(X, Y, XNew, YNew),
+    nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     questTile(X, Y),
     write('Q'),
-    nextTile(X, Y, XNew, YNew),
+    nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     waterTile(X, Y),
     write('o'),
-    nextTile(X, Y, XNew, YNew),
+    nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     diggedTile(X, Y),
     write('='),
-    nextTile(X, Y, XNew, YNew),
+    nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     playerTile(X, Y),
     write('P'),
-    nextTile(X, Y, XNew, YNew),
+    nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 /* QUERY */
