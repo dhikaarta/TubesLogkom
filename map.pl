@@ -12,8 +12,8 @@
 
 /* INISIALISASI FAKTA */
 createMap :-
-    asserta(lengthMap(16)),
-    asserta(widthMap(19)),
+    assertz(lengthMap(16)),
+    assertz(widthMap(19)),
     createEmptyMap(0, 0),
     createMarketplaceTile(10, 12),
     createRanchTile(10, 5),
@@ -57,28 +57,28 @@ createFenceTile(X, Y) :-
     lengthMap(P),
     widthMap(L),
     (X =:= 0; X =:= (P - 1); Y =:= 0; Y =:= (L - 1)), !,
-    asserta(fenceTile(X, Y)).
+    assertz(fenceTile(X, Y)).
 
 createMarketplaceTile(X, Y) :-
-    asserta(marketplaceTile(X, Y)).
+    assertz(marketplaceTile(X, Y)).
 
 createRanchTile(X, Y) :-
-    asserta(ranchTile(X, Y)).
+    assertz(ranchTile(X, Y)).
 
 createHouseTile(X, Y) :-
-    asserta(houseTile(X, Y)).
+    assertz(houseTile(X, Y)).
 
 createQuestTile(X, Y) :-
-    asserta(questTile(X, Y)).
+    assertz(questTile(X, Y)).
 
 createWaterTile(X, Y) :-
-    asserta(waterTile(X, Y)).
+    assertz(waterTile(X, Y)).
 
 createDiggedTile(X, Y) :-
-    asserta(diggedTile(X, Y)).
+    assertz(diggedTile(X, Y)).
 
 createPlayerTile(X, Y) :-
-    asserta(playerTile(X, Y)).
+    assertz(playerTile(X, Y)).
 
 createNormalTile(X, Y) :-
     lengthMap(P),
@@ -94,7 +94,7 @@ createNormalTile(X, Y) :-
     \+ (questTile(X, Y)),
     \+ (waterTile(X, Y)),
     \+ (diggedTile(X, Y)),
-    asserta(normalTile(X, Y)),
+    assertz(normalTile(X, Y)),
     nextTile(X, Y, XNew, YNew), !,
     createNormalTile(XNew, YNew).
 
