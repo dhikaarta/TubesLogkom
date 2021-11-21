@@ -1,4 +1,4 @@
-:- dynamic(items/4).
+:- dynamic(items/5).
 
 /* SEED */
 items(seed,bayamSeed).
@@ -123,7 +123,7 @@ levelupTool(Name) :-
     lvlup is lvl + 1,
     newexp is expnow mod expmax,
     newmax is expmax + 50,
-    retract(items(equip,Name,lvl,expnow,expmax)),
+    retractall(items(equip,Name,lvl,expnow,expmax)),
     asserta(items(equip,Name,lvlup,newexp,newmax)).
 
 /* USE ITEM */
