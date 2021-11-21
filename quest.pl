@@ -1,0 +1,1 @@
+ultimatequest1 :- write("MENAKLUKKAN SAPI GILA")
