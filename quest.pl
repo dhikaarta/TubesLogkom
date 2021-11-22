@@ -4,7 +4,7 @@
 :- dynamic(quest/3).
 :- dynamic(needed/3).
 
-quest :- \+ isQuest(_), asserta()
+quest :- \+ isQuest(_), asserta(isQuest(1)), asserta(quest(0,0,0)),
     write('Welcome! Here are your available daily quests!'), nl, listDailyQuest, nl, 
     repeat,
     write('Which quest would you like to do today?'), nl,
@@ -14,10 +14,10 @@ quest :- \+ isQuest(_), asserta()
     Choice =:= 3 -> daily3, nl ;
     write('You think that\'s funny? Try again.', nl, fail)), !.
 
-quest :- isQuest(_), quest(A, B, C), needed(D, E, F),
+quest :- isQuest(_), quest(A, B, C), needed(D, E, F), isQuest(Z),
     A >= D, B >= E, C >= F,
     write('Congrats. Nice work.'), nl, 
-    retractall(quest(A, B, C)), retractall(needed(D, E, F)), !.
+    retractall(quest(A, B, C)), retractall(needed(D, E, F)), retractall(isQuest(Z)), !.
 
 quest :- write('You have an on-going quest. Finish that first!'), !.
 
@@ -33,4 +33,4 @@ daily2 :- asserta(needed(2, 3, 2)), !.
 
 daily3 :- asserta(needed(3, 2, 2)), !.
 
-ultimatequest1 :- write("MENAKLUKKAN SAPI GILA")
+ultimatequest1 :- write("MENAKLUKKAN SAPI GILA"), !.
