@@ -23,7 +23,7 @@ changeSeason(X) :-
 
 changeSeason(X) :- 
     isValidSeason(X), retract(currentSeason(_)), asserta(currentSeason(X)), currentSeason(winter), 
-    write('Its now Winter ! Crops are bad, Animals are less active, and Its harder to Fish ! Hope you survive this one'), nl,!.
+    write('Its now Winter ! Crops are bad, Animals are less active, and Its harder to Fish ! Hope youve prepared to survive winter.'), nl,!.
 
 changeSeason(X) :-
     \+isValidSeason(X),
