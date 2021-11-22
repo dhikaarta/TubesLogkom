@@ -59,15 +59,11 @@ addInv(Item,Total):-
     addInv(Item,TotalNow), !.
 
 inventory :-
-    write('█ █▄░█ █░█ █▀▀ █▄░█ ▀█▀ █▀█ █▀█ █▄█\n'),
-    write('█ █░▀█ ▀▄▀ ██▄ █░▀█ ░█░ █▄█ █▀▄ ░█░\n'), nl,
     Linventory(Inv),
     Inv =:= [],
     write("Inventory is Empty.\n"), !.
 
 inventory :-
-    write('█ █▄░█ █░█ █▀▀ █▄░█ ▀█▀ █▀█ █▀█ █▄█\n'),
-    write('█ █░▀█ ▀▄▀ ██▄ █░▀█ ░█░ █▄█ █▀▄ ░█░\n'), nl,
     write('Your Inventory '),
     Linventory(Inv),
     TotalItems(X),
@@ -78,7 +74,7 @@ inventory :-
 throwItem(Item,amount) :-
     Linventory(Inv),
     \+ member(Item,Inv), !, 
-    format('You don\'t have ~w !', [Item] ), fail.
+    format('You don\'t have ~w !\n', [Item] ), fail.
 
 throwItem(Item,0) :- !.
 
