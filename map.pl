@@ -145,42 +145,49 @@ printMap(X, Y) :-
 
 printMap(X, Y) :-
     marketplaceTile(X, Y),
+    \+ (playerTile(X, Y)),
     write('M'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     ranchTile(X, Y),
+    \+ (playerTile(X, Y)),
     write('R'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     houseTile(X, Y),
+    \+ (playerTile(X, Y)),
     write('H'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     questTile(X, Y),
+    \+ (playerTile(X, Y)),
     write('Q'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     waterTile(X, Y),
+    \+ (playerTile(X, Y)),
     write('o'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     diggedTile(X, Y),
+    \+ (playerTile(X, Y)),
     write('='),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
     playerTile(X, Y),
+    \+ (playerTile(X, Y)),
     write('P'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).

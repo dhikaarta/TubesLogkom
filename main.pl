@@ -2,3 +2,6 @@
 
 start :-
     createMap.
+
+quit :-
+    halt(0).
