@@ -43,20 +43,19 @@ items(bait,bait4).
 items(bait,bait5).
 
 /* HASIL FISHING */
-items(fish,salmon).
-items(fish,tuna).
-items(fish,sardine).
-items(fish,cod).
-items(fish,catfish).
-items(fish,mackerel).
-items(fish,swordfish).
-items(fish,herring).
-items(fish,trout).
-items(fish,eel).
-items(fish,octopus).
-items(fish,squid).
-items(fish,shark).
-items(fish,trash).
+items(fish,Lele Raksasa).
+items(fish,Paus Uwu).
+items(fish,Teri Mikroskopis).
+items(fish,Ayah Nemo).
+items(fish,Sarden Badan Licin).
+items(fish,Cupang Menggemaskan).
+items(fish,Kakap Corak Batik khas Nusantara).
+items(fish,Geri Si Gurame).
+items(fish,Teri Mini).
+items(fish,Salmon Kulit Crispy Daging Kenyal).
+items(fish,Cacing Besar Alaska).
+items(fish,Teri Biasa Aja).
+items(fish,Trash).
 
 /* EQUIPMENT ada tambahan level sama exp equipment, dan max exp per level*/
 asserta(items(equip,fishingrod,1,0,50)).
@@ -65,56 +64,55 @@ asserta(items(equip,shovel,1,0,50)).
 asserta(items(equip,ranchequip,1,0,50)).
 
 /* PRICE ITEM */
-priceitems(bayamSeed,20).
-priceitems(wortelSeed,40).
-priceitems(kentangSeed,80).
-priceitems(jagungSeed,60).
-priceitems(cabeSeed,50).
-priceitems(bawang_merahSeed,70).
-priceitems(bawang_putihSeed,50).
-priceitems(padiSeed,30).
-priceitems(kangkungSeed,90).
-priceitems(bayam,80).
-priceitems(wortel,140).
-priceitems(kentang,300).
-priceitems(jagung,250).
-priceitems(cabe,200).
-priceitems(bawang_merah,350).
-priceitems(bawang_putih,250).
-priceitems(padi,100).
-priceitems(kangkung,350).
-priceitems(chickenfeed,50).
-priceitems(cowfeed,100).
-priceitems(sheepfeed,75).
-priceitems(egg,65).
-priceitems(milk,80).
-priceitems(wol,110)
-priceitems(cowmeat,350).
-priceitems(sheepmeat,270).
-priceitems(chickenmeat,150).
-priceitems(bait1,10).
-priceitems(bait2,20).
-priceitems(bait3,30).
-priceitems(bait4,40).
-priceitems(bait5,50).
-priceitems(salmon,300).
-priceitems(tuna,250).
-priceitems(sardine,120).
-priceitems(cod,220).
-priceitems(catfish,200).
-priceitems(mackerel,175).
-priceitems(swordfish,260).
-priceitems(herring,240).
-priceitems(trout,140).
-priceitems(eel,180).
-priceitems(octopus,230).
-priceitems(squid,150).
-priceitems(shark,0).
-priceitems(trash,0).
-priceitems(fishingrod,500).
-priceitems(watering,250).
-priceitems(shovel,250).
-priceitems(ranchequip,500).
+priceitems(bayamSeed,5).
+priceitems(wortelSeed,10).
+priceitems(kentangSeed,20).
+priceitems(jagungSeed,15).
+priceitems(cabeSeed,12).
+priceitems(bawang_merahSeed,17).
+priceitems(bawang_putihSeed,12).
+priceitems(padiSeed,7).
+priceitems(kangkungSeed,22).
+priceitems(bayam,20).
+priceitems(wortel,35).
+priceitems(kentang,75).
+priceitems(jagung,63).
+priceitems(cabe,50).
+priceitems(bawang_merah,87).
+priceitems(bawang_putih,63).
+priceitems(padi,25).
+priceitems(kangkung,87).
+priceitems(chickenfeed,5).
+priceitems(cowfeed,10).
+priceitems(sheepfeed,8).
+priceitems(egg,35).
+priceitems(milk,40).
+priceitems(wol,60)
+priceitems(cowmeat,250).
+priceitems(sheepmeat,170).
+priceitems(chickenmeat,90).
+priceitems(bait1,1).
+priceitems(bait2,2).
+priceitems(bait3,3).
+priceitems(bait4,4).
+priceitems(bait5,5).
+priceitems(Lele Raksasa,250).
+priceitems(Paus Uwu,170).
+priceitems(Teri Mikroskopis,2).
+priceitems(Ayah Nemo,75).
+priceitems(Sarden Badan Licin,60).
+priceitems(Cupang Menggemaskan,30).
+priceitems(Kakap Corak Batik khas Nusantara,150).
+priceitems(Geri Si Gurame,105).
+priceitems(Teri Mini,5).
+priceitems(Salmon Kulit Crispy Daging Kenyal,45).
+priceitems(Cacing Besar Alaska,90).
+priceitems(Teri Biasa Aja,15).
+priceitems(Trash,0).
+priceitems(fishingrod,50).
+priceitems(watering,25).
+priceitems(shovel,25).
+priceitems(ranchequip,50).
 
 /* Level Up TOOL */
 levelupTool(Name) :- 
