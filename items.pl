@@ -43,19 +43,19 @@ items(bait,bait4).
 items(bait,bait5).
 
 /* HASIL FISHING */
-items(fish,Lele Raksasa).
-items(fish,Paus Uwu).
-items(fish,Teri Mikroskopis).
-items(fish,Ayah Nemo).
-items(fish,Sarden Badan Licin).
-items(fish,Cupang Menggemaskan).
-items(fish,Kakap Corak Batik khas Nusantara).
-items(fish,Geri Si Gurame).
-items(fish,Teri Mini).
-items(fish,Salmon Kulit Crispy Daging Kenyal).
-items(fish,Cacing Besar Alaska).
-items(fish,Teri Biasa Aja).
-items(fish,Trash).
+items(fish,'Lele Raksasa').
+items(fish,'Paus Uwu').
+items(fish,'Teri Mikroskopis').
+items(fish,'Ayah Nemo').
+items(fish,'Sarden Badan Licin').
+items(fish,'Cupang Menggemaskan').
+items(fish,'Kakap Corak Batik khas Nusantara').
+items(fish,'Geri Si Gurame').
+items(fish,'Teri Mini').
+items(fish,'Salmon Kulit Crispy Daging Kenyal').
+items(fish,'Cacing Besar Alaska').
+items(fish,'Teri Biasa Aja').
+items(fish,'Trash').
 
 /* EQUIPMENT ada tambahan level sama exp equipment, dan max exp per level*/
 asserta(items(equip,fishingrod,1,0,50)).

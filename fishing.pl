@@ -3,43 +3,49 @@
 :- dynamic(currentSeason/1).
 
 % simulasi HP, XP, MONEY dan SEASON
-start :- asserta(character(100, 100, 0, 0)), asserta(currentSeason(summer)).
+start :- asserta(character(100, 100, 0, 0)), asserta(currentSeason(winter)).
 
-fish :- character(Health, MaxHealth, Lvl, Money), 
-    HPLoss is 2, (Health - HPLoss >= 0), nl,
-    write('Reeling in...              '), nl,
-    write('                     |     '), nl,
-    write('~~~~~~~~~~~~~~~~~~~~~|~~~~~'), nl,
-    write('Fishy-fish...   ~    |     '), nl,
-    write('                     |  ~  '), nl,
-    write('         ~           |     '), nl,
-    write('  ~                  o     '), nl,
-    write('             ~             '), nl,
+fish :- 
+    /* validasi fishing rod + bait dan HP */
+    character(Health, _, _, _), (Health - 2 >= 0), nl,
+    write('Attaching bait to fishing rod...  '), nl,
+    write('Casting the fishing rod!          '), nl, nl,
+    write('Reeling in...                     '), nl,
+    write('                     |            '), nl,
+    write('~~~~~~~~~~~~~~~~~~~~~|~~~~        '), nl,
+    write('Fishy-fish...   ~    |            '), nl,
+    write('                     |  ~         '), nl,
+    write('         ~           |            '), nl,
+    write('  ~                  o            '), nl,
+    write('             ~                    '), nl,
     write('Plz don\'t break @ fishing pole...'), nl, nl,
-    write('      ~             ~      '), nl,
-    write('=========================='), nl,
+    write('      ~             ~             '), nl,
+    write('==========================        '), nl,
 
     pickfish, fish(Type, Price), (Type == 'Trash' -> 
         write('A fish fell prey to your bait, but was able to get away.'), 
-        nl, write('You were left empty-handed. Bummer.'), nl ;
+        nl, write('However, you managed to land a nice pile of Trash. Congrats on keeping the lake clean.'), nl ;
         write('You caught a fish! It\'s '), write(Type), nl, 
         write('You got '), write(Price), write(' Golds'), nl), nl,
 
-    CurLvl is Lvl + 2,
-    CurMoney is Money + Price,
-    CurHealth is Health - HPLoss,
-    retract(character(Health, MaxHealth, Lvl, Money)),
-    asserta(character(CurHealth, MaxHealth, CurLvl, CurMoney)), nl,
-    
-    write('Current HP: '), write(CurHealth), write('/'), write(MaxHealth), nl, 
-    write('Current XP Fishing: '), write(CurLvl), nl,
-    write('Current Money: '), write(CurMoney), nl, 
-    retractall(fish(Type, Price)), !.
+    fishxpmoney, !.
 
 fish :- 
     write('Not enough HP (atau belom ngetik <start>, untuk sementara harus ketik <start> dulu sekali baru bisa <fish>)'), !.
 
-% dummy fish types
+fishxpmoney :- fish(Type, Price), character(Health, MaxHealth, Lvl, Money),
+    CurLvl is Lvl + 2,
+    CurMoney is Money + Price,
+    CurHealth is Health - 2,
+    retract(character(Health, MaxHealth, Lvl, Money)),
+    asserta(character(CurHealth, MaxHealth, CurLvl, CurMoney)), nl,
+    
+    write('Current HP: '), write(CurHealth), write('/'), write(MaxHealth), nl,
+    write('Current XP Fishing: '), write(CurLvl), nl,
+    write('Current Money: '), write(CurMoney), write(' (+'), write(Price), write(')'), nl,
+    retractall(fish(Type, Price)), !.
+
+% DUMMY FISH TYPES
 
 % unlocked at level 0-30
 noobfish :- random(0, 4, X),
