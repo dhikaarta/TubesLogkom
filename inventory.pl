@@ -76,6 +76,12 @@ throwItem(Item,amount) :-
     \+ member(Item,Inv), !, 
     format('You don\'t have ~w !\n', [Item] ), fail.
 
+throwItem(Item,amount) :-
+    Linventory(Inv),
+    totalperItem(Item,Inv,total),
+    amount > total, !,
+    format('You don\'t have enough ~w !\n', [Item] ), fail.
+
 throwItem(Item,0) :- !.
 
 throwItem(Item,amount) :-

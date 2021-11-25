@@ -19,7 +19,7 @@ fish :- character(Health, MaxHealth, Lvl, Money),
     write('      ~             ~      '), nl,
     write('=========================='), nl,
 
-    pickfish, fish(Type, Price), (Type == 'None' -> 
+    pickfish, fish(Type, Price), (Type == 'Trash' -> 
         write('A fish fell prey to your bait, but was able to get away.'), 
         nl, write('You were left empty-handed. Bummer.'), nl ;
         write('You caught a fish! It\'s '), write(Type), nl, 
@@ -43,14 +43,14 @@ fish :-
 
 % unlocked at level 0-30
 noobfish :- random(0, 4, X),
-        (   X =:= 0 -> asserta(fish('None', 0)) ;
+        (   X =:= 0 -> asserta(fish('Trash', 0)) ;
             X =:= 1 -> asserta(fish('Teri Biasa Aja', 15)) ; 
             X =:= 2 -> asserta(fish('Teri Mini', 5)) ; 
             X =:= 3 -> asserta(fish('Teri Mikroskopis', 2))     ), !.
 
 % unlocked at level 31-70
 avgfish :- random(0, 4, X),
-        (   X =:= 0 -> asserta(fish('None', 0)) ;
+        (   X =:= 0 -> asserta(fish('Trash', 0)) ;
             X =:= 1 -> asserta(fish('Sarden Badan Licin', 65)) ; 
             X =:= 2 -> asserta(fish('Salmon Kulit Crispy Daging Kenyal', 45)) ; 
             X =:= 3 -> asserta(fish('Cupang Menggemaskan', 30))     ), !.
@@ -63,16 +63,16 @@ profish :- random(1, 4, X),
 
 % special fishes 4 cammer
 summerfish :- random(0, 7, X),
-        (   X < 2 -> asserta(fish('None', 0)) ;
+        (   X < 2 -> asserta(fish('Trash', 0)) ;
             X < 4 -> asserta(fish('Kakap Corak Batik khas Nusantara', 150)) ;
             X < 6 -> asserta(fish('Paus Uwu', 170)) ;
             asserta(fish('Lele Raksasa', 250))      ), !.
 
 nooblevel :- random(0, 4, Z),
-        (   Z < 2 -> asserta(fish('None', 0)) ; noobfish    ), !.
+        (   Z < 2 -> asserta(fish('Trash', 0)) ; noobfish    ), !.
 
 avglevel :- random(0, 6, Z),
-        (   Z =:= 0 -> asserta(fish('None', 0)) ;
+        (   Z =:= 0 -> asserta(fish('Trash', 0)) ;
             Z < 3 -> noobfish ;
             avgfish     ), !.
 
@@ -92,7 +92,7 @@ pickfish :- currentSeason(X), X == summer, character(_, _, Lvl, _),
 % winter
 pickfish :- currentSeason(X), X == winter, character(_, _, Lvl, _),
         random(0, 21, ZZ),
-        (   ZZ < 13 -> asserta(fish('None', 0)) ;
+        (   ZZ < 13 -> asserta(fish('Trash', 0)) ;
             (   Lvl < 31 -> nooblevel ;
                 Lvl < 71 -> avglevel ;
                 prolevel    )   ), !.

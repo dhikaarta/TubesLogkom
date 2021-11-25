@@ -15,12 +15,18 @@ sell :-
     read(Z),
     sellitem(Y,Z), !.
 
-sellitem(_,0) :- !.
+sellitem(item,amount) :-
+    Linventory(Inv),
+    \+ member(item,Inv), !,
+    format('You don\'t have ~w !\n', [item] ), fail.
 
 sellitem(item,amount) :-
     Linventory(Inv),
-    \+ member(item,Inv),
-    format('You don\'t have ~w !\n', [Item] ), fail.
+    totalperItem(item,Inv,total),
+    amount > total, !,
+    format('You don\'t have enough ~w !\n', [item] ), fail.
+
+sellitem(_,0) :- !.
 
 sellitem(item,amount) :-
     Linventory(Inv),
@@ -28,6 +34,9 @@ sellitem(item,amount) :-
     retractall(Linventory(_)),
     asserta(Linventory(InvNow)),
     itemPrice(item,X),
-    /* goldPlayer is goldPlayer + X */
+    player(A,B,C,D,E,F,G,H,I,J,Gold,L),
+    GoldNow is Gold + X,
+    retractall(player(_,_,_,_,_,_,_,_,_,_,_,_)),
+    asserta(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
     amountNow is amount - 1
     sellitem(item,amountNow), !. 
