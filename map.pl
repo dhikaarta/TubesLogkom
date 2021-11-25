@@ -10,7 +10,7 @@
 :- dynamic(diggedTile/2).
 :- dynamic(playerTile/2).
 
-/* INISIALISASI FAKTA */ 
+/* FACT */ 
 createMap :-
     assertz(lengthMap(16)),
     assertz(widthMap(19)),
@@ -64,18 +64,18 @@ createNormalTile(_, Y, List) :-
     maplist(assertz, List), !.
 
 createNormalTile(X, Y, List) :-
-    (fenceTile(X, Y); marketplaceTile(X, Y); ranchTile(X, Y); houseTile(X, Y); questTile(X, Y); waterTile(X, Y); diggedTile(X, Y)),
+    (isFenceTile(X, Y); isMarketplaceTile(X, Y); isRanchTile(X, Y); isHouseTile(X, Y); isQuestTile(X, Y); isWaterTile(X, Y); isDiggedTile(X, Y)),
     nextTile(X, Y, XNew, YNew), !,
     createNormalTile(XNew, YNew, List).
 
 createNormalTile(X, Y, List) :-
-    \+ (fenceTile(X, Y)),
-    \+ (marketplaceTile(X, Y)),
-    \+ (ranchTile(X, Y)),
-    \+ (houseTile(X, Y)),
-    \+ (questTile(X, Y)),
-    \+ (waterTile(X, Y)),
-    \+ (diggedTile(X, Y)),
+    \+ (isFenceTile(X, Y)),
+    \+ (isMarketplaceTile(X, Y)),
+    \+ (isRanchTile(X, Y)),
+    \+ (isHouseTile(X, Y)),
+    \+ (isQuestTile(X, Y)),
+    \+ (isWaterTile(X, Y)),
+    \+ (isDiggedTile(X, Y)),
     nextTile(X, Y, XNew, YNew), !,
     createNormalTile(XNew, YNew, [normalTile(X, Y) | List]).
 

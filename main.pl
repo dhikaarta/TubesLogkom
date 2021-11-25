@@ -1,4 +1,5 @@
 :- include('map.pl').
+:- include('exploration.pl').
 
 start :-
     createMap.
