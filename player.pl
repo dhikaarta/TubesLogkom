@@ -4,6 +4,7 @@
 
 energy(100,100).
 
+
 status :- player(A,B,C,D,E,F,G,H,I,J,K,L),energy(CurrEnergy,MaxEnergy),
     MaxExpFarming is L + 50*D,
     MaxExpFishing is L + 50 *F,
@@ -28,8 +29,8 @@ write('2. Rancher'),nl,
 write('3. Fisher'),nl,
 chooseJob.
 
-% character (Job, Level, Level farming, Exp farming, Level fishing, Exp fishing, Level ranching, Exp ranching,Exp, LevelUpExp, Gold,Max job exp)
-% character (A  , B    , C            , D          , E            , F          , G             , H           ,I  , J         , K   ,L          )
+% player(Job, Level, Level farming, Exp farming, Level fishing, Exp fishing, Level ranching, Exp ranching,Exp, LevelUpExp, Gold,Max job exp)
+% player(A  , B    , C            , D          , E            , F          , G             , H           ,I  , J         , K   ,L          )
 
 chooseJob :- write('Choose a Job (1/2/3) :'), read(CC),nl,
 (CC =:= 1 -> asserta(player('Farmer', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0, 100)), write('You are a farmer ! Good Luck ') ;
@@ -58,7 +59,7 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), D > (L + (50*C)),
             write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE        VV VV   EE      LL         UU   UU PP                '),nl,
             write('LLLLLLL EEEEEEE    VVV    EEEEEEE LLLLLLL     UUUUU  PP         !!! !!!'),nl,nl,
-            write('You farming skillz leveled up ! '), write(C), write('->'), write(NewLevel), nl, levelUp.
+            write('Your farming skillz leveled up ! '), write(C), write('->'), write(NewLevel), nl, levelUp.
 
 levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), F > L + (50*E), 
             NewLevel is E + 1,
@@ -105,10 +106,8 @@ addEnergy(X) :- energy(A,Max), Anew is A + X,
                 
 
 depleteEnergy(X) :- energy(A,Max), 
-                    (A < X -> write('You dont have enough energy to do that !'), nl;
+                    (A < X -> write('You don\'t have enough energy to do that !'), nl;
                      A > X -> NewEnergy is A - X, retract(energy(_,Max)), asserta(energy(NewEnergy,Max)), write('You now have '), write(NewEnergy), write(' stamina'), nl;
                      A =:= X -> retract(energy(_,Max)), asserta(energy(0,Max)), asserta(isExhausted), write('You ran out of stamina, you are now exhausted'), nl).
                      
-
-                    
-                    
+                     
