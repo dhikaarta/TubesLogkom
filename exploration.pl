@@ -94,3 +94,10 @@ d :-
     retract(playerTile(X, Y)), !,
     assertz(playerTile(XNew, YNew)), !,
     write('You moved east.'), nl.
+
+dig :-
+    isPlayerTile(X, Y),
+    isNormalTile(X, Y),
+    retract(normalTile(X, Y)), !,
+    assertz(diggedTile(X, Y)), !,
+    write('You digged the tile.'), nl.
