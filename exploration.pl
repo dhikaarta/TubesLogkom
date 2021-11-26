@@ -4,14 +4,14 @@ w :-
     XNew is X,
     YNew is Y - 1,
     isWaterTile(XNew, YNew),
-    write('You can’t get into water!'), nl.
+    write('You cant get into water!'), nl.
 
 w :-
     isPlayerTile(X, Y),
     XNew is X,
     YNew is Y - 1,
     isFenceTile(XNew, YNew),
-    write('You can’t walk past fence!'), nl.
+    write('You cant walk past fence!'), nl.
 
 w :-
     isPlayerTile(X, Y),
@@ -28,14 +28,14 @@ a :-
     XNew is X - 1,
     YNew is Y,
     isWaterTile(XNew, YNew),
-    write('You can’t get into water!'), nl.
+    write('You cant get into water!'), nl.
 
 a :-
     isPlayerTile(X, Y),
     XNew is X - 1,
     YNew is Y,
     isFenceTile(XNew, YNew),
-    write('You can’t walk past fence!'), nl.
+    write('You cant walk past fence!'), nl.
 
 a :-
     isPlayerTile(X, Y),
@@ -52,14 +52,14 @@ s :-
     XNew is X,
     YNew is Y + 1,
     isWaterTile(XNew, YNew),
-    write('You can’t get into water!'), nl.
+    write('You cant get into water!'), nl.
 
 s :-
     isPlayerTile(X, Y),
     XNew is X,
     YNew is Y + 1,
     isFenceTile(XNew, YNew),
-    write('You can’t walk past fence!'), nl.
+    write('You cant walk past fence!'), nl.
 
 s :-
     isPlayerTile(X, Y),
@@ -76,14 +76,14 @@ d :-
     XNew is X + 1,
     YNew is Y,
     isWaterTile(XNew, YNew),
-    write('You can’t get into water!'), nl.
+    write('You cant get into water!'), nl.
 
 d :-
     isPlayerTile(X, Y),
     XNew is X + 1,
     YNew is Y,
     isFenceTile(XNew, YNew),
-    write('You can’t walk past fence!'), nl.
+    write('You cant walk past fence!'), nl.
 
 d :-
     isPlayerTile(X, Y),
