@@ -25,9 +25,20 @@ collect :- currentSeason(X), X == winter, random(0, 10, N),
 collect :- ranchxpmoney, !.
 
 % nanti nambah XP + XP Ranching disini + tambahin di inventory
-ranchxpmoney :- ranch(Livestock, Produce, Time, Price), character(A, B, Exp, Money),
+ranchxpmoney :- ranch(Livestock, Produce, Time, Price),
+    player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, Exp, _, Gold, _),
     write('Finally... It is time.'), nl, write('You gained '), write(Produce), write(' and '), write(Price), write(' Golds.'), nl,
-    CurMoney is Money + Price, CurExp is Exp + 4, retract(character(A, B, Exp, Money)), asserta(character(A, B, CurExp, CurMoney)), 
+
+    CurExpRanch is (13 * LevelRanch) + ExpRanch,
+    CurExp is (2 * Level) + Exp,
+    (   Job == 'Rancher' -> CurMoney is Money + (Price + (LevelRanch * 5)) ;
+        CurMoney is Money + Price ),    
+    addGold(CurMoney), 
+    addExp(CurExp, 0), 
+    addExp(CurExpRanch, 3), nl, 
+
+    write('Current XP Ranching: '), write(CurExpRanch), nl,
+    write('Current Money: '), write(CurMoney), write(' (+'), write(Price), write(')'), nl,
     retractall(ranch(Livestock, Produce, Time, Price)), !.
 
 % mockup inventory
@@ -36,10 +47,10 @@ livestock :-
     write('1. AUTO-JADI --> daging auto-jadi'), nl, write('2. ayam --> telor ayam'), nl, write('3. sapi --> susu segar'), nl, write('4. domab --> wol'), nl,
     write('Which livestock will you raise?'), nl,
     read(X),
-    (   X =:= 1 -> asserta(ranch('AUTO-JADI', 'daging auto-jadi', 0, 20)) ;
-        X =:= 2 -> asserta(ranch('ayam', 'telor ayam', 25, 35)) ;
-        X =:= 3 -> asserta(ranch('sapi', 'susu segar', 30, 40)) ;
-        X =:= 4 -> asserta(ranch('dombab', 'wol', 35, 60))  ), !.
+    (   X =:= 1 -> assertz(ranch('AUTO-JADI', 'daging auto-jadi', 0, 20)) ;
+        X =:= 2 -> assertz(ranch('ayam', 'telor ayam', 25, 35)) ;
+        X =:= 3 -> assertz(ranch('sapi', 'susu segar', 30, 40)) ;
+        X =:= 4 -> assertz(ranch('dombab', 'wol', 35, 60))  ), !.
 
 loop(1) :- write('*PAT* '), nl, !.
 
@@ -54,5 +65,5 @@ pat :- ranch(Livestock, Produce, Time, Price),
     write('You pat the animal '), write(Pat), write(' time(s).'), nl, nl,
     (   Pat =:= N -> write('Seems like it\'s working. Good job.'), CurPrice is Price + 7,
         retract(ranch(Livestock, Produce, Time, Price)), 
-        asserta(ranch(Livestock, Produce, Time, CurPrice)) ; 
+        assertz(ranch(Livestock, Produce, Time, CurPrice)) ; 
         write('The animal seems unbothered by your action. Do better next time.')   ), nl, !.

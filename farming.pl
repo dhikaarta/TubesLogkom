@@ -2,7 +2,7 @@
 
 :- dynamic(farm/3).
 
-farm :- \+ farm(_, _, _),
+farming :- \+ farm(_, _, _),
     write('Which seed would you like to plant?'), nl, seeds, farm(Seed, Time, _),
     write('You chose '), write(Seed), write('. Weird choice, but alright.'), nl, nl,
 
@@ -24,7 +24,7 @@ farm :- \+ farm(_, _, _),
     write('You have successfully planted the '), write(Seed), write(' seed.'), nl,
     write('Come back in '), write(Time), write(' seconds to get your '), write(Seed), write(' by typing <harvest> in the main menu'), !.
 
-farm :- write('You should harvest your crop before farming again.'), !.
+farming :- write('You should harvest your crop before farming again.'), !.
 
 harvest :- \+ farm(_, _, _), write('... You do realize you haven\'t planted anything, right?'), !.
 
@@ -45,7 +45,7 @@ harvest :- farmxpmoney, !.
 farmxpmoney :- farm(Seed, Time, Price), character(A, B, Exp, Money),
     write('The time has come for you to reap what you sow... Literally.'), nl, 
     write('You gained '), write(Seed), write(' and '), write(Price), write(' Golds.'), nl,
-    CurMoney is Money + Price, CurExp is Exp + 4, retract(character(A, B, Exp, Money)), asserta(character(A, B, CurExp, CurMoney)), 
+    CurMoney is Money + Price, CurExp is Exp + 4, retract(character(A, B, Exp, Money)), assertz(character(A, B, CurExp, CurMoney)), 
     retractall(farm(Seed, Time, Price)), !.
 
 % mockup inventory
@@ -53,6 +53,6 @@ seeds :-
     /* testing aja, nanti ceknya dari inventory */
     write('1. AUTO-JADI'), nl, write('2. wortel'), nl, write('3. bayam'), nl,
     read(X),
-    (X =:= 1 -> asserta(farm('AUTO-JADI', 0, 20)) ;
-    X =:= 2 -> asserta(farm('wortel', 15, 40)) ;
-    X =:= 3 -> asserta(farm('bayam', 20, 60))), !.
+    (X =:= 1 -> assertz(farm('AUTO-JADI', 0, 20)) ;
+    X =:= 2 -> assertz(farm('wortel', 15, 40)) ;
+    X =:= 3 -> assertz(farm('bayam', 20, 60))), !.
