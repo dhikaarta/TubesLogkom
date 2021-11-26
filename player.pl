@@ -33,16 +33,16 @@ chooseJob.
 % player(A  , B    , C            , D          , E            , F          , G             , H           ,I  , J         , K   ,L          )
 
 chooseJob :- write('Choose a Job (1/2/3) :'), read(CC),nl,
-(CC =:= 1 -> asserta(player('Farmer', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0, 100)), write('You are a farmer ! Good Luck ') ;
-CC =:= 2 -> asserta(player('Rancher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0, 100)), write('You are a rancher ! Good Luck ')  ;
-CC =:= 3 -> asserta(player('Fisher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0 , 100)), write('You are a fisher ! Good Luck ')  ;
+(CC =:= 1 -> assertz(player('Farmer', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0, 100)), write('You are a farmer ! Good Luck ') ;
+CC =:= 2 -> assertz(player('Rancher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0, 100)), write('You are a rancher ! Good Luck ')  ;
+CC =:= 3 -> assertz(player('Fisher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0 , 100)), write('You are a fisher ! Good Luck ')  ;
 write('No such job ! Choose again'), nl,chooseJob).
 
 levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), I > J,
             NewLevel is B + 1,
             NewExp is I - J,
             NewMax is J + 100,
-            retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), asserta(player(A,NewLevel,C,D,E,F,G,H,NewExp,NewMax,K,L)),
+            retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,NewLevel,C,D,E,F,G,H,NewExp,NewMax,K,L)),
             write('LL      EEEEEEE VV     VV EEEEEEE LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE      VV     VV EE      LL         UU   UU PP   PP    !!! !!!'),nl,
             write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
@@ -53,7 +53,7 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), I > J,
 levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), D > (L + (50*C)),  
             NewLevel is C + 1,
             NewExp is D - (L + (50*C)),
-            retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), asserta(player(A,B,NewLevel,NewExp,E,F,G,H,I,J,K,L)),
+            retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,NewLevel,NewExp,E,F,G,H,I,J,K,L)),
             write('LL      EEEEEEE VV     VV EEEEEEE LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE      VV     VV EE      LL         UU   UU PP   PP    !!! !!!'),nl,
             write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
@@ -64,7 +64,7 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), D > (L + (50*C)),
 levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), F > L + (50*E), 
             NewLevel is E + 1,
             NewExp is F - (L + (50*E)) ,
-            retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), asserta(player(A,B,C,D,NewLevel,NewExp,G,H,I,J,K,L)),
+            retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,NewLevel,NewExp,G,H,I,J,K,L)),
             write('LL      EEEEEEE VV     VV EEEEEEE LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE      VV     VV EE      LL         UU   UU PP   PP    !!! !!!'),nl,
             write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
@@ -75,7 +75,7 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), F > L + (50*E),
 levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), H > L + (50*G), 
             NewLevel is G + 1,
             NewExp is H - (L + (50*G)),
-            retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), asserta(player(A,B,C,D,E,F,NewLevel,NewExp,I,J,K,L)),
+            retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,NewLevel,NewExp,I,J,K,L)),
             write('LL      EEEEEEE VV     VV EEEEEEE LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE      VV     VV EE      LL         UU   UU PP   PP    !!! !!!'),nl,
             write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
@@ -85,29 +85,29 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), H > L + (50*G),
 
 addGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
               NewGold is K + X,
-              retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), asserta(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
+              retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
               write('You gained '), write(X), write(' Gold !'), nl ,!.
 
 addExp(X,Y) :- player(A,B,C,D,E,F,G,H,I,J,K,L),  % Y = 0 for general exp, Y = 1 for farming exp, Y=2 for fishing xp, Y =3 for ranching exp
-               (Y =:= 0 -> NewExp is I + X, retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), asserta(player(A,B,C,D,E,F,G,H,NewExp,J,K,L));
-                Y =:= 1 -> NewExp is D + X, retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), asserta(player(A,B,C,NewExp,E,F,G,H,I,J,K,L));
-                Y =:= 2 -> NewExp is F + X, retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), asserta(player(A,B,C,D,E,NewExp,G,H,I,J,K,L));
-                Y =:= 3 -> NewExp is H + X, retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), asserta(player(A,B,C,D,E,F,G,NewExp,I,J,K,L))),
+               (Y =:= 0 -> NewExp is I + X, retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,NewExp,J,K,L));
+                Y =:= 1 -> NewExp is D + X, retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,NewExp,E,F,G,H,I,J,K,L));
+                Y =:= 2 -> NewExp is F + X, retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,NewExp,G,H,I,J,K,L));
+                Y =:= 3 -> NewExp is H + X, retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,NewExp,I,J,K,L))),
                 levelUp .
                 
 
-restoreEnergy :- energy(_,Max),retract(energy(_,Max)), asserta(energy(Max,Max)), retract(isExhausted).
+restoreEnergy :- energy(_,Max),retract(energy(_,Max)), assertz(energy(Max,Max)), retract(isExhausted).
 
 addEnergy(X) :- energy(A,Max), Anew is A + X,
                 (Anew > Max -> restoreEnergy, Anew is Max;
-                 retract(energy(_,_)), asserta(energy(Anew, Max)), retract(isExhausted)),
+                 retract(energy(_,_)), assertz(energy(Anew, Max)), retract(isExhausted)),
                  write('You now have '), write(Anew), write(' stamina'), nl.
                  
                 
 
 depleteEnergy(X) :- energy(A,Max), 
                     (A < X -> write('You don\'t have enough energy to do that !'), nl;
-                     A > X -> NewEnergy is A - X, retract(energy(_,Max)), asserta(energy(NewEnergy,Max)), write('You now have '), write(NewEnergy), write(' stamina'), nl;
-                     A =:= X -> retract(energy(_,Max)), asserta(energy(0,Max)), asserta(isExhausted), write('You ran out of stamina, you are now exhausted'), nl).
+                     A > X -> NewEnergy is A - X, retract(energy(_,Max)), assertz(energy(NewEnergy,Max)), write('You now have '), write(NewEnergy), write(' stamina'), nl;
+                     A =:= X -> retract(energy(_,Max)), assertz(energy(0,Max)), assertz(isExhausted), write('You ran out of stamina, you are now exhausted'), nl).
                      
                      
