@@ -36,11 +36,7 @@ items(ranching,sheepmeat).
 items(ranching,chickenmeat).
 
 /* ITEM FISHING */
-items(bait,bait1).
-items(bait,bait2).
-items(bait,bait3).
-items(bait,bait4).
-items(bait,bait5).
+items(bait,bait).
 
 /* HASIL FISHING */
 items(fish,'Lele Raksasa').
@@ -58,10 +54,10 @@ items(fish,'Teri Biasa Aja').
 items(fish,'Trash').
 
 /* EQUIPMENT ada tambahan level sama exp equipment, dan max exp per level*/
-asserta(items(equip,fishingrod,1,0,50)).
-asserta(items(equip,watering,1,0,50)).
-asserta(items(equip,shovel,1,0,50)).
-asserta(items(equip,ranchequip,1,0,50)).
+assertz(items(equip,fishingrod,1,0,50)).
+assertz(items(equip,watering,1,0,50)).
+assertz(items(equip,shovel,1,0,50)).
+assertz(items(equip,ranchequip,1,0,50)).
 
 /* PRICE ITEM */
 priceitems(bayamSeed,5).
@@ -91,24 +87,20 @@ priceitems(wol,60)
 priceitems(cowmeat,250).
 priceitems(sheepmeat,170).
 priceitems(chickenmeat,90).
-priceitems(bait1,1).
-priceitems(bait2,2).
-priceitems(bait3,3).
-priceitems(bait4,4).
-priceitems(bait5,5).
-priceitems(Lele Raksasa,250).
-priceitems(Paus Uwu,170).
-priceitems(Teri Mikroskopis,2).
-priceitems(Ayah Nemo,75).
-priceitems(Sarden Badan Licin,60).
-priceitems(Cupang Menggemaskan,30).
-priceitems(Kakap Corak Batik khas Nusantara,150).
-priceitems(Geri Si Gurame,105).
-priceitems(Teri Mini,5).
-priceitems(Salmon Kulit Crispy Daging Kenyal,45).
-priceitems(Cacing Besar Alaska,90).
-priceitems(Teri Biasa Aja,15).
-priceitems(Trash,0).
+priceitems(bait,1).
+priceitems('Lele Raksasa',250).
+priceitems('Paus Uwu',170).
+priceitems('Teri Mikroskopis',2).
+priceitems('Ayah Nemo',75).
+priceitems('Sarden Badan Licin',60).
+priceitems('Cupang Menggemaskan',30).
+priceitems('Kakap Corak Batik khas Nusantara',150).
+priceitems('Geri Si Gurame',105).
+priceitems('Teri Mini',5).
+priceitems('Salmon Kulit Crispy Daging Kenyal',45).
+priceitems('Cacing Besar Alaska',90).
+priceitems('Teri Biasa Aja',15).
+priceitems('Trash',0).
 priceitems(fishingrod,50).
 priceitems(watering,25).
 priceitems(shovel,25).
@@ -122,7 +114,7 @@ levelupTool(Name) :-
     newexp is expnow mod expmax,
     newmax is expmax + 50,
     retractall(items(equip,Name,lvl,expnow,expmax)),
-    asserta(items(equip,Name,lvlup,newexp,newmax)).
+    assertz(items(equip,Name,lvlup,newexp,newmax)).
 
 /* USE ITEM */
 useItem(Name) :-

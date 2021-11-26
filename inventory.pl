@@ -42,21 +42,26 @@ writeInv(0,[H|T]) :-
     format('~w ~wx\n',[quantity,H]),
     writeInv(0,T),!.
 
-addInv(_,0) :- !.
+addItem(_,0) :- !.
 
-addInv(Item,Total):-
+addItem(Item,Total) :-
     TotalItems(X),
-    X =:= 100,
-    write("Inventory sudah penuh.\n"), !.
+    X =:= 100, !,
+    write("Inventory sudah penuh.\n"), fail.
 
-addInv(Item,Total):-
+addItem(Item,Total) :-
+    TotalItems(X),
+    X + Total > 100, !,
+    write("Inventory tidak cukup.\n"), fail.
+
+addItem(Item,Total):-
     TotalItems(X),
     Linventory(Inv),
     append(Inv,[Item],InvNow),
     retractall(Linventory(_)),
-    asserta(Linventory(InvNow)),
+    assertz(Linventory(InvNow)),
     TotalNow is Total-1,
-    addInv(Item,TotalNow), !.
+    addItem(Item,TotalNow), !.
 
 inventory :-
     Linventory(Inv),
@@ -88,6 +93,6 @@ throwItem(Item,amount) :-
     Linventory(Inv),
     delete(Item,Inv,InvNow),
     retractall(Linventory(_)),
-    asserta(Linventory(InvNow)),
+    assertz(Linventory(InvNow)),
     amountNow is amount - 1,
     throwItem(Item,amountNow), !.

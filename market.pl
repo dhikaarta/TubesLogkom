@@ -24,7 +24,7 @@ sellitem(item,amount) :-
     Linventory(Inv),
     totalperItem(item,Inv,total),
     amount > total, !,
-    format('You don\'t have enough ~w !\n', [item] ), fail.
+    format('You don\'t have enough ~w !\n', [item] ), fail.]
 
 sellitem(_,0) :- !.
 
@@ -32,11 +32,11 @@ sellitem(item,amount) :-
     Linventory(Inv),
     delete(item,Inv,InvNow),
     retractall(Linventory(_)),
-    asserta(Linventory(InvNow)),
+    assertz(Linventory(InvNow)),
     itemPrice(item,X),
     player(A,B,C,D,E,F,G,H,I,J,Gold,L),
     GoldNow is Gold + X,
     retractall(player(_,_,_,_,_,_,_,_,_,_,_,_)),
-    asserta(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
+    assertz(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
     amountNow is amount - 1
     sellitem(item,amountNow), !. 
