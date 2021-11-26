@@ -1,3 +1,6 @@
+:- include('items.pl').
+:- include('player.pl').
+
 :- dynamic(currentInventory/1).
 
 currentInventory([]).
@@ -5,17 +8,17 @@ currentInventory([]).
 /* Count jumlah per item */
 totalperItem(_,[],0).
 
-totalperItem(H,[H|T],quantity) :-
-    totalItem(H,T,quantity1),
-    quantity is quantity1 + 1, !.
+totalperItem(H,[H|T],Quantity) :-
+    totalperItem(H,T,Quantity1),
+    Quantity is Quantity1 + 1, !.
 
-totalperItem(H,[_|T],quantity) :-
-    totalItem(H,T,quantity), !.
+totalperItem(H,[_|T],Quantity) :-
+    totalperItem(H,T,Quantity), !.
 
 /* util count total item in inventory */
 totalitemsUtil([],0) :- !.
 
-totalitemsUtilotalItemsUtil([_|T],X) :-
+totalitemsUtil([_|T],X) :-
     totalitemsUtil(T,X1),
     X1 is (1+X), !.
 
@@ -26,20 +29,20 @@ totalItems(X) :-
 
 /*Write item in Inventorty */
 writeInv(1,[]) :-
-    write("Inventory is empty.\n"), !.
+    write('Inventory is empty.\n'), !.
 
 writeInv(0,[]) :- !.
 
 writeInv(1,[H|T]) :-
     currentInventory(Inv),
-    totalperItem(H,Inv,quantity),
-    format('~w ~wx\n',[quantity,H]),
+    totalperItem(H,Inv,Quantity),
+    format('~w ~wx\n',[Quantity,H]),
     writeInv(0,T),!.
 
 writeInv(0,[H|T]) :-
     currentInventory(Inv),
-    totalperItem(H,Inv,quantity),
-    format('~w ~wx\n',[quantity,H]),
+    totalperItem(H,Inv,Quantity),
+    format('~w ~wx\n',[Quantity,H]),
     writeInv(0,T),!.
 
 addItem(_,0) :- !.
@@ -47,12 +50,12 @@ addItem(_,0) :- !.
 addItem(_,_) :-
     totalItems(X),
     X =:= 100, !,
-    write("Inventory sudah penuh.\n"), fail.
+    write('Inventory sudah penuh.\n'), fail.
 
 addItem(_,Total) :-
     totalItems(X),
     X + Total > 100, !,
-    write("Inventory tidak cukup.\n"), fail.
+    write('Inventory tidak cukup.\n'), fail.
 
 addItem(Item,Total):-
     currentInventory(Inv),
@@ -65,59 +68,59 @@ addItem(Item,Total):-
 inventory :-
     currentInventory(Inv),
     Inv =:= [],
-    write("Inventory is Empty.\n"), !.
+    write('Inventory is Empty.\n'), !.
 
 inventory :-
     write('Your Inventory '),
     currentInventory(Inv),
     totalItems(X),
-    format('(~w / ~w\n',X,100),
-    sort(Inv),
-    writeInv(1,Inv), !.
+    format('(~w / ~w)\n',X,100),
+    sort(Inv,Inv2),
+    writeInv(1,Inv2), !.
 
-throwItem(Item,amount) :-
+throwItem(Item,_) :-
     currentInventory(Inv),
     \+ member(Item,Inv), !, 
     format('You don\'t have ~w !\n', [Item] ), fail.
 
-throwItem(Item,amount) :-
+throwItem(Item,Amount) :-
     currentInventory(Inv),
-    totalperItem(Item,Inv,total),
-    amount > total, !,
+    totalperItem(Item,Inv,Total),
+    Amount > Total, !,
     format('You don\'t have enough ~w !\n', [Item] ), fail.
 
 throwItem(_,0) :- !.
 
-throwItem(Item,amount) :-
+throwItem(Item,Amount) :-
     currentInventory(Inv),
     delete(Item,Inv,InvNow),
     retractall(currentInventory(_)),
     assertz(currentInventory(InvNow)),
-    amountNow is amount - 1,
-    throwItem(Item,amountNow), !.
+    AmountNow is Amount - 1,
+    throwItem(Item,AmountNow), !.
 
-sellitem(item,amount) :-
+sellitem(Item,_) :-
     currentInventory(Inv),
-    \+ member(item,Inv), !,
-    format('You don\'t have ~w !\n', [item] ), fail.
+    \+ member(Item,Inv), !,
+    format('You don\'t have ~w !\n', [Item] ), fail.
 
-sellitem(item,amount) :-
+sellitem(Item,Amount) :-
     currentInventory(Inv),
-    totalperItem(item,Inv,total),
-    amount > total, !,
-    format('You don\'t have enough ~w !\n', [item] ), fail.
+    totalperItem(Item,Inv,Total),
+    Amount > Total, !,
+    format('You don\'t have enough ~w !\n', [Item] ), fail.
 
 sellitem(_,0) :- !.
 
-sellitem(item,amount) :-
+sellitem(Item,Amount) :-
     currentInventory(Inv),
-    delete(item,Inv,InvNow),
+    delete(Item,Inv,InvNow),
     retractall(currentInventory(_)),
     assertz(currentInventory(InvNow)),
-    itemPrice(item,X),
+    priceitems(Item,X),
     player(A,B,C,D,E,F,G,H,I,J,Gold,L),
     GoldNow is Gold + X,
     retractall(player(_,_,_,_,_,_,_,_,_,_,_,_)),
     assertz(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
-    amountNow is amount - 1,
-    sellitem(item,amountNow), !. 
+    AmountNow is Amount - 1,
+    sellitem(Item,AmountNow), !. 
