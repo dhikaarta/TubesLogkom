@@ -3,6 +3,10 @@
 :- dynamic(diary/2).
 
 day(1).
+diary(1,'hahahahha').
+diary(2,'ini dua').
+diary(3,'ini tiga').
+
 house :- 
     isLocked, write('Your house is locked, write 1. to unlock it'),
     read(CC), (CC == 1 -> unlock).
@@ -48,3 +52,8 @@ exit :- isLocked, write('Your house is locked, write 1. to unlock it'),nl,nl,
         read(CC), (CC =:= 1 -> retract(isLocked), exit;houseloop).
 
 exit :- \+isLocked, write('You left your house'),nl.
+
+writeDiary :-  day(X), write('Masukkan entri untuk Day '), write(X), nl, read(DiaryInput), assertz(diary(X,DiaryInput)).
+
+readDiary :- write('Here are the list of your entries :'), nl,forall(diary(X,_), format('- Day ~d\n', [X])), read(CC),
+             diary(CC,Output), write(Output), nl,nl, houseloop.
