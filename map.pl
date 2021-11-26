@@ -308,7 +308,7 @@ sow(S) :-
     assertz(cropTile(X, Y, S)), !,
     format('You planted a ~w seed.', [S]).
 
-harvest :-
+reap :-
     isPlayerTile(X, Y),
     isCropTile(X, Y, S),
     retract(cropTile(X, Y, S)), !,
