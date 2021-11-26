@@ -1,4 +1,4 @@
-:- dynamic(items/5).
+:- dynamic(equip/4).
 
 /* SEED */
 items(seed,bayamSeed).
@@ -54,10 +54,10 @@ items(fish,'Teri Biasa Aja').
 items(fish,'Trash').
 
 /* EQUIPMENT ada tambahan level sama exp equipment, dan max exp per level*/
-assertz(items(equip,fishingrod,1,0,50)).
-assertz(items(equip,watering,1,0,50)).
-assertz(items(equip,shovel,1,0,50)).
-assertz(items(equip,ranchequip,1,0,50)).
+equip(fishingrod,1,0,50).
+equip(watering,1,0,50).
+equip(shovel,1,0,50).
+equip(ranchequip,1,0,50).
 
 /* PRICE ITEM */
 priceitems(bayamSeed,5).
@@ -83,7 +83,7 @@ priceitems(cowfeed,10).
 priceitems(sheepfeed,8).
 priceitems(egg,35).
 priceitems(milk,40).
-priceitems(wol,60)
+priceitems(wol,60).
 priceitems(cowmeat,250).
 priceitems(sheepmeat,170).
 priceitems(chickenmeat,90).
@@ -117,5 +117,3 @@ levelupTool(Name) :-
     assertz(items(equip,Name,lvlup,newexp,newmax)).
 
 /* USE ITEM */
-useItem(Name) :-
-    item(type,Name), !, _dosomething
