@@ -32,7 +32,7 @@ fishing :- \+ isExhausted,
 
     CurExpFish is (10 * (LevelFish)) + ExpFish,
     CurExp is (2 * Level) + Exp,
-    (   Job == 'Fisher' -> NewMoney is (Price + (LevelFish * 5)) ;
+    (   (Job == 'Fisher', \+ (Type == 'Trash'))  -> NewMoney is (Price + (LevelFish * 2)) ;
         NewMoney is Price ),
     CurMoney is Money + NewMoney,
 
