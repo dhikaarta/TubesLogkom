@@ -110,4 +110,4 @@ depleteEnergy(X) :- energy(A,Max),
                      A > X -> NewEnergy is A - X, retract(energy(_,Max)), assertz(energy(NewEnergy,Max)), write('You now have '), write(NewEnergy), write(' stamina'), nl;
                      A =:= X -> retract(energy(_,Max)), assertz(energy(0,Max)), assertz(isExhausted), write('You ran out of stamina, you are now exhausted'), nl).
                      
-                     
+                    
