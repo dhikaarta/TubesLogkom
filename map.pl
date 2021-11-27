@@ -9,7 +9,7 @@
 :- dynamic(waterTile/2).
 :- dynamic(diggedTile/2).
 :- dynamic(playerTile/2).
-:- dynamic(cropTile/3).
+:- dynamic(cropTile/4).
 
 /* FACT */ 
 createMap :-
@@ -132,8 +132,8 @@ isDiggedTile(X, Y) :-
 isPlayerTile(X, Y) :-
     playerTile(X, Y), !.
 
-isCropTile(X, Y, S) :-
-    cropTile(X, Y, S), !.
+isCropTile(X, Y, S, T) :-
+    cropTile(X, Y, S, T), !.
 
 /* OUTPUT */
 printMap(X, Y) :-
@@ -218,7 +218,7 @@ printMap(X, Y) :-
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
-    isCropTile(X, Y, S),
+    isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
     S == 'bayam',
     write('b'),
@@ -226,7 +226,7 @@ printMap(X, Y) :-
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
-    isCropTile(X, Y, S),
+    isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
     S == 'wortel',
     write('w'),
@@ -234,7 +234,7 @@ printMap(X, Y) :-
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
-    isCropTile(X, Y, S),
+    isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
     S == 'kentang',
     write('k'),
@@ -242,7 +242,7 @@ printMap(X, Y) :-
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
-    isCropTile(X, Y, S),
+    isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
     S == 'jagung',
     write('j'),
@@ -250,7 +250,7 @@ printMap(X, Y) :-
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
-    isCropTile(X, Y, S),
+    isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
     S == 'cabe',
     write('c'),
@@ -258,7 +258,7 @@ printMap(X, Y) :-
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
-    isCropTile(X, Y, S),
+    isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
     S == 'bawang_merah',
     write('b'),
@@ -266,7 +266,7 @@ printMap(X, Y) :-
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
-    isCropTile(X, Y, S),
+    isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
     S == 'bawang_putih',
     write('b'),
@@ -274,7 +274,7 @@ printMap(X, Y) :-
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
-    isCropTile(X, Y, S),
+    isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
     S == 'padi',
     write('p'),
@@ -282,7 +282,7 @@ printMap(X, Y) :-
     printMap(XNew, YNew).
 
 printMap(X, Y) :-
-    isCropTile(X, Y, S),
+    isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
     S == 'kangkung',
     write('k'),
@@ -301,16 +301,16 @@ dig :-
     assertz(diggedTile(X, Y)), !,
     write('You digged the tile.'), nl.
 
-sow(S, _, _) :-
+sow(S, T) :-
     isPlayerTile(X, Y),
     isDiggedTile(X, Y),
     retract(diggedTile(X, Y)), !,
-    assertz(cropTile(X, Y, S)), !,
+    assertz(cropTile(X, Y, S, T)), !,
     format('You planted a ~w.', [S]).
 
 reap :-
     isPlayerTile(X, Y),
-    isCropTile(X, Y, S),
-    retract(cropTile(X, Y, S)), !,
+    isCropTile(X, Y, S, T),
+    retract(cropTile(X, Y, S, T)), !,
     assertz(diggedTile(X, Y)), !,
     format('You harvested ~w.', [S]).
