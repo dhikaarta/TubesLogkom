@@ -1,5 +1,4 @@
 :- include('items.pl').
-:- include('player.pl').
 
 :- dynamic(currentInventory/1).
 

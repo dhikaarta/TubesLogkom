@@ -2,8 +2,6 @@
 :- include('exploration.pl').
 
 :- dynamic(items/2).
-:- dynamic(priceitems/2).
-:- dynamic(equip/4).
 
 /* SEED */
 items(seed,'bayam Seed').
@@ -75,6 +73,8 @@ items(equip,'fishing rod').
 items(equip,'watering').
 items(equip,'shovel').
 items(equip,'ranch equip').
+
+:- dynamic(equip/4).
 equip('fishing rod',1,0,50).
 equip('watering',1,0,50).
 equip('shovel',1,0,50).
@@ -102,6 +102,7 @@ usepotion('Gamble potion') :-
 
 
 /* PRICE ITEM */
+:- dynamic(priceitems/2).
 priceitems('bayam Seed',5).
 priceitems('wortel Seed',10).
 priceitems('kentang Seed',20).

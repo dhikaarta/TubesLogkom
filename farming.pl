@@ -1,3 +1,6 @@
+:- include('map.pl').
+:- include('season.pl').
+:- include('inventory.pl').
 :- dynamic(farm/3).
 
 digtile :- \+ (isDiggedTile(_, _)),
@@ -75,7 +78,7 @@ harvest :- currentSeason(X), X == winter, random(0, 10, N), reap, nl,
     retractall(farm(_, _, _, _)) ;
     farmxpmoney   ), !.
 
-harvest :- write('disana'), farmxpmoney, reap, nl, !.
+harvest :- reap, farmxpmoney, nl, !.
 
 % nanti nambah XP + XP Farming di harvest yg ini + tambahin di inv
 farmxpmoney :- isPlayerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Price),
