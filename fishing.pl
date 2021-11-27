@@ -39,7 +39,8 @@ fish :-
     CurExpFish is NewExpFish + ExpFish,
     (   Job == 'Fisher' ->  write('You were paid for working as a fisher'), nl,
                             Salary is (LevelFish * 5),
-                            addGold(Salary)     ), nl,
+                            addGold(Salary), nl  ;
+        nl  ),
 
     write('Current Stamina: '), write(CurHP), write('/'), write(MaxEnergy), nl,
     write('Current XP Fishing: '), write(CurExpFish), nl,
