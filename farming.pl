@@ -96,7 +96,7 @@ farmxpmoney :- playerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Pri
     write('Current XP Farming: '), write(CurExpFarm), nl,
     addItem(Seed, 1),
     addExp(NewExp, 0),
-    addExp(NewExpFarm,2), !.
+    addExp(NewExpFarm, 1), !.
 
 seeds :- 
     inventory(seed), nl,
