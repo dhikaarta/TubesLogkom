@@ -98,7 +98,7 @@ usepotion('teleport potion') :-
 usepotion('Gamble potion') :-
     random(0,2,X),
     ( X =:= 0, loseGold(500);
-    addGold(500)), !.
+    addGold(1000)), !.
 
 
 /* PRICE ITEM */
