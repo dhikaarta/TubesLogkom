@@ -39,8 +39,9 @@ fishing :- \+ isExhausted,
     write('Current Stamina: '), write(CurHP), write('/'), write(MaxEnergy), nl,
     write('Current XP Fishing: '), write(CurExpFish), nl,
     write('Current Money: '), write(CurMoney), write(' (+'), write(NewMoney), write(')'), nl,
-    retractall(player(Job, Level, C, D, LevelFish, ExpFish, E, F, Exp, G, Money, H)),
-    assertz(player(Job, Level, C, D, LevelFish, CurExpFish, E, F, CurExp, G, CurMoney, H)),
+    %retractall(player(Job, Level, C, D, LevelFish, ExpFish, E, F, Exp, G, Money, H)),
+    %assertz(player(Job, Level, C, D, LevelFish, CurExpFish, E, F, CurExp, G, CurMoney, H)),
+    addGold(CurMoney),addExp(CurExp,0),addExp(CurExpFish,2),
     depleteEnergy(HPLoss),
     retractall(fish(Type, Price)), !.
 
