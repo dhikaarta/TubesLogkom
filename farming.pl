@@ -1,17 +1,14 @@
-:- include('map.pl').
-:- include('season.pl').
-:- include('inventory.pl').
 :- dynamic(farm/3).
 
-digtile :- \+ (isDiggedTile(_, _)),
+digtile :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
     write('Let\'s dig this patch of tile right here!'), nl, nl,
-    write('Type <\'DIG DIG DIG\'>  to dig a hole in this tile'), nl,
+    write('Type <\'PLZ DIG\'>  to dig a hole in this tile'), nl,
     write('(P.S.: Don\'t forget to type the apostrophe (\')'), nl,
     repeat, nl, 
     read(Dig), nl,
     % plz ini ascii art jgn diubah keliatannya aja jelek tp di prolog ini jadi bagus ko :D
-    (   Dig == 'DIG DIG DIG' -> 
-    
+    (   Dig == 'PLZ DIG' -> 
+
         write('  _______   __    _______   _______  __  .__   __.   _______                         '), nl,                  
         write(' |       \\ |  |  /  _____| /  _____||  | |  \\ |  |  /  _____|                      '), nl,
         write(' |   __   ||  | |  |  __  |  |  __  |  | |   \\|  | |  |  __                         '), nl,
@@ -20,23 +17,26 @@ digtile :- \+ (isDiggedTile(_, _)),
         write(' |_______/ |__|  \\______|  \\______| |__| |__| \\__|  \\______| (__)   (__)   (__)  '), nl ;
 
         write('You\'re gonna end up digging your own grave if you keep digging like that.'), nl,
-        write('Try typing <\'DIG DIG DIG\'> again. Do NOT forget the apostrophe.'), nl, fail), nl, nl,
+        write('Try typing <\'PLZ DIG\'> again. Do NOT forget the apostrophe.'), nl, fail), nl, nl,
     dig,
     write('Phew, that was a lot of work. You lost 10 stamina while digging the hole.'), depleteEnergy(10), nl, nl,
     write('Now that this tile is digged, you can plant your seed(s) here by typing <plant> in the main menu.'), !.
 
-digtile :- (isDiggedTile(_, _)),
+digtile :- isPlayerTile(X, Y), isCropTile(X, Y, _, _),
+    write('This is a cropped tile! Are you trying to ruin it?'), !.
+
+digtile :- isPlayerTile(X, Y), (isDiggedTile(X, Y)),
     write('This tile is already digged. Try <plant> instead.'), !.
 
-plant :- \+ (totalItemsType(X, seed), X =:= 0), (isDiggedTile(_, _)),
+plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTile(X, Y)), 
     write('Here are a list of seeds in your inventory: '), nl, 
     nl, seeds, farm(Seed, Time, _),
-    
+ 
     repeat,
-    write('Type <\'PLZ BLESS MY SEED\'> to gain the harvest god\'s blessing.'), nl,
+    write('Type <\'PLZ BLESS\'> to gain the harvest god\'s blessing.'), nl,
     write('Once again, DO NOT forget the apostrophe (\'). Plz.'), nl,
     nl, read(Plant), nl,
-    (   Plant == 'PLZ BLESS MY SEED' -> 
+    (   Plant == 'PLZ BLESS' -> 
 
         write('        __               __   __                       '), nl,
         write('._____.|  |.___._._____.|  |_|__|._____._____.         '), nl,
@@ -55,16 +55,16 @@ plant :- \+ (totalItemsType(X, seed), X =:= 0), (isDiggedTile(_, _)),
 plant :- (totalItemsType(X, seed), X =:= 0),
     write('You don\'t have any seed in your inventory. Buy seeds in marketplace first.'), !.
 
-plant :- \+ (isDiggedTile(_, _)),
+plant :- isPlayerTile(X, Y), isCropTile(X, Y, _, _),
+    write('You have already cropped this tile. Type <harvest> to harvest your crop(s)'), !.
+
+plant :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
     write('You have to dig the tiles first before planting your seed. Try <digtile>.'), !.
 
-harvest :- \+ isCropTile(_, _, _, _), \+ (isDiggedTile(_, _)),
+harvest :- isPlayerTile(X, Y), \+ isCropTile(X, Y, _, _), \+ (isDiggedTile(X, Y)),
     write('You haven\'t even digged this tile. Try <digtile> followed by <plant>'), !.
 
-harvest :- \+ (isCropTile(_, _, _, _)), \+ (farm(_, _, _)),
-    write('... You do realize you haven\'t planted anything, right?'), !.
-
-harvest :- \+ (isCropTile(_, _, _, _)),
+harvest :- isPlayerTile(X, Y), \+ (isCropTile(X, Y, _, _)), isDiggedTile(X, Y),
     write('You haven\'t planted anything in this digged tile. Try <plant>.'), !.
 
 harvest :- farm(Seed, Time, _), (Time > 0),
@@ -78,11 +78,11 @@ harvest :- currentSeason(X), X == winter, random(0, 10, N), reap, nl,
     retractall(farm(_, _, _, _)) ;
     farmxpmoney   ), !.
 
-harvest :- reap, farmxpmoney, nl, !.
+harvest :- farmxpmoney, reap, nl, !.
 
 % nanti nambah XP + XP Farming di harvest yg ini + tambahin di inv
-farmxpmoney :- isPlayerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Price),
-    player(Job, Level, LevelFarm, ExpFarm, C, D, E, F, Exp, G, Money, H),
+farmxpmoney :- playerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Price),
+    player(Job, Level, LevelFarm, ExpFarm, _, _, _, _, Exp, _, Money, _),
     write('The time has come for you to reap what you sow... Literally.'), nl, nl,
     write('You got '), write(Seed), nl,
     format('You can sell this ~w for ~d Golds in the marketplace', [Seed, Price]), nl,
@@ -93,10 +93,9 @@ farmxpmoney :- isPlayerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, P
     CurExpFarm is NewExpFarm + ExpFarm,
     (   Job == 'Farmer' ->  write('You were paid for working as a farmer'), nl,
                             Salary is (LevelFarm * 5),
-                            addGold(Salary)     ), nl,
-
+                            addGold(Salary), nl ;
+        nl ),
     write('Current XP Farming: '), write(CurExpFarm), nl,
-    write(Seed),
     addItem(Seed, 1),
     addExp(NewExp, 0),
     addExp(NewExpFarm,2),
@@ -113,5 +112,3 @@ seeds :-
         format('You chose ~w. Weird choice, but alright.', [Seed]), nl, nl  ),
     throwItem(Seed, 1), priceitems(Seed, Price),
     assertz(farm(Seed, 0, Price)), !.
-
-
