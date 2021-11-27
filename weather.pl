@@ -14,12 +14,12 @@ weather(hailstorm).
 isValidWeather(X) :- weather(X).
 
 weatherRandomizer :- \+ currentSeason(winter), random(1,101, X),
-                     (X < 3 -> retract(currentWeather(_)), assertz(currentWeather(flood)), write('Its flooding today ! You cant go out there, lets hope your crops and animals are okay. '),nl;
+                     (X < 3 -> retract(currentWeather(_)), assertz(currentWeather(flood)), write('Its flooding today ! You cant go out there, just go back to sleep ! '),nl,sleep;
                       X < 51 -> retract(currentWeather(_)), assertz(currentWeather(rainy)), write('Its raining today ! Be careful out there.'), nl;
                       X > 50 -> retract(currentWeather(_)), assertz(currentWeather(sunny)), write('What a beatiful day ! The sun is shining brightly today !'), nl), !.
 
 weatherRandomizer :-  currentSeason(winter), random(1,101, X),
-                      (X < 3 -> retract(currentWeather(_)), assertz(currentWeather(hailstorm)), write('Theres a hailstorm !!! You cant go out, you should just rest inside'), nl;
+                      (X < 3 -> retract(currentWeather(_)), assertz(currentWeather(hailstorm)), write('Theres a hailstorm !!! You cant go out, you should just rest inside'), nl,sleep;
                        retract(currentWeather(_)), assertz(currentWeather(snowing)), write('Its snowing! '), nl),!.
 
 changeSeason(X) :- 
