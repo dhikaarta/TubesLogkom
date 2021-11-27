@@ -16,16 +16,14 @@ totalperItem(H,[_|T],Quantity) :-
     totalperItem(H,T,Quantity), !.
 
 /* util count total item in inventory */
-totalitemsUtil([],0) :- !.
+countInvUtil([],0).
+countInvUtil([_|T],X) :-
+    countInvUtil(T,Y),
+    X is (1+Y),!.
 
-totalitemsUtil([_|T],X) :-
-    totalitemsUtil(T,X1),
-    X1 is (1+X), !.
-
-/*count total item in inventory */
 totalItems(X) :-
     currentInventory(Inv),
-    totalitemsUtil(Inv,X), !.
+    countInvUtil(Inv,X),!.
 
 /*Write item in Inventorty */
 writeInv(1,[]) :-
@@ -36,16 +34,16 @@ writeInv(0,[]) :- !.
 writeInv(1,[H|T]) :-
     currentInventory(Inv),
     totalperItem(H,Inv,Quantity),
-    format('~w ~wx\n',[Quantity,H]),
+    format('~w ~w\n',[Quantity,H]),
     writeInv(0,T),!.
 
 writeInv(0,[H|T]) :-
     currentInventory(Inv),
     totalperItem(H,Inv,Quantity),
-    format('~w ~wx\n',[Quantity,H]),
+    format('~w ~w\n',[Quantity,H]),
     writeInv(0,T),!.
 
-addItem(_,0) :- !.
+addItem(_,0).
 
 addItem(_,_) :-
     totalItems(X),
@@ -67,16 +65,22 @@ addItem(Item,Total):-
 
 inventory :-
     currentInventory(Inv),
-    Inv =:= [],
+    Inv = [],
     write('Inventory is Empty.\n'), !.
 
 inventory :-
     write('Your Inventory '),
     currentInventory(Inv),
     totalItems(X),
-    format('(~w / ~w)\n',X,100),
+    format('(~w / ~w)\n',[X,100]),
     sort(Inv,Inv2),
     writeInv(1,Inv2), !.
+
+remover(_, [], []).
+remover(R, [R|T], T).
+remover(R, [H|T], [H|T2]) :- H \= R, remover( R, T, T2).
+
+throwItem(_,0).
 
 throwItem(Item,_) :-
     currentInventory(Inv),
@@ -89,11 +93,9 @@ throwItem(Item,Amount) :-
     Amount > Total, !,
     format('You don\'t have enough ~w !\n', [Item] ), fail.
 
-throwItem(_,0) :- !.
-
 throwItem(Item,Amount) :-
     currentInventory(Inv),
-    delete(Item,Inv,InvNow),
+    remover(Item,Inv,InvNow),
     retractall(currentInventory(_)),
     assertz(currentInventory(InvNow)),
     AmountNow is Amount - 1,
@@ -114,7 +116,7 @@ sellitem(_,0) :- !.
 
 sellitem(Item,Amount) :-
     currentInventory(Inv),
-    delete(Item,Inv,InvNow),
+    remover(Item,Inv,InvNow),
     retractall(currentInventory(_)),
     assertz(currentInventory(InvNow)),
     priceitems(Item,X),

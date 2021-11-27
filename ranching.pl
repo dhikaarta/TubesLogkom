@@ -2,17 +2,25 @@
 
 :- dynamic(ranch/4).    
 
-ranch :- \+ ranch(_, _, _, _),
-    write('Here are a list of your available livestocks!'), nl, livestock, ranch(Livestock, Produce, Time, _),
-    write('You chose '), write(Livestock), write('. Great. Now let\'s care for it.'), nl, nl, pat, 
-    write('Come back in '), write(Time), write(' seconds to get your '), write(Produce), write(' by typing <collect> in the main menu'), !.
+% nanti tambahin kasus inventory kosong
+ranching :- \+ ranch(_, _, _, _),
+    write('Here are a list of your available livestocks!'), nl, 
+    livestock, ranch(Livestock, Produce, Time, _),
 
-ranch :- write('Shouldn\'t you be typing <\'collect\'> instead of <\'ranch\'> ?'), !.
+    format('You chose ~w. Great, now let\'s care for it.', [Livestock]), nl, nl, pat,
+    format('Come back in ~d seconds to get your ~w', [Time, Produce]), nl,
+    write('You can do this by typing <collect> in the main menu'), !.
 
-collect :- \+ ranch(_, _, _, _), write('You tried collecting eggs from a nearby chicken, but all you got was chicken poop.'), nl, write('Ranch first.'), !.
+ranching :- ranch(_, _, _, _),
+    write('Shouldn\'t you be typing <\'collect\'> instead of <\'ranching\'> ?'), !.
+
+collect :- \+ ranch(_, _, _, _), 
+    write('You tried collecting eggs from a nearby chicken...'), nl,
+    write('...but all you got was chicken poop.'), nl, nl,
+    write('That\'s what you get for not ranching first.'), !.
 
 collect :- ranch(_, Produce, Time, _), (Time > 0),
-    write('Come back in '), write(Time), write(' seconds to get your '), write(Produce), !.
+    write('Come back in ~d seconds to get your ~w', [Time, Produce]), !.
 
 % winter = syulit farming
 collect :- currentSeason(X), X == winter, random(0, 10, N),
@@ -26,19 +34,20 @@ collect :- ranchxpmoney, !.
 
 % nanti nambah XP + XP Ranching disini + tambahin di inventory
 ranchxpmoney :- ranch(Livestock, Produce, Time, Price),
-    player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, Exp, _, Gold, _),
-    write('Finally... It is time.'), nl, write('You gained '), write(Produce), write(' and '), write(Price), write(' Golds.'), nl,
+    player(Job, Level, C, D, E, F, LevelRanch, ExpRanch, Exp, G, Money, H),
+    write('Finally... It is time.'), nl, write('You gained '), write(Produce), 
+    write(' and '), write(Price), write(' Golds.'), nl,
 
     CurExpRanch is (13 * LevelRanch) + ExpRanch,
-    CurExp is (2 * Level) + Exp,
-    (   Job == 'Rancher' -> CurMoney is Money + (Price + (LevelRanch * 5)) ;
-        CurMoney is Money + Price ),    
-    addGold(CurMoney), 
-    addExp(CurExp, 0), 
-    addExp(CurExpRanch, 3), nl, 
+    CurExp is (3 * Level) + Exp,
+    (   Job == 'Rancher' -> NewMoney is Price + (LevelRanch * 3) ;
+        NewMoney is Price ),  
+    CurMoney is Money + NewMoney,
 
     write('Current XP Ranching: '), write(CurExpRanch), nl,
-    write('Current Money: '), write(CurMoney), write(' (+'), write(Price), write(')'), nl,
+    write('Current Money: '), write(CurMoney), write(' (+'), write(NewMoney), write(')'), nl,
+    retractall(player(Job, Level, C, D, E, F, LevelRanch, ExpRanch, Exp, G, Money, H)),
+    assertz(player(Job, Level, C, D, E, F, LevelRanch, CurExpRanch, CurExp, G, CurMoney, H)),
     retractall(ranch(Livestock, Produce, Time, Price)), !.
 
 % mockup inventory

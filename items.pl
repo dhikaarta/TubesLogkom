@@ -1,4 +1,5 @@
 :- dynamic(equip/4).
+:- dynamic(items/2).
 
 /* SEED */
 items(seed,'bayamSeed').
@@ -115,3 +116,9 @@ levelupTool(Name) :-
     Newmax is Expmax + 50,
     retractall(items(equip,Name,Lvl,Expnow,Expmax)),
     assertz(items(equip,Name,Lvlup,Newexp,Newmax)).
+
+changePrice(Item,Price) :-
+    items(Item,X), !,
+    retract(items(Item,X)),
+    assertz(items(Item,Price)).
+

@@ -52,11 +52,11 @@ sell :-
 
 buy :-
     currentSeason(X),
-    market(X),
     write('What do you want to buy?\n'),
+    market(X),
     read(Y),
     write('How many do you want to buy?\n'),
-    read(Z).
+    read(Z),
     buyItem(X,Y,Z), !.
 
 check(X,Y) :-
@@ -82,13 +82,13 @@ market(X,Y,Iterate) :-
 buyItem(X,Y,Z) :-
     currentInventory(Inv),
     totalItems(X),
-    X + Z > 100, !.
+    X + Z > 100, !,
     write('Inventory full.\n'), fail.
 
 buyItem(X,Y,Z) :-
     check(X,Total),
     Total < Y, !,
-    write('No Items'), fail.
+    write('No Items\n'), fail.
 
 buyItem(X,Y,Z) :-
     shopitem(Name,X,Y),
@@ -106,4 +106,6 @@ buyItem(X,Y,Z) :-
     GoldNow is Gold-PriceTotal,
     retractall(player(_,_,_,_,_,_,_,_,_,_,_,_)),
     assertz(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
-    addItem(Name,Z), !.
+    addItem(Name,Z), 
+    format('You have bought ~d ~w.\n',[Z,Name]), 
+    format('You are charged ~d.\n',[PriceTotal]), !.
