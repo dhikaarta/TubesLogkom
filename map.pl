@@ -220,10 +220,7 @@ printMap(X, Y) :-
 printMap(X, Y) :-
     isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
-    S == 'bayam Seed',
-    Snew = 'bayam',
-    retract(cropTile(X, Y, S, T)), !,
-    assertz(cropTile(X, Y, Snew, T)), !,
+    S == 'bayam',
     write('b'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
@@ -231,10 +228,7 @@ printMap(X, Y) :-
 printMap(X, Y) :-
     isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
-    S == 'wortel Seed',
-    Snew = 'wortel',
-    retract(cropTile(X, Y, S, T)), !,
-    assertz(cropTile(X, Y, Snew, T)), !,    
+    S == 'wortel',
     write('w'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
@@ -242,10 +236,7 @@ printMap(X, Y) :-
 printMap(X, Y) :-
     isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
-    S == 'kentang Seed',
-    Snew = 'kentang',
-    retract(cropTile(X, Y, S, T)), !,
-    assertz(cropTile(X, Y, Snew, T)), !, 
+    S == 'kentang',
     write('k'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
@@ -253,10 +244,7 @@ printMap(X, Y) :-
 printMap(X, Y) :-
     isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
-    S == 'jagung Seed',
-    Snew = 'jagung',
-    retract(cropTile(X, Y, S, T)), !,
-    assertz(cropTile(X, Y, Snew, T)), !, 
+    S == 'jagung',
     write('j'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
@@ -264,10 +252,7 @@ printMap(X, Y) :-
 printMap(X, Y) :-
     isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
-    S == 'cabe Seed',
-    Snew = 'cabe',
-    retract(cropTile(X, Y, S, T)), !,
-    assertz(cropTile(X, Y, Snew, T)), !, 
+    S == 'cabe',
     write('c'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
@@ -275,10 +260,7 @@ printMap(X, Y) :-
 printMap(X, Y) :-
     isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
-    S == 'bawang merah Seed',
-    Snew = 'bawang merah',
-    retract(cropTile(X, Y, S, T)), !,
-    assertz(cropTile(X, Y, Snew, T)), !, 
+    S == 'bawang merah',
     write('b'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
@@ -286,10 +268,7 @@ printMap(X, Y) :-
 printMap(X, Y) :-
     isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
-    S == 'bawang putih Seed',
-    Snew = 'bawang putih',
-    retract(cropTile(X, Y, S, T)), !,
-    assertz(cropTile(X, Y, Snew, T)), !, 
+    S == 'bawang putih',
     write('b'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
@@ -297,10 +276,7 @@ printMap(X, Y) :-
 printMap(X, Y) :-
     isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
-    S == 'padi Seed',
-    Snew = 'padi',
-    retract(cropTile(X, Y, S, T)), !,
-    assertz(cropTile(X, Y, Snew, T)), !, 
+    S == 'padi',
     write('p'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
@@ -308,10 +284,7 @@ printMap(X, Y) :-
 printMap(X, Y) :-
     isCropTile(X, Y, S, _),
     \+ (isPlayerTile(X, Y)),
-    S == 'kangkung Seed',
-    Snew = 'kangkung',
-    retract(cropTile(X, Y, S, T)), !,
-    assertz(cropTile(X, Y, Snew, T)), !, 
+    S == 'kangkung',
     write('k'),
     nextTile(X, Y, XNew, YNew), !,
     printMap(XNew, YNew).
@@ -332,7 +305,25 @@ sow(S, T) :-
     isPlayerTile(X, Y),
     isDiggedTile(X, Y),
     retract(diggedTile(X, Y)), !,
-    assertz(cropTile(X, Y, S, T)), !,
+    (   S == 'bayam Seed'   -> Snew = 'bayam' ;
+
+        S == 'wortel Seed'  -> Snew = 'wortel' ;
+
+        S == 'kentang Seed' -> Snew = 'kentang' ;
+
+        S == 'jagung Seed'  -> Snew = 'jagung' ;
+
+        S == 'cabe Seed'    -> Snew = 'cabe' ; 
+
+        S == 'bawang merah Seed' -> Snew = 'bawang merah' ;
+
+        S == 'bawang putih Seed' -> Snew = 'bawang putih' ;
+
+        S == 'padi Seed'    -> Snew = 'padi' ;
+
+        S == 'kangkung Seed'    -> Snew = 'kangkung' ),
+
+    assertz(cropTile(X, Y, Snew, T)), !,
     format('You planted a ~w.', [S]).
 
 reap :-
