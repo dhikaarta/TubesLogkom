@@ -94,3 +94,9 @@ d :-
     retract(playerTile(X, Y)), !,
     assertz(playerTile(XNew, YNew)), !,
     write('You moved east.'), nl.
+
+teleport(A, B) :-
+    isPlayerTile(X, Y),
+    retract(playerTile(X, Y)), !,
+    assertz(playerTile(A, B)), !,
+    write('You teleported.'), nl.
