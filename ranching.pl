@@ -9,26 +9,41 @@ initLivestock :- assertz(chicken(2, 28)), assertz(cow(2, 35)), assertz(sheep(0, 
 /*checkDeath :- chicken(_, DeathChicken), cow(_, DeathCow), sheep(_, DeathSheep),
     ()*/
 
-feed :- \+ (totalItemsType(Z, feed), Z =:= 0),
+feed :- (totalItemsType(Z, feed), Z =:= 0),
     write('You don\'t have any animal food. Buy it first in the marketplace.'), !.
 
-/*feed :- inventory(feed), nl,
+feed :- inventory(feed), nl,
     write('Which animal food would you like to pick?'), nl,
     repeat,
     write('Type food name inside apostrophes <\'food_name\'>'), nl, nl,
-    read(Feed), currentInventory(Inv),
-    (   \+ member(Feed, Inv) -> write('That\'s not a valid food name. Try again'), nl, fail ;
-        format('You chose ~w. Weird choice, but alright.', [Feed]), nl, nl  ),
-    throwItem(Feed, 1), 
-    
-    (   Feed == 'chicken feed' -> ;
-        Feed == 'cow feed' -> ;
-        Feed == 'sheep feed' -> ), !.*/
+    read(Choice), currentInventory(Inv),
+    (   (\+ member(Choice, Inv), \+ items(feed, Choice)) -> write('You don\'t have that. Try again'), nl, fail ;
+        format('You chose ~w. Weird choice, but alright.', [Choice]), nl, nl  ),
+    throwItem(Choice, 1), 
+    (   Choice == 'chicken feed'  ->  chicken(Count, Death), Animal = 'ayam',
+                                    (Death < 24 -> NewDeath is Death + 4 ;
+                                    NewDeath is 28 ),
+                                    retractall(chicken(Count, Death)),
+                                    assertz(chicken(Count, NewDeath)) ;
 
-/*ranch :- currentRanch(_, _, _, _),
-    write('Shouldn\'t you be typing <\'collect\'> instead of <\'ranch\'> ?'), !.*/
+        Choice == 'cow feed'      ->   cow(Count, Death), Animal = 'sapi',
+                                    (Death < 31 -> NewDeath is Death + 4 ;
+                                    NewDeath is 35 ),
+                                    retractall(cow(Count, Death)),
+                                    assertz(cow(Count, NewDeath)) ;
 
-ranch :- 
+        Choice == 'sheep feed'    ->  sheep(Count, Death), Animal = 'kambing',
+                                    (Death < 27 -> NewDeath is Death + 4 ;
+                                    NewDeath is 27 ),
+                                    retractall(sheep(Count, Death)),
+                                    assertz(sheep(Count, NewDeath)) ), 
+    format('You added 4 more days to your ~w(s)\' life.', [Animal]), nl,
+    format('Don\'t forget to feed them, for they will die in ~d day(s)', [NewDeath]), !.
+
+ranch :- currentRanch(_, _, _, _),
+    write('Shouldn\'t you be typing <\'collect\'> instead of <\'ranch\'> ?'), !.
+
+ranch :- \+ currentRanch(_, _, _, _),
     cow(CountCow, DeathCow),
     sheep(CountSheep, DeathSheep),
     chicken(CountChicken, DeathChicken), 
@@ -36,9 +51,9 @@ ranch :-
     \+ (All =:= 0),
 
     write('Here are a list of your available livestocks!'), nl, 
-    livestock, currentRanch(Livestock, Produce, _, _),
+    livestock, currentRanch(Livestock, Produce, _, _), nl,
 
-    format('You chose ~w. Great, now let\'s care for it.', [Livestock]), nl, nl, pat,
+    format('You chose ~w. Great, now let\'s care for it.', [Livestock]), nl, pat,
     format('Come back tomorrow to get your ~w', [Produce]), nl,
     write('You can do this by typing <collect> in the main menu'), !.
 
@@ -92,7 +107,7 @@ ranchxpmoney :- currentRanch(Livestock, Produce, Time, Death),
 
     addItem(Produce, 1),
     addExp(NewExp, 0),
-    addExp(NewExpRanch,2),
+    addExp(NewExpRanch,3),
     retractall(currentRanch(_, _, _, _)), !.
 
 loop(1) :- write('*PAT* '), nl, !.
@@ -115,14 +130,14 @@ livestock :- chicken(CountChicken, DeathChicken), cow(CountCow, DeathCow), sheep
     repeat,
     write('Which livestock will you raise?'), nl,
     read(X), nl,
-    (   X =:= 1 -> (CountChicken =:= 0 ->   write('You don\'t have any ayam(s).'), nl, nl, fail ;
+    (   X =:= 1 -> (CountChicken =:= 0 ->   write('You don\'t have any ayam(s).'), nl, fail ;
                                             nl, processChicken) ;
-        X =:= 2 -> (CountCow =:= 0 ->   write('You don\'t have any sapi(s).'), nl, nl, fail ;
+        X =:= 2 -> (CountCow =:= 0 ->   write('You don\'t have any sapi(s).'), nl, fail ;
                                             nl, processCow) ;
-        X =:= 3 -> (CountSheep =:= 0 ->   write('You don\'t have any kambing(s).'), nl, nl, fail ;
+        X =:= 3 -> (CountSheep =:= 0 ->   write('You don\'t have any kambing(s).'), nl, fail ;
                                             nl, processSheep) ), !.
 
-processChicken :- write('These are the products you can gain from raising ayam:'), nl, nl,
+processChicken :- write('These are the products you can gain from raising ayam:'), nl,
     write('1. Egg\n2. Chicken Meat\n\nWhich product will you choose?'), nl,
     read(Choice),
     (   Choice =:= 1 -> assertz(currentRanch('ayam', 'egg', 0, 0)) ;
