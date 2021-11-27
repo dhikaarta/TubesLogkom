@@ -301,12 +301,12 @@ dig :-
     assertz(diggedTile(X, Y)), !,
     write('You digged the tile.'), nl.
 
-sow(S) :-
+sow(S, _, _) :-
     isPlayerTile(X, Y),
     isDiggedTile(X, Y),
     retract(diggedTile(X, Y)), !,
     assertz(cropTile(X, Y, S)), !,
-    format('You planted a ~w seed.', [S]).
+    format('You planted a ~w.', [S]).
 
 reap :-
     isPlayerTile(X, Y),
