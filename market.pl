@@ -211,7 +211,9 @@ buyItem(X,Y,Z) :-
     priceitems(Name,Price),
     PriceTotal is Price*Z,
     loseGold(PriceTotal),
-    /* add To Ranch Inventory */ 
+    (   Name == 'ayam' -> addChicken(Z),
+        Name == 'sapi' -> addCow(Z),
+        Name == 'kambing' -> addSheep(Z)),
     format('You have bought ~d ~w.\n',[Z,Name]), !.
 
 buyItem(X,Y,Z) :-
