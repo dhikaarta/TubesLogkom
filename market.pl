@@ -72,17 +72,14 @@ shoppotion('Gamble potion',6,500).
 
 alchemist :-
     random(0,5,X),
-    ( X < 3, write('No Alchemist here, comeback later.\n');
+    ( X < 3 -> write('No Alchemist here, comeback later.\n');
     buyalchemist),!.
 
 buyalchemist :-
-    write('Hello, i am alchemist, do you want to buy something?(y/n)\n'),
+    write('Hello, i am alchemist, what do you want to buy?\n'),
+    marketpotion(6,1),
     read(X),
-    (X = n -> write('ヽ(ಠ_ಠ)ノ\n');
-    X = y -> write('what do you want to buy?\n'), marketpotion(6,1),
-    read(X),
-    buypotion(X);
-    write('No such option, please try again.\n'),buyalchemist), !.
+    buypotion(X), !.
 
 marketpotion(Y,Y) :-
     shoppotion(Name,Y,Price),
@@ -95,39 +92,39 @@ marketpotion(Y,Iterate) :-
     marketpotion(Y,IterateNow), !.
 
 buypotion(X) :-
-    X < 1, !,
+    X < 1,!,
     write('You type wrong number.\n'), fail.
 
 buypotion(X) :-
-    X > 6, !,
+    X > 6,!,
     write('You type wrong number.\n'), fail.
 
 buypotion(X) :-
     player(_,_,_,_,_,_,_,_,_,_,Gold,_),
     shoppotion(_,X,Price),
-    Price > Gold, !,
+    Price > Gold,!,
     write('You dont have enough gold, comeback later!\n'), fail.
 
 buypotion(X) :-
     shoppotion(Name,X,Price),
     loseGold(Price),
-    write('You have bought ~w.\n',[Name]),
+    format('You have bought ~w.\n',[Name]),
     usepotion(Name), !.
 
 sell :-
     totalItems(X),
-    X =:= 0,
+    X =:= 4,!,
     write('You dont have item to sell, comeback later!\n'), !.
 
 sell :-
-    write('What do you want to sell?\n'),
     currentInventory(Inv),
-    writeInv(1,Inv),
-    write('>>>'),
-    read(Y),
-    write('amount : '),
+    write('What do you want to sell?\n'),
+    sort(Inv,Inv2), 
+    writeInvSell(1,Inv2), 
+    read(Y), 
+    write('amount : \n'), 
     read(Z),
-    sellitem(Y,Z), !.
+    sellitem(Y,Z),!.
 
 buy :-
     currentSeason(X),
@@ -181,14 +178,14 @@ marketequip(X,Y,Iterate) :-
     IterateNow is Iterate+1,
     marketequip(X,Y,IterateNow), !.
 
-buyItem(X,_,Z) :-
-    totalItems(X),
-    X + Z > 100, !,
+buyItem(_,_,Z) :-
+    totalItems(Total),
+    Total + Z > 100,!,
     write('Inventory full.\n'), fail.
 
 buyItem(X,Y,_) :-
     check(X,Total),
-    Total < Y, !,
+    Total < Y,!,
     write('No Items\n'), fail.
 
 buyItem(X,Y,Z) :-
@@ -196,19 +193,18 @@ buyItem(X,Y,Z) :-
     priceitems(Name,Price),
     PriceTotal is Price*Z,
     player(_,_,_,_,_,_,_,_,_,_,Gold,_),
-    Gold < PriceTotal, !,
+    Gold < PriceTotal,!,
     write('You don\'t have enough golds.\n'), fail.
 
 buyItem(X,Y,Z) :-
     shopitem(Name,X,Y),
     items(Type,Name),
-    Type = animal,!,
+    Type == animal,!,
     priceitems(Name,Price),
     PriceTotal is Price*Z,
     loseGold(PriceTotal),
     /* add To Ranch Inventory */ 
-    format('You have bought ~d ~w.\n',[Z,Name]), 
-    format('You are charged ~d.\n',[PriceTotal]), !.
+    format('You have bought ~d ~w.\n',[Z,Name]), !.
 
 buyItem(X,Y,Z) :-
     shopitem(Name,X,Y),
@@ -216,12 +212,11 @@ buyItem(X,Y,Z) :-
     PriceTotal is Price*Z,
     loseGold(PriceTotal),
     addItem(Name,Z), 
-    format('You have bought ~d ~w.\n',[Z,Name]), 
-    format('You are charged ~d.\n',[PriceTotal]), !.
+    format('You have bought ~d ~w.\n',[Z,Name]), !.
 
-buyequip(X,_) :-
+buyequip(_,_) :-
     totalItems(X),
-    X = 100, !,
+    X == 100, !,
     write('Inventory full.\n'), fail.
 
 buyequip(X,Y) :-
@@ -243,5 +238,4 @@ buyequip(X,Y) :-
     changeStats(Name,Lvl,Expmax),
     throwItem(Name,1),
     addItem(Name,1),
-    format('You have bought 1 ~w.\n',[Name]), 
-    format('You are charged ~d.\n',[Price]), !.
+    format('You have bought 1 ~w.\n',[Name]), !.
