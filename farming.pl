@@ -25,11 +25,10 @@ digtile :- \+ (isDiggedTile(_, _)),
 digtile :- (isDiggedTile(_, _)),
     write('This tile is already digged. Try <plant> instead.'), !.
 
-plant :- (isDiggedTile(_, _)),
-    write('Which seed would you like to plant?'), nl, 
-    seeds, farm(Seed, Time, _),
+plant :- \+ (totalItemsType(X, seed), X =:= 0), (isDiggedTile(_, _)),
+    write('Here are a list of seeds in your inventory: '), nl, 
+    nl, seeds, farm(Seed, Time, _),
     
-    format('You chose ~w. Weird choice, but alright.', [Seed]), nl, nl,
     repeat,
     write('Type <\'PLZ BLESS MY SEED\'> to gain the harvest god\'s blessing.'), nl,
     write('Once again, DO NOT forget the apostrophe (\'). Plz.'), nl,
@@ -46,9 +45,12 @@ plant :- (isDiggedTile(_, _)),
     format('You shouted "~w" at the top of your lungs', [Plant]), nl,
     write('Hopefully the god of harvest will hear your thunderous prayers'), nl, nl,
     
-    write('While planting, you lost 5 stamina.'), depleteEnergy(5), nl, nl, sow(Seed), 
+    write('While planting, you lost 5 stamina.'), depleteEnergy(5), nl, nl, sow(Seed, _, _), 
     nl, nl, format('Come back in ~d seconds to get your ~w', [Time, Seed]), nl,
     write('You can do this by typing <harvest> in the main menu'), !.
+
+plant :- (totalItemsType(X, seed), X =:= 0),
+    write('You don\'t have any seed in your inventory. Buy seeds in marketplace first.'), !.
 
 plant :- \+ (isDiggedTile(_, _)),
     write('You have to dig the tiles first before planting your seed. Try <digtile>.'), !.
@@ -76,7 +78,7 @@ harvest :- currentSeason(X), X == winter, random(0, 10, N), reap, nl,
 harvest :- reap, nl, farmxpmoney, !.
 
 % nanti nambah XP + XP Farming di harvest yg ini + tambahin di inv
-farmxpmoney :- farm(Seed, Time, Price),
+farmxpmoney :- isCropTile(_, _, _), cropTile(_, _, Seed), priceitems(Seed, Price),
     player(Job, Level, LevelFarm, ExpFarm, C, D, E, F, Exp, G, Money, H),
     write('The time has come for you to reap what you sow... Literally.'), nl, nl,
     write('You got '), write(Seed), nl,
@@ -91,7 +93,7 @@ farmxpmoney :- farm(Seed, Time, Price),
                             addGold(Salary)     ), nl,
 
     write('Current XP Farming: '), write(CurExpFarm), nl,
-
+    write(Seed),
     addItem(Seed, 1),
     addExp(NewExp, 0),
     addExp(NewExpFarm,2),
@@ -99,4 +101,14 @@ farmxpmoney :- farm(Seed, Time, Price),
 
 % mockup inventory
 seeds :- 
-    writeInvType(1, seed, _), !.
+    inventory(seed), nl,
+    write('Which seed would you like to pick?'), nl,
+    repeat,
+    write('Type seed name inside apostrophes <\'seed_name\'>'), nl, nl,
+    read(Seed), currentInventory(Inv),
+    (   \+ member(Seed, Inv) -> write('That\'s not a valid seed name. Try again'), nl, fail ;
+        format('You chose ~w. Weird choice, but alright.', [Seed]), nl, nl  ),
+    throwItem(Seed, 1), priceitems(Seed, Price),
+    assertz(farm(Seed, 0, Price)), !.
+
+
