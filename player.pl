@@ -124,6 +124,11 @@ loseGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
               retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
               write('You spent '), write(X), write(' Gold !'), nl.
 
+unconsiousGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
+                     NewGold is K - X,
+                     retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
+                     write('You lost '), write(X), write(' Gold !'), nl.
+
 
 addExp(X,Y) :- player(A,B,C,D,E,F,G,H,I,J,K,L),  % Y = 0 for general exp, Y = 1 for farming exp, Y=2 for fishing xp, Y =3 for ranching exp
                (Y =:= 0 -> NewExp is I + X, retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,NewExp,J,K,L));
@@ -140,7 +145,7 @@ loseExp(X,Y) :- player(A,B,C,D,E,F,G,H,I,J,K,L),  % Y = 0 for general exp, Y = 1
                 levelDown.
                 
 
-restoreEnergy :- energy(CurrEnergy,Max),retractall(energy(CurrEnergy,Max)), assertz(energy(Max,Max)), write('Your stamina has been restored !'),retractall(isExhausted).
+restoreEnergy :- energy(CurrEnergy,Max),retractall(energy(CurrEnergy,Max)), assertz(energy(Max,Max)), write('Your stamina has been restored !\n'),retractall(isExhausted).
 
 addEnergy(X) :- energy(A,Max), Anew is A + X,
                 (Anew > Max -> restoreEnergy, Anew is Max;
