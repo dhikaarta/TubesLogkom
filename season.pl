@@ -29,3 +29,19 @@ changeSeason(X) :-
 changeSeason(X) :-
     \+isValidSeason(X),
     write('No such season !').
+
+whatSeasonIsIt(X) :- 
+                   (X =:= 31 -> changeSeason(summer),!;
+                    X =:= 61 -> changeSeason(fall),!;
+                    X =:= 91 -> changeSeason(winter),!;
+                    X =:= 121 -> changeSeason(spring),!;
+                    X =:= 151 -> changeSeason(summer),!;
+                    X =:= 181 -> changeSeason(fall),!;
+                    X =:= 211 -> changeSeason(winter),!;
+                    X =:= 241 -> changeSeason(spring),!;
+                    X =:= 271 -> changeSeason(summer),!;
+                    X =:= 301 -> changeSeason(fall),!;
+                    X =:= 331 -> changeSeason(winter),!;
+                    X =:= 361 -> changeSeason(spring)),!.
+
+whatSeasonIsIt(X) :- !.

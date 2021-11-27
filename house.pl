@@ -32,7 +32,7 @@ sleep :-
     restoreEnergy,robbery, periTidur,wakeUp.
 
 
-wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,weatherRandomizer,currentSeason(CurSeason),
+wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,whatSeasonIsIt(X),weatherRandomizer,currentSeason(CurSeason),
           currentWeather(CurWeather), format('\nSeason : ~w\nWeather : ~w\n\n', [CurSeason,CurWeather]).
 
 robbery :- 
@@ -43,22 +43,22 @@ robbery :- isLocked,!.
 lock :- 
     isPlayerTile(A, B),
     isHouseTile(A, B),
-    \+ isLocked, assertz(isLocked),write('you locked your house'),nl,nl.
+    \+ isLocked, assertz(isLocked),write('you locked your house'),nl,nl,!.
 
 lock :- 
     isPlayerTile(A, B),
     isHouseTile(A, B),
-    isLocked, write('youve already locked the door'),nl,nl.
+    isLocked, write('youve already locked the door'),nl,nl,!.
 
 unlock :- 
     isPlayerTile(A, B),
     isHouseTile(A, B),
-    \+ isLocked, write('Your house is not locked'),nl,nl.
+    \+ isLocked, write('Your house is not locked'),nl,nl,!.
 
 unlock :- 
     isPlayerTile(A, B),
     isHouseTile(A, B),
-    isLocked, retract(isLocked).
+    isLocked, retract(isLocked),!.
 
 writeDiary :-  
     isPlayerTile(A, B),
@@ -75,7 +75,7 @@ changeDay(X) :-
     retractall(day(CurrentDay)), assertz(day(X)). 
 
 periTidur :- 
-    random(1,101,X),X < 10,nl, write('A dream fairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,
+    random(1,101,X),X < 3,nl, write('A dream fairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,
              write('1. Water'),nl,write('2. Quest'),nl, write('3. Ranch'),nl,
              write('4. Marketplace'), nl,read(CC),
              (CC=:=1 -> write('Wish granted ! Youll wake up beside the water! Go fish\n'),teleport(4,8) ;
