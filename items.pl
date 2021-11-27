@@ -1,5 +1,6 @@
 :- dynamic(equip/4).
 :- dynamic(items/2).
+:- dynamic(priceitems/2).
 
 /* SEED */
 items(seed,'bayamSeed').
@@ -110,10 +111,14 @@ priceitems('Salmon Kulit Crispy Daging Kenyal',45).
 priceitems('Cacing Besar Alaska',90).
 priceitems('Teri Biasa Aja',15).
 priceitems('Trash',0).
-priceitems('fishingrod',50).
-priceitems('watering',25).
-priceitems('shovel',25).
-priceitems('ranchequip',50).
+priceEquip('fishingrod',Lvl,X) :-
+    X is Lvl*50.
+priceEquip('watering',Lvl,X) :-
+    X is Lvl*25.
+priceEquip('shovel',Lvl,X) :-
+    X is Lvl*25.
+priceEquip('ranchequip',Lvl,X) :-
+    X is Lvl*50.
 
 /* Level Up TOOL */
 levelupTool(Name) :- 
@@ -121,12 +126,11 @@ levelupTool(Name) :-
     Expnow > Expmax,
     Lvlup is Lvl + 1,
     Newexp is Expnow mod Expmax,
-    Newmax is Expmax + 50,
-    retractall(items(equip,Name,Lvl,Expnow,Expmax)),
+    retract(items(equip,Name,Lvl,Expnow,Expmax)),
     assertz(items(equip,Name,Lvlup,Newexp,Newmax)).
 
 changePrice(Item,Price) :-
-    items(Item,X), !,
-    retract(items(Item,X)),
-    assertz(items(Item,Price)).
+    items(_,Item), !,
+    retractall(priceitems(Item,_)),
+    assertz(priceitems(Item,Price)).
 

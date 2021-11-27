@@ -33,7 +33,18 @@ shopitem('bawang_merahSeed',winter,6).
 shopitem('bawang_putihSeed',fall,7).
 shopitem('padiSeed',winter,7).
 shopitem('kangkungSeed',fall,8).
-
+shopitem('sapi',summer,10),
+shopitem('sapi',fall,9),
+shopitem('sapi',winter,8),
+shopitem('sapi',spring,9),
+shopitem('ayam',summer,11),
+shopitem('ayam',fall,10),
+shopitem('ayam',winter,9),
+shopitem('ayam',spring,10),
+shopitem('kambing',summer,12),
+shopitem('kambing',fall,11),
+shopitem('kambing',winter,10),
+shopitem('kambing',spring,11),
 
 sell :-
     totalItems(X),
@@ -97,6 +108,20 @@ buyItem(X,Y,Z) :-
     player(A,B,C,D,E,F,G,H,I,J,Gold,L),
     Gold < PriceTotal, !,
     write('You don\'t have enough golds.\n'), fail.
+
+buyItem(X,Y,Z) :-
+    shopitem(Name,X,Y),
+    items(Type,Name),
+    Type = animal,!,
+    priceitems(Name,Price),
+    PriceTotal is Price*Z,
+    player(A,B,C,D,E,F,G,H,I,J,Gold,L),
+    GoldNow is Gold-PriceTotal,
+    retractall(player(_,_,_,_,_,_,_,_,_,_,_,_)),
+    assertz(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
+    /* add To Ranch Inventory */ 
+    format('You have bought ~d ~w.\n',[Z,Name]), 
+    format('You are charged ~d.\n',[PriceTotal]), !.
 
 buyItem(X,Y,Z) :-
     shopitem(Name,X,Y),
