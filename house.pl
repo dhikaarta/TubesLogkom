@@ -38,8 +38,8 @@ sleep :-
 
 wakeUp :- day(X),format('Good Morning ! its now day ~d \n', [X]),isBirthday,weatherRandomizer.
 
-robbery :- \+ isLocked,random(1,101,X), (X<10 -> write('Youve been robbed !\n')),unconsiousGold(100),!.
-robbery :- \+ isLocked,!.
+robbery :- \+ isLocked,random(1,101,X),write(X),nl, (X<10 -> write('Youve been robbed !\n')),unconsiousGold(100),!.
+robbery :- !.
 robbery :- isLocked,!.
 
 lock :- \+ isLocked, assertz(isLocked),write('you locked your house'),nl,nl,houseloop.
@@ -62,7 +62,7 @@ readDiary :- write('Here are the list of your entries :'), nl,forall(diary(X,_),
 
 changeDay(X) :- retractall(day(CurrentDay)), assertz(day(X)). 
 
-periTidur :- random(1,101,X), X < 10, write('A dream fairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,
+periTidur :- random(1,101,X), write(X),X < 10,nl, write('A dream fairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,
              write('1. Water'),nl,write('2. Quest'),nl, write('3. Ranch'),nl,
              write('4. Marketplace'), nl,read(CC),
              (CC=:=1 -> write('Wish granted ! Youll wake up beside the water! Go fish\n'),teleport(4,8) ;
@@ -70,7 +70,7 @@ periTidur :- random(1,101,X), X < 10, write('A dream fairy has visited you, you 
               CC =:= 3 -> write('Wish granted ! Youll wake up in your ranch !\n'),teleport(10,5);
               CC =:= 4 -> write('Wish granted ! Youll wake up in the market! SHOPPING SPREE\n'),teleport(10,12)).
 
-periTidur :- random(1,101,X), X > 9,!.
+periTidur :- !.
 
 unconsious(X) :- write('Youre unconsious! Well, atleast youre resting\n'),
                  day(Day), NewDay is Day + X, retract(day(_)), assertz(day(NewDay)), wakeUp.

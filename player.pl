@@ -120,14 +120,14 @@ addGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
               write('You gained '), write(X), write(' Gold !'), nl.
 
 loseGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
-              NewGold is K - X, NewGold >0,
+              NewGold is K - X,NewGold >= 0,
               retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
-              write('You spent '), write(X), write(' Gold !'), nl.
+              write('You spent '), write(X), write(' Gold !'), nl,!.
 
 loseGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
-              NewGold is K - X, NewGold <0, NewGold is 0,
-              retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
-              write('You spent '), write(X), write(' Gold !'), nl.
+              NewGold is K - X, NewGold <0, 
+              retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,0,L)),
+              write('You spent '), write(K), write(' Gold !'), nl,!.
 
 unconsiousGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
                      NewGold is K - X, NewGold >0,
@@ -135,9 +135,9 @@ unconsiousGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
                      write('You lost '), write(X), write(' Gold !'), nl.
 
 unconsiousGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
-                     NewGold is K - X, NewGold<0, NewGold is 0,
-                     retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
-                     write('You lost '), write(X), write(' Gold !'), nl.
+                     NewGold is K - X, NewGold<0,
+                     retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,0,L)),
+                     write('You lost '), write(K), write(' Gold !'), nl.
 
 
 addExp(X,Y) :- player(A,B,C,D,E,F,G,H,I,J,K,L),  % Y = 0 for general exp, Y = 1 for farming exp, Y=2 for fishing xp, Y =3 for ranching exp
