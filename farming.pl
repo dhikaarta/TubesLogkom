@@ -81,7 +81,7 @@ harvest :- currentSeason(X), X == winter, random(0, 10, N), reap, nl,
 harvest :- farmxpmoney, reap, nl, !.
 
 % nanti nambah XP + XP Farming di harvest yg ini + tambahin di inv
-farmxpmoney :- write('satu'), nl, playerTile(X, Y), write('satu'), nl, isCropTile(X, Y, Seed, _), write('satu'), nl, priceitems(Seed, Price), write('satu'), nl, 
+farmxpmoney :- playerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Price),
     player(Job, Level, LevelFarm, ExpFarm, _, _, _, _, Exp, _, Money, _),
     write('The time has come for you to reap what you sow... Literally.'), nl, nl,
     write('You got '), write(Seed), nl,
@@ -93,8 +93,8 @@ farmxpmoney :- write('satu'), nl, playerTile(X, Y), write('satu'), nl, isCropTil
     CurExpFarm is NewExpFarm + ExpFarm,
     (   Job == 'Farmer' ->  write('You were paid for working as a farmer'), nl,
                             Salary is (LevelFarm * 5),
-                            addGold(Salary)     ), nl,
-
+                            addGold(Salary), nl ;
+        nl ),
     write('Current XP Farming: '), write(CurExpFarm), nl,
     addItem(Seed, 1),
     addExp(NewExp, 0),
