@@ -35,20 +35,23 @@ collect :- ranchxpmoney, !.
 % nanti nambah XP + XP Ranching disini + tambahin di inventory
 ranchxpmoney :- ranch(Livestock, Produce, Time, Price),
     player(Job, Level, C, D, E, F, LevelRanch, ExpRanch, Exp, G, Money, H),
-    write('Finally... It is time.'), nl, write('You gained '), write(Produce), 
-    write(' and '), write(Price), write(' Golds.'), nl,
+    write('Finally... It is time.'), nl, write('You gained '), write(Produce), nl, 
+    format('You can sell this ~w for ~d Golds in the marketplace', [Produce, Price]), nl,
 
-    CurExpRanch is (13 * LevelRanch) + ExpRanch,
-    CurExp is (3 * Level) + Exp,
-    (   Job == 'Rancher' -> NewMoney is Price + (LevelRanch * 3) ;
-        NewMoney is Price ),  
-    CurMoney is Money + NewMoney,
+    NewExpRanch is (13 * (LevelRanch)),
+    NewExp is (3 * Level),
+    CurExp is NewExp + Exp,
+    CurExpFarm is NewExpRanch + ExpRanch,
+    (   Job == 'Rancher' ->  write('You were paid for working as a rancher'), nl,
+                            Salary is (LevelRanch * 5),
+                            addGold(Salary)     ), nl,
 
     write('Current XP Ranching: '), write(CurExpRanch), nl,
-    write('Current Money: '), write(CurMoney), write(' (+'), write(NewMoney), write(')'), nl,
-    retractall(player(Job, Level, C, D, E, F, LevelRanch, ExpRanch, Exp, G, Money, H)),
-    assertz(player(Job, Level, C, D, E, F, LevelRanch, CurExpRanch, CurExp, G, CurMoney, H)),
-    retractall(ranch(Livestock, Produce, Time, Price)), !.
+
+    addItem(Produce, 1),
+    addExp(NewExp, 0),
+    addExp(NewExpRanch,2),
+    retractall(ranch(_, _, _, _)), !.
 
 % mockup inventory
 livestock :- 
