@@ -7,7 +7,6 @@
 
 energy(100,100).
 
-
 status :- player(A,B,C,D,E,F,G,H,I,J,K,L),energy(CurrEnergy,MaxEnergy),
     MaxExpFarming is L + 50*C,
     MaxExpFishing is L + 50 *E,
@@ -24,21 +23,18 @@ status :- player(A,B,C,D,E,F,G,H,I,J,K,L),energy(CurrEnergy,MaxEnergy),
     write('Gold           : '), write(K), nl,
     write('Stamina        : '), write(CurrEnergy), write('/') , write(MaxEnergy),nl.
 
-
-
-initPlayer :- random(1,366,X),retractall(birthday(Birthday)),assertz(birthday(X)), 
+initPlayer :- random(1,366,X),retractall(birthday(_)),assertz(birthday(X)), 
 write('Welcome to Strukdat Valley ! List of jobs here:'),nl,
 write('1. Farmer'),nl,
 write('2. Rancher'),nl,
 write('3. Fisher'),nl,
 chooseJob.
 
-
-chooseJob :- write('Choose a Job (1/2/3) :'), read(CC),nl,
+chooseJob :- write('Choose a Job (1/2/3) : '), read(CC),nl,
 (CC =:= 1 -> assertz(player('Farmer', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0, 100)), write('You are a farmer ! Good Luck ') ;
 CC =:= 2 -> assertz(player('Rancher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0, 100)), write('You are a rancher ! Good Luck ')  ;
 CC =:= 3 -> assertz(player('Fisher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0 , 100)), write('You are a fisher ! Good Luck ')  ;
-write('No such job ! Choose again'), nl,chooseJob).
+write('No such job ! Choose again'), nl, chooseJob).
 
 levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), I > J,
             NewLevel is B + 1,
@@ -100,7 +96,7 @@ levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), D < 0,
             retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,NewLevel,NewExp,E,F,G,H,I,J,K,L)),
             write('Your farming skillz got worse '), write(C), write('->'), write(NewLevel), nl, levelDown, !.
 
-levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), F <0, 
+levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), F < 0, 
             NewLevel is E - 1,
             NewExp is (L + (50*NewLevel) + F) ,
             retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,NewLevel,NewExp,G,H,I,J,K,L)),
@@ -161,31 +157,27 @@ addEnergy(X) :- energy(A,Max), Anew is A + X,
                 (Anew > Max -> restoreEnergy, Anew is Max;
                  retractall(energy(A,Max)), assertz(energy(Anew, Max)), retractall(isExhausted)),
                  write('You now have '), write(Anew), write(' stamina'), nl.
-                 
-                
 
 depleteEnergy(X) :- energy(A,Max), 
                     (A < X -> write('You don\'t have enough energy to do that !'), nl;
                      A > X -> NewEnergy is A - X, retractall(energy(A,Max)), assertz(energy(NewEnergy,Max)), write('You now have '), write(NewEnergy), write(' stamina'), nl;
-                     A =:= X -> retractall(energy(A,Max)), assertz(energy(0,Max)), assertz(isExhausted), write('You ran out of stamina, you are now exhausted'), nl).
-                     
-                    
+                     A =:= X -> retractall(energy(A,Max)), assertz(energy(0,Max)), assertz(isExhausted), write('You ran out of stamina, you are now exhausted'), nl).   
 
 farmPriceUp :- 
-priceitems('bayam',A), Anew is A + 3, changePrice('bayam',Anew),
-priceitems('wortel',B), Bnew is B + 3,changePrice('wortel',Bnew),
-priceitems('kentang',C), Cnew is C + 3,changePrice('kentang',Cnew),
-priceitems('jagung',D), Dnew is D + 3,changePrice('jagung',Dnew),
-priceitems('cabe',E), Enew is E+ 3,changePrice('cabe',Enew),
-priceitems('bawang merah',F), Fnew is F + 3,changePrice('bawang merah',Fnew),
-priceitems('bawang putih',G), Gnew is G + 3,changePrice('bawang putih',Gnew),
-priceitems('padi',H), Hnew is H + 3,changePrice('padi',Hnew),
-priceitems('kangkung',I), Inew is I + 3,changePrice('kangkung',Inew).
+    priceitems('bayam',A), Anew is A + 3, changePrice('bayam',Anew),
+    priceitems('wortel',B), Bnew is B + 3,changePrice('wortel',Bnew),
+    priceitems('kentang',C), Cnew is C + 3,changePrice('kentang',Cnew),
+    priceitems('jagung',D), Dnew is D + 3,changePrice('jagung',Dnew),
+    priceitems('cabe',E), Enew is E+ 3,changePrice('cabe',Enew),
+    priceitems('bawang merah',F), Fnew is F + 3,changePrice('bawang merah',Fnew),
+    priceitems('bawang putih',G), Gnew is G + 3,changePrice('bawang putih',Gnew),
+    priceitems('padi',H), Hnew is H + 3,changePrice('padi',Hnew),
+    priceitems('kangkung',I), Inew is I + 3,changePrice('kangkung',Inew).
 
 ranchPriceUp :- 
-priceitems('egg',A), Anew is A + 3, changePrice('egg',Anew),
-priceitems('milk',B), Bnew is B + 3,changePrice('milk',Bnew),
-priceitems('wol',C), Cnew is C + 3,changePrice('wol',Cnew),
-priceitems('cow meat',D), Dnew is D + 3,changePrice('cow meat',Dnew),
-priceitems('sheep meat',E), Enew is E+ 3,changePrice('sheep meat',Enew),
-priceitems('chicken meat',F), Fnew is F + 3,changePrice('chicken meat',Fnew).
+    priceitems('egg',A), Anew is A + 3, changePrice('egg',Anew),
+    priceitems('milk',B), Bnew is B + 3,changePrice('milk',Bnew),
+    priceitems('wol',C), Cnew is C + 3,changePrice('wol',Cnew),
+    priceitems('cow meat',D), Dnew is D + 3,changePrice('cow meat',Dnew),
+    priceitems('sheep meat',E), Enew is E+ 3,changePrice('sheep meat',Enew),
+    priceitems('chicken meat',F), Fnew is F + 3,changePrice('chicken meat',Fnew).

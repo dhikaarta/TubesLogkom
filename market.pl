@@ -1,6 +1,3 @@
-:- include('inventory.pl').
-:- include('season.pl').
-
 shopitem('bait',summer,1).
 shopitem('bait',spring,1).
 shopitem('chicken feed',summer,2).
@@ -71,6 +68,8 @@ shoppotion('teleport potion',5,500).
 shoppotion('Gamble potion',6,500).
 
 alchemist :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     random(0,5,X),
     ( X < 3 -> write('No Alchemist here, comeback later.\n');
     buyalchemist),!.
@@ -112,11 +111,16 @@ buypotion(X) :-
     usepotion(Name), !.
 
 sell :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     totalItems(X),
     X =:= 4,!,
     write('You dont have item to sell, comeback later!\n'), !.
 
 sell :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
+    write('What do you want to sell?\n'),
     currentInventory(Inv),
     write('What do you want to sell?\n'),
     sort(Inv,Inv2), 
@@ -127,6 +131,8 @@ sell :-
     sellitem(Y,Z),!.
 
 buy :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     currentSeason(X),
     write('What do you want to buy?\n'),
     market(X),
@@ -136,6 +142,8 @@ buy :-
     buyItem(X,Y,Z), !.
 
 buyequipment :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     currentSeason(X),
     write('What do you want to buy?\n'),
     marketequip(X),
@@ -143,18 +151,14 @@ buyequipment :-
     buyequip(X,Y), !.
 
 check(X,Y) :-
-    aggregate_all(count, shopitem(_,X,_), Y), !.
+    aggregate_all(count, shopitem(_,X,_), Y), !. /* INI ERROR */
 
 checkequip(X,Y) :-
-    aggregate_all(count, shopequip(_,X,_,_,_), Y), !.
+    aggregate_all(count, shopequip(_,X,_,_,_), Y), !. /* INI ERROR */
 
 market(X) :-
     check(X,Y),
     market(X,Y,1), !.
-
-marketequip(X) :-
-    checkequip(X,Y),
-    marketequip(X,Y,1), !.
 
 market(X,Y,Y) :-
     shopitem(Name,X,Y),
@@ -167,6 +171,10 @@ market(X,Y,Iterate) :-
     format('~d. ~w (~d golds)\n',[Iterate,Name,Z]),
     IterateNow is Iterate+1,
     market(X,Y,IterateNow), !.
+
+marketequip(X) :-
+    checkequip(X,Y),
+    marketequip(X,Y,1), !.
 
 marketequip(X,Y,Y) :-
     shopequip(Name,X,Lvl,Price,Y),

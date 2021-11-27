@@ -1,6 +1,3 @@
-:- include('season.pl').
-
-
 :- dynamic(currentWeather/1).
 
 currentWeather(sunny).
@@ -22,14 +19,14 @@ weatherRandomizer :-  currentSeason(winter), random(1,101, X),
                       (X < 3 -> retract(currentWeather(_)), assertz(currentWeather(hailstorm)), write('Theres a hailstorm !!! You cant go out, you should just rest inside'), nl,sleep;
                        retract(currentWeather(_)), assertz(currentWeather(snowing)), write('Its snowing! '), nl),!.
 
-changeSeason(X) :- 
+changeWeather(X) :-
     isValidWeather(X), retract(currentWeather(_)), assertz(currentWeather(X)), currentWeather(rainy),!.
 
-changeSeason(X) :- 
+changeWeather(X) :- 
     isValidWeather(X), retract(currentWeather(_)), assertz(currentWeather(X)), currentWeather(sunny),!.
 
-changeSeason(X) :- 
+changeWeather(X) :- 
     isValidWeather(X), retract(currentWeather(_)), assertz(currentWeather(X)), currentWeather(snowing),!.
 
-changeSeason(X) :- 
+changeWeather(X) :-
     isValidWeather(X), retract(currentWeather(_)), assertz(currentWeather(X)), currentWeather(flood),!.

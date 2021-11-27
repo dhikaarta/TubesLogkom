@@ -7,7 +7,8 @@ season(summer).
 season(fall).
 season(winter).
 
-isValidSeason(X) :- season(X).
+isValidSeason(X) :- 
+    season(X).
 
 changeSeason(X) :- 
     isValidSeason(X), retract(currentSeason(_)), assertz(currentSeason(X)), currentSeason(spring), 

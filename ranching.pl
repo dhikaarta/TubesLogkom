@@ -3,7 +3,10 @@
 :- dynamic(ranch/4).    
 
 % nanti tambahin kasus inventory kosong
-ranching :- \+ ranch(_, _, _, _),
+ranching :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    \+ ranch(_, _, _, _),
     write('Here are a list of your available livestocks!'), nl, 
     livestock, ranch(Livestock, Produce, Time, _),
 
@@ -11,26 +14,41 @@ ranching :- \+ ranch(_, _, _, _),
     format('Come back in ~d seconds to get your ~w', [Time, Produce]), nl,
     write('You can do this by typing <collect> in the main menu'), !.
 
-ranching :- ranch(_, _, _, _),
+ranching :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    ranch(_, _, _, _),
     write('Shouldn\'t you be typing <\'collect\'> instead of <\'ranching\'> ?'), !.
 
-collect :- \+ ranch(_, _, _, _), 
+collect :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    \+ ranch(_, _, _, _), 
     write('You tried collecting eggs from a nearby chicken...'), nl,
     write('...but all you got was chicken poop.'), nl, nl,
     write('That\'s what you get for not ranching first.'), !.
 
-collect :- ranch(_, Produce, Time, _), (Time > 0),
+collect :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    ranch(_, Produce, Time, _), (Time > 0),
     write('Come back in ~d seconds to get your ~w', [Time, Produce]), !.
 
 % winter = syulit farming
-collect :- currentSeason(X), X == winter, random(0, 10, N),
+collect :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    currentSeason(X), X == winter, random(0, 10, N),
     (   N < 6 -> write('You forgot to give scarfs and hand-warmers to the animal.'), nl,
     write('It died peacefully in the midst of the cold winter.'), nl, nl,
     write('You gained nothing and 0 Gold.'),
     retractall(ranch(_, _, _, _)) ;
     ranchxpmoney   ), !.
 
-collect :- ranchxpmoney, !.
+collect :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    ranchxpmoney, !.
 
 % nanti nambah XP + XP Ranching disini + tambahin di inventory
 ranchxpmoney :- ranch(Livestock, Produce, Time, Price),

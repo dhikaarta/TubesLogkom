@@ -1,6 +1,3 @@
-:- include('player.pl').
-:- include('exploration.pl').
-
 :- dynamic(items/2).
 
 /* SEED */

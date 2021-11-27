@@ -4,7 +4,10 @@ hploss(LevelFish, HPLoss) :-
     (   LevelFish > 10 -> HPLoss is 10 ;
         HPLoss is 20 - LevelFish  ), !.
 
-fish :- \+ isExhausted,
+fish :-
+    isPlayerTile(A, B),
+    isTepiAirTile(A, B),
+    \+ isExhausted,
     player(Job, Level, _, _, LevelFish, ExpFish, _, _, _, _, _, _),
     energy(HP, MaxEnergy), hploss(LevelFish, HPLoss), CurHP is HP - HPLoss,
     (CurHP >= 0), nl, 
@@ -47,7 +50,10 @@ fish :- \+ isExhausted,
     depleteEnergy(HPLoss),
     retractall(currentFish(Type)), !.
 
-fish :- player(_, _, _, _, LevelFish, _, _, _, _, _, _, _), energy(HP, _), 
+fish :- 
+    isPlayerTile(A, B),
+    isTepiAirTile(A, B),
+    player(_, _, _, _, LevelFish, _, _, _, _, _, _, _), energy(HP, _), 
     hploss(LevelFish, HPLoss), CurHP is HP - HPLoss, (CurHP < 0), 
     write('Not enough HP.'), !.
 

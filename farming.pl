@@ -1,4 +1,6 @@
-digtile :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
+:- dynamic(farm/3).
+
+dig :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
     write('Let\'s dig this patch of tile right here!'), nl, nl,
     write('Type <\'PLZ DIG\'>  to dig a hole in this tile'), nl,
     write('(P.S.: Don\'t forget to type the apostrophe (\')'), nl,
@@ -16,14 +18,14 @@ digtile :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, 
 
         write('You\'re gonna end up digging your own grave if you keep digging like that.'), nl,
         write('Try typing <\'PLZ DIG\'> again. Do NOT forget the apostrophe.'), nl, fail), nl, nl,
-    dig,
+    digtile,
     write('Phew, that was a lot of work. You lost 10 stamina while digging the hole.'), depleteEnergy(10), nl, nl,
     write('Now that this tile is digged, you can plant your seed(s) here by typing <plant> in the main menu.'), !.
 
-digtile :- isPlayerTile(X, Y), isCropTile(X, Y, _, _),
+dig :- isPlayerTile(X, Y), isCropTile(X, Y, _, _),
     write('This is a cropped tile! Are you trying to ruin it?'), !.
 
-digtile :- isPlayerTile(X, Y), (isDiggedTile(X, Y)),
+dig :- isPlayerTile(X, Y), (isDiggedTile(X, Y)),
     write('This tile is already digged. Try <plant> instead.'), !.
 
 plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTile(X, Y)), 
@@ -57,11 +59,11 @@ plant :- (totalItemsType(X, seed), X =:= 0),
 plant :- playerTile(X, Y), isCropTile(X, Y, _, _),
     write('You have already cropped this tile. Type <harvest> to harvest your crop(s)'), !.
 
-plant :- playerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
-    write('You have to dig the tiles first before planting your seed. Try <digtile>.'), !.
+plant :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
+    write('You have to dig the tiles first before planting your seed. Try <dig>.'), !.
 
-harvest :- playerTile(X, Y), \+ isCropTile(X, Y, _, _), \+ (isDiggedTile(X, Y)),
-    write('You haven\'t even digged this tile. Try <digtile> followed by <plant>'), !.
+harvest :- isPlayerTile(X, Y), \+ isCropTile(X, Y, _, _), \+ (isDiggedTile(X, Y)),
+    write('You haven\'t even digged this tile. Try <dig> followed by <plant>'), !.
 
 harvest :- playerTile(X, Y), \+ (isCropTile(X, Y, _, _)), isDiggedTile(X, Y),
     write('You haven\'t planted anything in this digged tile. Try <plant>.'), !.

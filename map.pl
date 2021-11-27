@@ -294,12 +294,12 @@ map :-
     printMap(0, 0), !.
 
 /* FARMING */
-dig :-
+digtile :-
     isPlayerTile(X, Y),
     isNormalTile(X, Y),
     retract(normalTile(X, Y)), !,
     assertz(diggedTile(X, Y)), !,
-    write('You digged the tile.'), nl.
+    write('You digged a tile.'), nl.
 
 sow(S, T) :-
     isPlayerTile(X, Y),
@@ -332,3 +332,11 @@ reap :-
     retract(cropTile(X, Y, S, T)), !,
     assertz(diggedTile(X, Y)), !,
     format('You harvested ~w.', [S]).
+
+/* FISHING */
+isTepiAirTile(X, Y):-
+    XPlus is X + 1,
+    XMin is X - 1,
+    YPlus is Y + 1,
+    YMin is Y - 1,
+    (isWaterTile(XPlus, Y); isWaterTile(X, YPlus); isWaterTile(XMin, Y); isWaterTile(X, YMin)), !.
