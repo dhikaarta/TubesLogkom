@@ -68,7 +68,7 @@ harvest :- isPlayerTile(X, Y), \+ isCropTile(X, Y, _, _), \+ (isDiggedTile(X, Y)
 harvest :- playerTile(X, Y), \+ (isCropTile(X, Y, _, _)), isDiggedTile(X, Y),
     write('You haven\'t planted anything in this digged tile. Try <plant>.'), !.
 
-harvest :- playerTile(X, Y), isCropTile(X, Y, _, Time), (Time > 0),
+harvest :- playerTile(X, Y), isCropTile(X, Y, Seed, Time), (Time > 0),
     write('Come back in ~d seconds to get your ~w', [Time, Seed]), !.
 
 harvest :- currentSeason(X), X == winter, random(0, 10, N), reap, nl,
@@ -81,7 +81,7 @@ harvest :- farmxpmoney, reap, nl, !.
 
 % nanti nambah XP + XP Farming di harvest yg ini + tambahin di inv
 farmxpmoney :- playerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Price),
-    player(Job, Level, LevelFarm, ExpFarm, _, _, _, _, _, _, Money, _),
+    player(Job, Level, LevelFarm, ExpFarm, _, _, _, _, _, _, _, _),
     write('The time has come for you to reap what you sow... Literally.'), nl, nl,
     write('You got '), write(Seed), nl,
     format('You can sell this ~w for ~d Golds in the marketplace', [Seed, Price]), nl,

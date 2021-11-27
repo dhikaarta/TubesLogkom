@@ -44,9 +44,9 @@ ranch :- currentRanch(_, _, _, _),
     write('Shouldn\'t you be typing <\'collect\'> instead of <\'ranch\'> ?'), !.
 
 ranch :- \+ currentRanch(_, _, _, _),
-    cow(CountCow, DeathCow),
-    sheep(CountSheep, DeathSheep),
-    chicken(CountChicken, DeathChicken), 
+    cow(CountCow, _),
+    sheep(CountSheep, _),
+    chicken(CountChicken, _), 
     All is CountChicken + CountCow + CountSheep,
     \+ (All =:= 0),
 
@@ -57,7 +57,7 @@ ranch :- \+ currentRanch(_, _, _, _),
     format('Come back tomorrow to get your ~w', [Produce]), nl,
     write('You can do this by typing <collect> in the main menu'), !.
 
-ranch :- cow(CountCow, DeathCow), sheep(CountSheep, DeathSheep), chicken(CountChicken, DeathChicken), 
+ranch :- cow(CountCow, _), sheep(CountSheep, _), chicken(CountChicken, _), 
     All is CountChicken + CountCow + CountSheep, All =:= 0, 
     write('You don\'t have any animals. Try buying it first in the marketplace.'), !.
 
@@ -83,8 +83,8 @@ collect :- currentSeason(X), X == winter, random(0, 10, N), currentRanch(Livesto
 
 collect :- ranchxpmoney, !.
 
-ranchxpmoney :- currentRanch(Livestock, Produce, Time, Death),
-    player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, _, _, Money, _), 
+ranchxpmoney :- currentRanch(Livestock, Produce, _, Death),
+    player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, _, _, _, _), 
     write('Finally... It is time.'), nl,  priceitems(Produce, Price),
     (    Death =:= 0 -> format('You gently collected the ~w from the ~w.', [Produce, Livestock]) ;
         Death =:= 1 ->  format('You butchered the ~w swiftly. You cried.', [Livestock]),
@@ -114,7 +114,7 @@ loop(1) :- write('*PAT* '), nl, !.
 
 loop(X) :- write('*PAT* '), Y is X - 1, loop(Y).
 
-pat :- currentRanch(Livestock, Produce, Time, Price),
+pat :- currentRanch(_, _, _, _),
     write('You can take care of your animal by patting it like this'), nl, nl,
     random(1, 11, N), loop(N), nl, 
     random(1, 16, G),
@@ -125,7 +125,7 @@ pat :- currentRanch(Livestock, Produce, Time, Price),
         write('The animal seems unbothered by your action. It almost looks uncomfortable.')   ), nl, !.
 
 % mockup inventory
-livestock :- chicken(CountChicken, DeathChicken), cow(CountCow, DeathCow), sheep(CountSheep, DeathSheep),
+livestock :- chicken(CountChicken, _), cow(CountCow, _), sheep(CountSheep, _),
     format('1. Ayam (~dx)\n2. Sapi (~dx)\n3. Kambing (~dx)\n', [CountChicken, CountCow, CountSheep]),
     repeat,
     write('Which livestock will you raise?'), nl,

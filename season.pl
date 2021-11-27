@@ -44,4 +44,4 @@ whatSeasonIsIt(X) :-
                     X =:= 331 -> changeSeason(winter),!;
                     X =:= 361 -> changeSeason(spring)),!.
 
-whatSeasonIsIt(X) :- !.
+whatSeasonIsIt(_) :- !.

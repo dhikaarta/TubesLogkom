@@ -72,7 +72,7 @@ readDiary :-
              diary(CC,Output), nl, write(Output), nl,nl.
 
 changeDay(X) :- 
-    retractall(day(CurrentDay)), assertz(day(X)). 
+    retractall(day(_)), assertz(day(X)). 
 
 periTidur :- 
     random(1,101,X),X < 3,nl, write('A dream fairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,

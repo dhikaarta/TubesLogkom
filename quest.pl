@@ -27,7 +27,7 @@ quest :-
         isQuest(2) -> endingQuest2 ;
         isQuest(3) -> endingQuest3 ),
 
-    player(A, Level, C, D, E, F, G, H, Exp, J, Gold, L),
+    player(_, Level, _, _, _, _, _, _, _, _, _, _),
     priceitems(Farm, PriceFarm),
     priceitems(Fish, PriceFish),
     priceitems(Ranch, PriceRanch),
