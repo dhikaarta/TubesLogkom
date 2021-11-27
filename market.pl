@@ -151,10 +151,10 @@ buyequipment :-
     buyequip(X,Y), !.
 
 check(X,Y) :-
-    aggregate_all(count, shopitem(_,X,_), Y), !. /* INI ERROR */
+    findall(1, shopitem(_,X,_), List), length(List, Y).
 
 checkequip(X,Y) :-
-    aggregate_all(count, shopequip(_,X,_,_,_), Y), !. /* INI ERROR */
+    findall(1,shopequip(_,X,_,_,_),List), length(List,Y).
 
 market(X) :-
     check(X,Y),
