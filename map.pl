@@ -333,6 +333,13 @@ reap :-
     assertz(diggedTile(X, Y)), !,
     format('You harvested ~w.', [S]).
 
+updateCrop :- /* BERPOTENSI BACKTRACKING BANYAK */
+    cropTile(X, Y, S, T),
+    (   T =:= 0 -> TNew is T;
+        T =\= 0 -> TNew is T - 1),
+    retract(cropTile(X, Y, S, T)),
+    assertz(cropTile(X, Y, S, TNew)).
+
 /* FISHING */
 isTepiAirTile(X, Y):-
     XPlus is X + 1,
