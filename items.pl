@@ -28,6 +28,11 @@ items(feed,'chickenfeed').
 items(feed,'cowfeed').
 items(feed,'sheepfeed').
 
+/* ITEM TERNAK */
+items(animal,'ayam').
+items(animal,'sapi').
+items(animal,'kambing').
+
 /* HASIL RANCHING */
 items(ranching,'egg').
 items(ranching,'milk').
@@ -88,6 +93,9 @@ priceitems('wol',60).
 priceitems('cowmeat',250).
 priceitems('sheepmeat',170).
 priceitems('chickenmeat',90).
+priceitems('ayam',80).
+priceitems('sapi',320).
+priceitems('kambing',240).
 priceitems('bait',1).
 priceitems('Lele Raksasa',250).
 priceitems('Paus Uwu',170).

@@ -43,6 +43,37 @@ writeInv(0,[H|T]) :-
     format('~w ~w\n',[Quantity,H]),
     writeInv(0,T),!.
 
+writeInvType(1,_,[]) :-
+    write('Inventory is empty.\n'), !.
+
+writeInvType(0,_,[]) :- !.
+
+writeInvType(1,Type,[H|T]) :-
+    currentInventory(Inv),
+    items(Type1,H),
+    Type1 = Type,
+    totalperItem(H,Inv,Quantity),
+    format('~w ~w\n',[Quantity,H]),
+    writeInvType(0,Type,T),!.
+
+writeInvType(0,Type,[H|T]) :-
+    currentInventory(Inv),
+    items(Type1,H),
+    Type1 = Type,
+    totalperItem(H,Inv,Quantity),
+    format('~w ~w\n',[Quantity,H]),
+    writeInvType(0,Type,T),!.
+
+writeInvType(1,Type,[H|T]) :-
+    items(Type1,H),
+    Type1 \= Type,
+    writeInvType(0,Type,T),!.
+
+writeInvType(0,Type,[H|T]) :-
+    items(Type1,H),
+    Type1 \= Type,
+    writeInvType(0,Type,T),!.
+
 addItem(_,0).
 
 addItem(_,_) :-
@@ -75,6 +106,17 @@ inventory :-
     format('(~w / ~w)\n',[X,100]),
     sort(Inv,Inv2),
     writeInv(1,Inv2), !.
+
+inventory(_) :-
+    currentInventory(Inv),
+    Inv = [],
+    write('Inventory is Empty.\n'), !.
+
+inventory(Type) :-
+    write('Your Inventory\n'),
+    currentInventory(Inv),
+    sort(Inv,Inv2),
+    writeInvType(1,Type,Inv2), !.
 
 remover(_, [], []).
 remover(R, [R|T], T).
