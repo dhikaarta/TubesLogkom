@@ -87,6 +87,33 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), H > L + (50*G),
 
 levelUp :- !.
 
+levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), I < 0,
+            NewLevel is B - 1,
+            NewMax is J - 100,
+            NewExp is NewMax + I,
+            retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,NewLevel,C,D,E,F,G,H,NewExp,NewMax,K,L)),
+            write('You lost a level '), write(B), write('->'), write(NewLevel), nl, levelDown, !.
+
+levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), D < 0,  
+            NewLevel is C - 1,
+            NewExp is (L + (50*NewLevel) + D),
+            retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,NewLevel,NewExp,E,F,G,H,I,J,K,L)),
+            write('Your farming skillz got worse '), write(C), write('->'), write(NewLevel), nl, levelDown, !.
+
+levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), F <0, 
+            NewLevel is E - 1,
+            NewExp is (L + (50*NewLevel) + F) ,
+            retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,NewLevel,NewExp,G,H,I,J,K,L)),
+            write('Your fishing skillz got worse '), write(E), write('->'), write(NewLevel), nl, levelDown, !.
+
+levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), H < 0, 
+            NewLevel is G - 1,
+            NewExp is (L + (50*NewLevel) + H),
+            retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,NewLevel,NewExp,I,J,K,L)),
+            write('Your ranching skillz got worse ! '), write(G), write('->'), write(NewLevel), nl, levelDown, !.
+
+levelDown :- !.
+
 addGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
               NewGold is K + X,
               retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
@@ -99,6 +126,12 @@ addExp(X,Y) :- player(A,B,C,D,E,F,G,H,I,J,K,L),  % Y = 0 for general exp, Y = 1 
                 Y =:= 3 -> NewExp is H + X, retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,NewExp,I,J,K,L))),
                 levelUp.
                 
+loseExp(X,Y) :- player(A,B,C,D,E,F,G,H,I,J,K,L),  % Y = 0 for general exp, Y = 1 for farming exp, Y=2 for fishing xp, Y =3 for ranching exp
+               (Y =:= 0 -> NewExp is I - X, retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,NewExp,J,K,L));
+                Y =:= 1 -> NewExp is D - X, retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,NewExp,E,F,G,H,I,J,K,L));
+                Y =:= 2 -> NewExp is F - X, retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,NewExp,G,H,I,J,K,L));
+                Y =:= 3 -> NewExp is H - X, retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,NewExp,I,J,K,L))),
+                levelDown.
                 
 
 restoreEnergy :- energy(CurrEnergy,Max),retractall(energy(CurrEnergy,Max)), assertz(energy(Max,Max)), write('Your stamina has been restored !'),retractall(isExhausted).
