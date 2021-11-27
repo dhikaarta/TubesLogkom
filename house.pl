@@ -34,9 +34,11 @@ houseloop :-
      CC == 'unlock' -> unlock).
 
 sleep :-
-    write('You went to sleep'),nl,
+    write('You went to sleep'),nl,nl,
     day(X), Xnew is X+1, retract(day(_)), assertz(day(Xnew)),
-    restoreEnergy,(\+isLocked -> robbery).
+    restoreEnergy,(\+isLocked -> robbery), wakeUp.
+
+wakeUp :- day(X),format('Good Morning ! its now the ~d th day', [X]).
 
 robbery :- random(1,101,X), (X<10 -> write('Youve been robbed !')).
 
@@ -63,3 +65,7 @@ changeDay(X) :- retractall(day(CurrentDay)), assertz(day(X)).
 periTidur :- random(1,101,X), X < 10, write('A dream dairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,
              write('1. Water'),nl,write('2. Quest'),nl, write('3. Ranch'),nl,
              write('4. Marketplace'), read(CC).
+
+unconsious(X) :- write('Youre unconsious! Well, atleast youre resting\n'),
+                 day(Day), NewDay is Day + X, retract(day(_)), assertz(day(NewDay)), wakeUp.
+                 
