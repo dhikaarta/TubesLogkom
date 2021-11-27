@@ -120,12 +120,22 @@ addGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
               write('You gained '), write(X), write(' Gold !'), nl.
 
 loseGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
-              NewGold is K - X,
+              NewGold is K - X, NewGold >0,
+              retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
+              write('You spent '), write(X), write(' Gold !'), nl.
+
+loseGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
+              NewGold is K - X, NewGold <0, NewGold is 0,
               retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
               write('You spent '), write(X), write(' Gold !'), nl.
 
 unconsiousGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
-                     NewGold is K - X,
+                     NewGold is K - X, NewGold >0,
+                     retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
+                     write('You lost '), write(X), write(' Gold !'), nl.
+
+unconsiousGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
+                     NewGold is K - X, NewGold<0, NewGold is 0,
                      retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
                      write('You lost '), write(X), write(' Gold !'), nl.
 

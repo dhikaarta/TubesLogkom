@@ -10,19 +10,19 @@ season(winter).
 isValidSeason(X) :- season(X).
 
 changeSeason(X) :- 
-    isValidSeason(X), retract(currentSeason(_)), asserta(currentSeason(X)), currentSeason(spring), 
+    isValidSeason(X), retract(currentSeason(_)), assertz(currentSeason(X)), currentSeason(spring), 
     write('Its now Spring ! Flowers are blooming and Animals are more active!'), nl,!.
 
 changeSeason(X) :- 
-    isValidSeason(X), retract(currentSeason(_)), asserta(currentSeason(X)), currentSeason(summer), 
+    isValidSeason(X), retract(currentSeason(_)), assertz(currentSeason(X)), currentSeason(summer), 
     write('Its now Summer ! Days are warmer and hotter , also theres rare fishes in the lake now !'), nl,!.
 
 changeSeason(X) :- 
-    isValidSeason(X), retract(currentSeason(_)), asserta(currentSeason(X)), currentSeason(fall), 
+    isValidSeason(X), retract(currentSeason(_)), assertz(currentSeason(X)), currentSeason(fall), 
     write('Its now Fall ! Temperatures are starting to drop, prepare for winter ! Theres rare seeds in the marketplace now! '), nl,!.
 
 changeSeason(X) :- 
-    isValidSeason(X), retract(currentSeason(_)), asserta(currentSeason(X)), currentSeason(winter), 
+    isValidSeason(X), retract(currentSeason(_)), assertz(currentSeason(X)), currentSeason(winter), 
     write('Its now Winter ! Crops are bad, Animals are less active, and Its harder to Fish ! Hope youve prepared to survive winter.'), nl,!.
 
 changeSeason(X) :-

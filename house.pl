@@ -3,9 +3,6 @@
 :- dynamic(diary/2).
 
 day(1).
-diary(1,'hahahahha').
-diary(2,'ini dua').
-diary(3,'ini tiga').
 
 house :- 
     isLocked, write('Your house is locked, write 1. to unlock it'),
@@ -23,7 +20,7 @@ house :-
      CC == 'unlock' -> unlock).
 
 houseloop :- 
-    write('What do you want to do?'),nl,
+    write('What do you want to do next ?'),nl,
     write('- sleep'),nl, write('- writeDiary'),nl, write('- readDiary'),nl, 
     write('- exit'),nl,write('- lock'),nl,write('- unlock'),nl,read(CC),
     (CC == 'sleep' -> sleep;
@@ -36,12 +33,12 @@ houseloop :-
 sleep :-
     write('You went to sleep'),nl,nl,
     day(X), Xnew is X+1, retract(day(_)), assertz(day(Xnew)),
-    restoreEnergy,robbery, periTidur,wakeUp,isBirthday.
+    restoreEnergy,robbery, periTidur,wakeUp.
 
 
-wakeUp :- day(X),format('Good Morning ! its now day ~d \n', [X]).
+wakeUp :- day(X),format('Good Morning ! its now day ~d \n', [X]),isBirthday,weatherRandomizer.
 
-robbery :- \+ isLocked,random(1,101,X), (X<10 -> write('Youve been robbed !\n')),!.
+robbery :- \+ isLocked,random(1,101,X), (X<10 -> write('Youve been robbed !\n')),unconsiousGold(100),!.
 robbery :- \+ isLocked,!.
 robbery :- isLocked,!.
 
@@ -58,10 +55,10 @@ exit :- isLocked, write('Your house is locked, write 1. to unlock it'),nl,nl,
 
 exit :- \+isLocked, write('You left your house'),nl.
 
-writeDiary :-  day(X), write('Masukkan entri untuk Day '), write(X), nl, read(DiaryInput), assertz(diary(X,DiaryInput)).
+writeDiary :-  day(X), write('Masukkan entri untuk Day '), write(X), nl, read(DiaryInput), assertz(diary(X,DiaryInput)), houseloop.
 
 readDiary :- write('Here are the list of your entries :'), nl,forall(diary(X,_), format('- Day ~d\n', [X])), read(CC),
-             diary(CC,Output), write(Output), nl,nl, houseloop.
+             diary(CC,Output), nl, write(Output), nl,nl, houseloop.
 
 changeDay(X) :- retractall(day(CurrentDay)), assertz(day(X)). 
 
