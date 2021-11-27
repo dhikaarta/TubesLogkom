@@ -1,10 +1,10 @@
-:- dynamic(fish/1).
+:- dynamic(currentFish/1).
 
 hploss(LevelFish, HPLoss) :- 
     (   LevelFish > 10 -> HPLoss is 10 ;
         HPLoss is 20 - LevelFish  ), !.
 
-fishing :- \+ isExhausted,
+fish :- \+ isExhausted,
     player(Job, Level, _, _, LevelFish, ExpFish, _, _, _, _, _, _),
     energy(HP, MaxEnergy), hploss(LevelFish, HPLoss), CurHP is HP - HPLoss,
     (CurHP >= 0), nl, 
@@ -24,7 +24,7 @@ fishing :- \+ isExhausted,
     write('      ~             ~             '), nl,
     write('===========================       '), nl,
 
-    pickfish, fish(Type), priceitems(Type, Price),
+    pickfish, currentFish(Type), priceitems(Type, Price),
     (   Type == 'Trash' ->  write('A fish fell prey to your bait, but was able to get away.'), nl,
                             write('However, you managed to land a nice pile of Trash.'), 
                             write('Congrats on keeping the lake clean.'), nl ;
@@ -45,45 +45,45 @@ fishing :- \+ isExhausted,
     addExp(NewExp, 0),
     addExp(NewExpFish,2),
     depleteEnergy(HPLoss),
-    retractall(fish(Type)), !.
+    retractall(currentFish(Type)), !.
 
-fishing :- player(_, _, _, _, LevelFish, _, _, _, _, _, _, _), energy(HP, _), 
+fish :- player(_, _, _, _, LevelFish, _, _, _, _, _, _, _), energy(HP, _), 
     hploss(LevelFish, HPLoss), CurHP is HP - HPLoss, (CurHP < 0), 
     write('Not enough HP.'), !.
 
 % DUMMY FISH TYPES
 % unlocked at level 0-30
 noobfish :- random(0, 4, X),
-        (   X =:= 0 -> assertz(fish('Trash')) ;
-            X =:= 1 -> assertz(fish('Teri Biasa Aja')) ; 
-            X =:= 2 -> assertz(fish('Teri Mini')) ; 
-            X =:= 3 -> assertz(fish('Teri Mikroskopis'))     ), !.
+        (   X =:= 0 -> assertz(currentFish('Trash')) ;
+            X =:= 1 -> assertz(currentFish('Teri Biasa Aja')) ; 
+            X =:= 2 -> assertz(currentFish('Teri Mini')) ; 
+            X =:= 3 -> assertz(currentFish('Teri Mikroskopis'))     ), !.
 
 % unlocked at level 31-70
 avgfish :- random(0, 4, X),
-        (   X =:= 0 -> assertz(fish('Trash')) ;
-            X =:= 1 -> assertz(fish('Sarden Badan Licin')) ; 
-            X =:= 2 -> assertz(fish('Salmon Kulit Crispy Daging Kenyal')) ; 
-            X =:= 3 -> assertz(fish('Cupang Menggemaskan'))     ), !.
+        (   X =:= 0 -> assertz(currentFish('Trash')) ;
+            X =:= 1 -> assertz(currentFish('Sarden Badan Licin')) ; 
+            X =:= 2 -> assertz(currentFish('Salmon Kulit Crispy Daging Kenyal')) ; 
+            X =:= 3 -> assertz(currentFish('Cupang Menggemaskan'))     ), !.
 
 % unlocked at level 71
 profish :- random(1, 4, X),  
-        (   X =:= 1 -> assertz(fish('Cacing Besar Alaska')) ; 
-            X =:= 2 -> assertz(fish('Ayah Nemo')) ; 
-            X =:= 3 -> assertz(fish('Geri Si Gurame'))     ), !.
+        (   X =:= 1 -> assertz(currentFish('Cacing Besar Alaska')) ; 
+            X =:= 2 -> assertz(currentFish('Ayah Nemo')) ; 
+            X =:= 3 -> assertz(currentFish('Geri Si Gurame'))     ), !.
 
 % special fishes 4 cammer
 summerfish :- random(0, 7, X),
-        (   X < 2 -> assertz(fish('Trash')) ;
-            X < 4 -> assertz(fish('Kakap Corak Batik khas Nusantara')) ;
-            X < 6 -> assertz(fish('Paus Uwu')) ;
-            assertz(fish('Lele Raksasa'))      ), !.
+        (   X < 2 -> assertz(currentFish('Trash')) ;
+            X < 4 -> assertz(currentFish('Kakap Corak Batik khas Nusantara')) ;
+            X < 6 -> assertz(currentFish('Paus Uwu')) ;
+            assertz(currentFish('Lele Raksasa'))      ), !.
 
 nooblevel :- random(0, 4, Z),
-        (   Z < 2 -> assertz(fish('Trash')) ; noobfish    ), !.
+        (   Z < 2 -> assertz(currentFish('Trash')) ; noobfish    ), !.
 
 avglevel :- random(0, 6, Z),
-        (   Z =:= 0 -> assertz(fish('Trash')) ;
+        (   Z =:= 0 -> assertz(currentFish('Trash')) ;
             Z < 3 -> noobfish ;
             avgfish     ), !.
 
@@ -105,7 +105,7 @@ pickfish :- currentSeason(X), X == summer,
 pickfish :- currentSeason(X), X == winter,
         player(_, _, _, _, LevelFish, _, _, _, _, _, _, _),
         random(0, 21, ZZ),
-        (   ZZ < 13 -> assertz(fish('Trash')) ;
+        (   ZZ < 13 -> assertz(currentFish('Trash')) ;
             (   LevelFish < 8 -> nooblevel ;
                 LevelFish < 15 -> avglevel ;
                 prolevel    )   ), !.
