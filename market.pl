@@ -3,36 +3,36 @@
 
 shopitem('bait',summer,1).
 shopitem('bait',spring,1).
-shopitem('chickenfeed',summer,2).
-shopitem('cowfeed',summer,3).
-shopitem('sheepfeed',summer,4).
-shopitem('chickenfeed',spring,2).
-shopitem('cowfeed',spring,3).
-shopitem('sheepfeed',spring,4).
-shopitem('chickenfeed',fall,1).
-shopitem('cowfeed',fall,2).
-shopitem('sheepfeed',fall,3).
-shopitem('chickenfeed',winter,1).
-shopitem('cowfeed',winter,2).
-shopitem('sheepfeed',winter,3).
-shopitem('bayamSeed',summer,5).
-shopitem('wortelSeed',spring,5).
-shopitem('kentangSeed',summer,6).
-shopitem('jagungSeed',spring,6).
-shopitem('cabeSeed',summer,7).
-shopitem('bawang_merahSeed',spring,7).
-shopitem('bawang_putihSeed',summer,8).
-shopitem('padiSeed',spring,8).
-shopitem('kangkungSeed',summer,9).
-shopitem('bayamSeed',fall,4).
-shopitem('wortelSeed',winter,4).
-shopitem('kentangSeed',fall,5).
-shopitem('jagungSeed',winter,5).
-shopitem('cabeSeed',fall,6).
-shopitem('bawang_merahSeed',winter,6).
-shopitem('bawang_putihSeed',fall,7).
-shopitem('padiSeed',winter,7).
-shopitem('kangkungSeed',fall,8).
+shopitem('chicken feed',summer,2).
+shopitem('cow feed',summer,3).
+shopitem('sheep feed',summer,4).
+shopitem('chicken feed',spring,2).
+shopitem('cow feed',spring,3).
+shopitem('sheep feed',spring,4).
+shopitem('chicken feed',fall,1).
+shopitem('cow feed',fall,2).
+shopitem('sheep feed',fall,3).
+shopitem('chicken feed',winter,1).
+shopitem('cow feed',winter,2).
+shopitem('sheep feed',winter,3).
+shopitem('bayam Seed',summer,5).
+shopitem('wortel Seed',spring,5).
+shopitem('kentang Seed',summer,6).
+shopitem('jagung Seed',spring,6).
+shopitem('cabe Seed',summer,7).
+shopitem('bawang merah Seed',spring,7).
+shopitem('bawang putih Seed',summer,8).
+shopitem('padi Seed',spring,8).
+shopitem('kangkung Seed',summer,9).
+shopitem('bayam Seed',fall,4).
+shopitem('wortel Seed',winter,4).
+shopitem('kentang Seed',fall,5).
+shopitem('jagung Seed',winter,5).
+shopitem('cabe Seed',fall,6).
+shopitem('bawang merah Seed',winter,6).
+shopitem('bawang putih Seed',fall,7).
+shopitem('padi Seed',winter,7).
+shopitem('kangkung Seed',fall,8).
 shopitem('sapi',summer,10).
 shopitem('sapi',fall,9).
 shopitem('sapi',winter,8).

@@ -124,6 +124,7 @@ addItem(_,Total) :-
 
 addItem(Item,Total):-
     currentInventory(Inv),
+    items(_,Item),!,
     append(Inv,[Item],InvNow),
     retractall(currentInventory(_)),
     assertz(currentInventory(InvNow)),

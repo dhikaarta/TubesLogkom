@@ -6,15 +6,15 @@
 :- dynamic(equip/4).
 
 /* SEED */
-items(seed,'bayamSeed').
-items(seed,'wortelSeed').
-items(seed,'kentangSeed').
-items(seed,'jagungSeed').
-items(seed,'cabeSeed').
-items(seed,'bawang_merahSeed').
-items(seed,'bawang_putihSeed').
-items(seed,'padiSeed').
-items(seed,'kangkungSeed').
+items(seed,'bayam Seed').
+items(seed,'wortel Seed').
+items(seed,'kentang Seed').
+items(seed,'jagung Seed').
+items(seed,'cabe Seed').
+items(seed,'bawang merah Seed').
+items(seed,'bawang putih Seed').
+items(seed,'padi Seed').
+items(seed,'kangkung Seed').
 
 /* HASIL PANEN */
 items(harvest,'bayam').
@@ -22,15 +22,15 @@ items(harvest,'wortel').
 items(harvest,'kentang').
 items(harvest,'jagung').
 items(harvest,'cabe').
-items(harvest,'bawang_merah').
-items(harvest,'bawang_putih').
+items(harvest,'bawang merah').
+items(harvest,'bawang putih').
 items(harvest,'padi').
 items(harvest,'kangkung').
 
 /* ITEM RANCHING */
-items(feed,'chickenfeed').
-items(feed,'cowfeed').
-items(feed,'sheepfeed').
+items(feed,'chicken feed').
+items(feed,'cow feed').
+items(feed,'sheep feed').
 
 /* ITEM TERNAK */
 items(animal,'ayam').
@@ -41,9 +41,9 @@ items(animal,'kambing').
 items(ranching,'egg').
 items(ranching,'milk').
 items(ranching,'wol').
-items(ranching,'cowmeat').
-items(ranching,'sheepmeat').
-items(ranching,'chickenmeat').
+items(ranching,'cow meat').
+items(ranching,'sheep meat').
+items(ranching,'chicken meat').
 
 /* ITEM FISHING */
 items(bait,'bait').
@@ -102,33 +102,33 @@ usepotion('Gamble potion') :-
 
 
 /* PRICE ITEM */
-priceitems('bayamSeed',5).
-priceitems('wortelSeed',10).
-priceitems('kentangSeed',20).
-priceitems('jagungSeed',15).
-priceitems('cabeSeed',12).
-priceitems('bawang_merahSeed',17).
-priceitems('bawang_putihSeed',12).
-priceitems('padiSeed',7).
-priceitems('kangkungSeed',22).
+priceitems('bayam Seed',5).
+priceitems('wortel Seed',10).
+priceitems('kentang Seed',20).
+priceitems('jagung Seed',15).
+priceitems('cabe Seed',12).
+priceitems('bawang merah Seed',17).
+priceitems('bawang putih Seed',12).
+priceitems('padi Seed',7).
+priceitems('kangkung Seed',22).
 priceitems('bayam',20).
 priceitems('wortel',35).
 priceitems('kentang',75).
 priceitems('jagung',63).
 priceitems('cabe',50).
-priceitems('bawang_merah',87).
-priceitems('bawang_putih',63).
+priceitems('bawang merah',87).
+priceitems('bawang putih',63).
 priceitems('padi',25).
 priceitems('kangkung',87).
-priceitems('chickenfeed',5).
-priceitems('cowfeed',10).
-priceitems('sheepfeed',8).
+priceitems('chicken feed',5).
+priceitems('cow feed',10).
+priceitems('sheep feed',8).
 priceitems('egg',35).
 priceitems('milk',40).
 priceitems('wol',60).
-priceitems('cowmeat',250).
-priceitems('sheepmeat',170).
-priceitems('chickenmeat',90).
+priceitems('cow meat',250).
+priceitems('sheep meat',170).
+priceitems('chicken meat',90).
 priceitems('ayam',80).
 priceitems('sapi',320).
 priceitems('kambing',240).
@@ -163,6 +163,12 @@ levelupTool(Name) :-
     changePrice(Name,PriceNow),
     retract(equip(Name,Lvl,Expnow,Expmax)),
     assertz(equip(Name,Lvlup,Newexp,Newmax)).
+    write('LL      EEEEEEE VV     VV EEEEEEE LL         UU   UU PPPPPP     !!! !!!'),nl,
+    write('LL      EE      VV     VV EE      LL         UU   UU PP   PP    !!! !!!'),nl,
+    write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
+    write('LL      EE        VV VV   EE      LL         UU   UU PP                '),nl,
+    write('LLLLLLL EEEEEEE    VVV    EEEEEEE LLLLLLL     UUUUU  PP         !!! !!!'),nl,nl,
+    write('You have leveled up ! '), write(Lvl), write('->'), write(Lvlup), nl, levelupTool(Name), !.
 
 changePrice(Item,Price) :-
     items(_,Item), !,
