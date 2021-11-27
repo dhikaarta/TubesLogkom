@@ -1,5 +1,3 @@
-:- include('items.pl').
-
 :- dynamic(currentInventory/1).
 
 currentInventory(['ranch equip','shovel','watering','fishing rod']).

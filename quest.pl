@@ -1,7 +1,9 @@
 :- dynamic(isQuest/1).
 :- dynamic(questNeeded/6).
 
-quest :- 
+quest :-
+    isPlayerTile(A, B),
+    isQuestTile(A, B),
     \+ isQuest(_),
     write('Welcome! Here are your available quests!'), nl, listQuest, nl, 
     repeat,
@@ -13,6 +15,8 @@ quest :-
         write('You think that\'s funny? Try again.', nl, fail)  ), !.
 
 quest :-
+    isPlayerTile(A, B),
+    isQuestTile(A, B),
     isQuest(X), write(X),
     questNeeded(CountFarm, Farm, CountFish, Fish, CountRanch, Ranch),
     totalperItem(Farm, _, QuantityFarm), QuantityFarm >= CountFarm, 
@@ -40,6 +44,8 @@ quest :-
     retractall(isQuest(_)), !.
 
 quest :- 
+    isPlayerTile(A, B),
+    isQuestTile(A, B),
     write('You have an on-going quest which lacks:'), nl,
     questNeeded(CountFarm, Farm, CountFish, Fish, CountRanch, Ranch),
     totalperItem(Farm, _, QuantityFarm), 

@@ -1,6 +1,3 @@
-:- include('inventory.pl').
-:- include('season.pl').
-
 shopitem('bait',summer,1).
 shopitem('bait',spring,1).
 shopitem('chicken feed',summer,2).
@@ -71,8 +68,10 @@ shoppotion('teleport potion',5,500).
 shoppotion('Gamble potion',6,500).
 
 alchemist :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     random(0,5,X),
-    ( X < 3, write('No Alchemist here, comeback later.\n');
+    (X < 3, write('No Alchemist here, comeback later.\n');
     buyalchemist),!.
 
 buyalchemist :-
@@ -115,11 +114,15 @@ buypotion(X) :-
     usepotion(Name), !.
 
 sell :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     totalItems(X),
     X =:= 0,
     write('You dont have item to sell, comeback later!\n'), !.
 
 sell :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     write('What do you want to sell?\n'),
     currentInventory(Inv),
     writeInv(1,Inv),
@@ -130,6 +133,8 @@ sell :-
     sellitem(Y,Z), !.
 
 buy :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     currentSeason(X),
     write('What do you want to buy?\n'),
     market(X),
@@ -139,6 +144,8 @@ buy :-
     buyItem(X,Y,Z), !.
 
 buyequipment :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     currentSeason(X),
     write('What do you want to buy?\n'),
     marketequip(X),
@@ -146,30 +153,36 @@ buyequipment :-
     buyequip(X,Y), !.
 
 check(X,Y) :-
-    aggregate_all(count, shopitem(_,X,_), Y), !.
+    aggregate_all(count, shopitem(_,X,_), Y), !. /* INI ERROR */
 
 checkequip(X,Y) :-
-    aggregate_all(count, shopequip(_,X,_,_,_), Y), !.
+    aggregate_all(count, shopequip(_,X,_,_,_), Y), !. /* INI ERROR */
 
 market(X) :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     check(X,Y),
     market(X,Y,1), !.
 
-marketequip(X) :-
-    checkequip(X,Y),
-    marketequip(X,Y,1), !.
-
 market(X,Y,Y) :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     shopitem(Name,X,Y),
     priceitems(Name,Z),
     format('~d. ~w (~d golds)\n',[Y,Name,Z]), !.
 
 market(X,Y,Iterate) :-
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
     shopitem(Name,X,Iterate),
     priceitems(Name,Z),
     format('~d. ~w (~d golds)\n',[Iterate,Name,Z]),
     IterateNow is Iterate+1,
     market(X,Y,IterateNow), !.
+
+marketequip(X) :-
+    checkequip(X,Y),
+    marketequip(X,Y,1), !.
 
 marketequip(X,Y,Y) :-
     shopequip(Name,X,Lvl,Price,Y),
