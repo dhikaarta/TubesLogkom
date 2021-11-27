@@ -45,7 +45,7 @@ plant :- \+ (totalItemsType(X, seed), X =:= 0), (isDiggedTile(_, _)),
     format('You shouted "~w" at the top of your lungs', [Plant]), nl,
     write('Hopefully the god of harvest will hear your thunderous prayers'), nl, nl,
     
-    write('While planting, you lost 5 stamina.'), depleteEnergy(5), nl, nl, sow(Seed, _, _), 
+    write('While planting, you lost 5 stamina.'), depleteEnergy(5), nl, nl, sow(Seed, 0), 
     nl, nl, format('Come back in ~d seconds to get your ~w', [Time, Seed]), nl,
     write('You can do this by typing <harvest> in the main menu'), !.
 
@@ -55,13 +55,13 @@ plant :- (totalItemsType(X, seed), X =:= 0),
 plant :- \+ (isDiggedTile(_, _)),
     write('You have to dig the tiles first before planting your seed. Try <digtile>.'), !.
 
-harvest :- \+ isCropTile(_, _, _), \+ (isDiggedTile(_, _)),
+harvest :- \+ isCropTile(_, _, _, _), \+ (isDiggedTile(_, _)),
     write('You haven\'t even digged this tile. Try <digtile> followed by <plant>'), !.
 
-harvest :- \+ (isCropTile(_, _, _)), \+ (farm(_, _, _)),
+harvest :- \+ (isCropTile(_, _, _, _)), \+ (farm(_, _, _)),
     write('... You do realize you haven\'t planted anything, right?'), !.
 
-harvest :- \+ (isCropTile(_, _, _)),
+harvest :- \+ (isCropTile(_, _, _, _)),
     write('You haven\'t planted anything in this digged tile. Try <plant>.'), !.
 
 harvest :- farm(Seed, Time, _), (Time > 0),
@@ -75,10 +75,10 @@ harvest :- currentSeason(X), X == winter, random(0, 10, N), reap, nl,
     retractall(farm(_, _, _, _)) ;
     farmxpmoney   ), !.
 
-harvest :- reap, nl, farmxpmoney, !.
+harvest :- write('disana'), farmxpmoney, reap, nl, !.
 
 % nanti nambah XP + XP Farming di harvest yg ini + tambahin di inv
-farmxpmoney :- isCropTile(_, _, _), cropTile(_, _, Seed), priceitems(Seed, Price),
+farmxpmoney :- isPlayerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Price),
     player(Job, Level, LevelFarm, ExpFarm, C, D, E, F, Exp, G, Money, H),
     write('The time has come for you to reap what you sow... Literally.'), nl, nl,
     write('You got '), write(Seed), nl,

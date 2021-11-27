@@ -162,7 +162,7 @@ levelupTool(Name) :-
     PriceNow is Price+50,
     changePrice(Name,PriceNow),
     retract(equip(Name,Lvl,Expnow,Expmax)),
-    assertz(equip(Name,Lvlup,Newexp,Newmax)).
+    assertz(equip(Name,Lvlup,Newexp,Newmax)),
     write('LL      EEEEEEE VV     VV EEEEEEE LL         UU   UU PPPPPP     !!! !!!'),nl,
     write('LL      EE      VV     VV EE      LL         UU   UU PP   PP    !!! !!!'),nl,
     write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
