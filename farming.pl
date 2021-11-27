@@ -9,16 +9,17 @@ digtile :- \+ (isDiggedTile(_, _)),
     % plz ini ascii art jgn diubah keliatannya aja jelek tp di prolog ini jadi bagus ko :D
     (   Dig == 'DIG DIG DIG' -> 
     
-        write('  _______   __    _______   _______  __  .__   __.   _______                   '), nl,                  
-        write(' |       \\ |  |  /  _____| /  _____||  | |  \\ |  |  /  _____|                  '), nl,
-        write(' |   __   ||  | |  |  __  |  |  __  |  | |   \\|  | |  |  __                    '), nl,
-        write(' |  |  |  ||  | |  | |_ | |  | |_ | |  | |  . `  | |  | |_ |                   '), nl,
-        write(' |  \'--\'  ||  | |  |__| | |  |__| | |  | |  |\\   | |  |__| |  __     __     __ '), nl,
-        write(' |_______/ |__|  \\______|  \\______| |__| |__| \\__|  \\______| (__)   (__)   (__)'), nl ;
+        write('  _______   __    _______   _______  __  .__   __.   _______                         '), nl,                  
+        write(' |       \\ |  |  /  _____| /  _____||  | |  \\ |  |  /  _____|                      '), nl,
+        write(' |   __   ||  | |  |  __  |  |  __  |  | |   \\|  | |  |  __                         '), nl,
+        write(' |  |  |  ||  | |  | |_ | |  | |_ | |  | |  . `  | |  | |_ |                         '), nl,
+        write(' |  \'--\'  ||  | |  |__| | |  |__| | |  | |  |\\   | |  |__| |  __     __     __    '), nl,
+        write(' |_______/ |__|  \\______|  \\______| |__| |__| \\__|  \\______| (__)   (__)   (__)  '), nl ;
 
         write('You\'re gonna end up digging your own grave if you keep digging like that.'), nl,
         write('Try typing <\'DIG DIG DIG\'> again. Do NOT forget the apostrophe.'), nl, fail), nl, nl,
     dig,
+    write('Phew, that was a lot of work. You lost 10 stamina while digging the hole.'), depleteEnergy(10), nl, nl,
     write('Now that this tile is digged, you can plant your seed(s) here by typing <plant> in the main menu.'), !.
 
 digtile :- (isDiggedTile(_, _)),
@@ -44,14 +45,15 @@ plant :- (isDiggedTile(_, _)),
         write('Are you trying to offend the god of harvest? Please try again.'), nl, nl, fail), nl,
     format('You shouted "~w" at the top of your lungs', [Plant]), nl,
     write('Hopefully the god of harvest will hear your thunderous prayers'), nl, nl,
-
-    sow(Seed), nl, nl, format('Come back in ~d seconds to get your ~w', [Time, Seed]), nl,
+    
+    write('While planting, you lost 5 stamina.'), depleteEnergy(5), nl, nl, sow(Seed), 
+    nl, nl, format('Come back in ~d seconds to get your ~w', [Time, Seed]), nl,
     write('You can do this by typing <harvest> in the main menu'), !.
 
 plant :- \+ (isDiggedTile(_, _)),
     write('You have to dig the tiles first before planting your seed. Try <digtile>.'), !.
 
-harvest :- \+ (isDiggedTile(_, _)),
+harvest :- \+ isCropTile(_, _, _), \+ (isDiggedTile(_, _)),
     write('You haven\'t even digged this tile. Try <digtile> followed by <plant>'), !.
 
 harvest :- \+ (isCropTile(_, _, _)), \+ (farm(_, _, _)),
@@ -76,26 +78,25 @@ harvest :- reap, nl, farmxpmoney, !.
 % nanti nambah XP + XP Farming di harvest yg ini + tambahin di inv
 farmxpmoney :- farm(Seed, Time, Price),
     player(Job, Level, LevelFarm, ExpFarm, C, D, E, F, Exp, G, Money, H),
-    write('The time has come for you to reap what you sow... Literally.'), nl, 
-    write('You gained '), write(Seed), write(' and '), write(Price), write(' Golds.'), nl,
+    write('The time has come for you to reap what you sow... Literally.'), nl, nl,
+    write('You got '), write(Seed), nl,
+    format('You can sell this ~w for ~d Golds in the marketplace', [Seed, Price]), nl,
 
-    CurExpFarm is (13 * LevelFarm) + ExpFarm,
-    CurExp is (3 * Level) + Exp,
-    (   Job == 'Farmer' -> NewMoney is Price + (LevelFarm * 3) ;
-        NewMoney is Price ),  
-    CurMoney is Money + NewMoney,
+    NewExpFarm is (13 * (LevelFarm)),
+    NewExp is (3 * Level),
+    CurExp is NewExp + Exp,
+    CurExpFarm is NewExpFarm + ExpFarm,
+    (   Job == 'Farmer' ->  write('You were paid for working as a farmer'), nl,
+                            Salary is (LevelFarm * 5),
+                            addGold(Salary)     ), nl,
 
     write('Current XP Farming: '), write(CurExpFarm), nl,
-    write('Current Money: '), write(CurMoney), write(' (+'), write(NewMoney), write(')'), nl,
-    retractall(player(Job, Level, LevelFarm, ExpFarm, C, D, E, F, Exp, G, Money, H)),
-    assertz(player(Job, Level, LevelFarm, CurExpFarm, C, D, E, F, CurExp, G, CurMoney, H)),
-    retractall(farm(Seed, Time, Price)), !.
+
+    addItem(Seed, 1),
+    addExp(NewExp, 0),
+    addExp(NewExpFarm,2),
+    retractall(farm(_, _, _)), !.
 
 % mockup inventory
 seeds :- 
-    /* testing aja, nanti ceknya dari inventory */
-    write('1. AUTO-JADI'), nl, write('2. wortel'), nl, write('3. bayam'), nl,
-    read(X),
-    (X =:= 1 -> assertz(farm('AUTO-JADI', 0, 20)) ;
-    X =:= 2 -> assertz(farm('wortel', 15, 40)) ;
-    X =:= 3 -> assertz(farm('bayam', 20, 60))), !.
+    writeInvType(1, seed, _), !.

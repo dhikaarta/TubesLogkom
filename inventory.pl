@@ -3,7 +3,7 @@
 
 :- dynamic(currentInventory/1).
 
-currentInventory([]).
+currentInventory(['ranch equip','shovel','watering','fishing rod']).
 
 /* Count jumlah per item */
 totalperItem(_,[],0).
@@ -25,6 +25,22 @@ totalItems(X) :-
     currentInventory(Inv),
     countInvUtil(Inv,X),!.
 
+countInvUtilType([],_,0).
+countInvUtilType([H|T],Type,X) :-
+    items(Type2,H),
+    Type2 \= Type, !,
+    countInvUtilType(T,Type,X), !.
+
+countInvUtilType([H|T],Type,X) :-
+    items(Type2,H),
+    Type2 = Type, !,
+    countInvUtilType(T,Type,Y),
+    X is (1+Y),!.
+
+totalItemsType(X,Type) :-
+    currentInventory(Inv),
+    countInvUtilType(Inv,Type,X),!.
+
 /*Write item in Inventorty */
 writeInv(1,[]) :-
     write('Inventory is empty.\n'), !.
@@ -33,14 +49,34 @@ writeInv(0,[]) :- !.
 
 writeInv(1,[H|T]) :-
     currentInventory(Inv),
+    items(Type,H),
+    Type \= equip,
+    totalperItem(H,Inv,Quantity),
+    format('~w ~w\n',[Quantity,H]),
+    writeInv(0,T),!.
+
+writeInv(1,[H|T]) :-
+    currentInventory(_),
+    items(Type,H),
+    Type = equip,
+    equip(H,Lvl,_,_),
+    format('~w Level ~w ~w\n',[1,Lvl,H]),
+    writeInv(0,T),!.
+
+writeInv(0,[H|T]) :-
+    currentInventory(Inv),
+    items(Type,H),
+    Type \= equip,
     totalperItem(H,Inv,Quantity),
     format('~w ~w\n',[Quantity,H]),
     writeInv(0,T),!.
 
 writeInv(0,[H|T]) :-
-    currentInventory(Inv),
-    totalperItem(H,Inv,Quantity),
-    format('~w ~w\n',[Quantity,H]),
+    currentInventory(_),
+    items(Type,H),
+    Type = equip,
+    equip(H,Lvl,_,_),
+    format('~w Level ~w ~w\n',[1,Lvl,H]),
     writeInv(0,T),!.
 
 writeInvType(1,_,[]) :-
@@ -162,9 +198,6 @@ sellitem(Item,Amount) :-
     retractall(currentInventory(_)),
     assertz(currentInventory(InvNow)),
     priceitems(Item,X),
-    player(A,B,C,D,E,F,G,H,I,J,Gold,L),
-    GoldNow is Gold + X,
-    retractall(player(_,_,_,_,_,_,_,_,_,_,_,_)),
-    assertz(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
+    addGold(X),
     AmountNow is Amount - 1,
     sellitem(Item,AmountNow), !. 

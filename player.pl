@@ -119,6 +119,12 @@ addGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
               retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
               write('You gained '), write(X), write(' Gold !'), nl.
 
+loseGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
+              NewGold is K - X,
+              retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
+              write('You spent '), write(X), write(' Gold !'), nl.
+
+
 addExp(X,Y) :- player(A,B,C,D,E,F,G,H,I,J,K,L),  % Y = 0 for general exp, Y = 1 for farming exp, Y=2 for fishing xp, Y =3 for ranching exp
                (Y =:= 0 -> NewExp is I + X, retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,NewExp,J,K,L));
                 Y =:= 1 -> NewExp is D + X, retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,NewExp,E,F,G,H,I,J,K,L));

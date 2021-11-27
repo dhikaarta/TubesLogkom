@@ -1,6 +1,9 @@
-:- dynamic(equip/4).
+:- include('player.pl').
+:- include('exploration.pl').
+
 :- dynamic(items/2).
 :- dynamic(priceitems/2).
+:- dynamic(equip/4).
 
 /* SEED */
 items(seed,'bayamSeed').
@@ -60,11 +63,43 @@ items(fish,'Cacing Besar Alaska').
 items(fish,'Teri Biasa Aja').
 items(fish,'Trash').
 
+items(potion,'fishing potion').
+items(potion,'ranching potion').
+items(potion,'farming potion').
+items(potion,'EXP potion').
+items(potion,'teleport potion').
+items(potion,'Gamble potion').
+
 /* EQUIPMENT ada tambahan level sama exp equipment, dan max exp per level*/
-equip('fishingrod',1,0,50).
+items(equip,'fishing rod').
+items(equip,'watering').
+items(equip,'shovel').
+items(equip,'ranch equip').
+equip('fishing rod',1,0,50).
 equip('watering',1,0,50).
 equip('shovel',1,0,50).
-equip('ranchequip',1,0,50).
+equip('ranch equip',1,0,50).
+
+usepotion('fishing potion') :-
+    addExp(200,2).
+
+usepotion('ranching potion') :-
+    addExp(200,3).
+
+usepotion('farming potion') :-
+    addExp(200,1).
+
+usepotion('EXP potion') :-
+    addExp(200,0).
+
+usepotion('teleport potion') :-
+    teleport(5,5).
+
+usepotion('Gamble potion') :-
+    random(0,2,X),
+    ( X =:= 0, loseGold(500);
+    addGold(500)), !.
+
 
 /* PRICE ITEM */
 priceitems('bayamSeed',5).
@@ -111,26 +146,32 @@ priceitems('Salmon Kulit Crispy Daging Kenyal',45).
 priceitems('Cacing Besar Alaska',90).
 priceitems('Teri Biasa Aja',15).
 priceitems('Trash',0).
-priceEquip('fishingrod',Lvl,X) :-
-    X is Lvl*50.
-priceEquip('watering',Lvl,X) :-
-    X is Lvl*25.
-priceEquip('shovel',Lvl,X) :-
-    X is Lvl*25.
-priceEquip('ranchequip',Lvl,X) :-
-    X is Lvl*50.
+priceitems('fishing rod',50).
+priceitems('watering',25).
+priceitems('shovel',25).
+priceitems('ranch equip',50).
 
 /* Level Up TOOL */
 levelupTool(Name) :- 
     equip(Name,Lvl,Expnow,Expmax), !,
-    Expnow > Expmax,
+    Expnow > Expmax, !,
     Lvlup is Lvl + 1,
     Newexp is Expnow mod Expmax,
-    retract(items(equip,Name,Lvl,Expnow,Expmax)),
-    assertz(items(equip,Name,Lvlup,Newexp,Newmax)).
+    Newmax is Expmax + 50,
+    priceitems(Name,Price),
+    PriceNow is Price+50,
+    changePrice(Name,PriceNow),
+    retract(equip(Name,Lvl,Expnow,Expmax)),
+    assertz(equip(Name,Lvlup,Newexp,Newmax)).
 
 changePrice(Item,Price) :-
     items(_,Item), !,
     retractall(priceitems(Item,_)),
     assertz(priceitems(Item,Price)).
 
+changeStats(Item,Lvl,Expmax) :-
+    retractall(equip(Item,_,_,_)),
+    assertz(equip(Item,Lvl,0,Expmax)).
+
+checkLevel(Item,X) :-
+    equip(Item,X,_,_).
