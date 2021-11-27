@@ -141,7 +141,7 @@ buy :-
     read(Z),
     buyItem(X,Y,Z), !.
 
-buyequipment :-
+buyEquipment :-
     isPlayerTile(A, B),
     isMarketplaceTile(A, B),
     currentSeason(X),
