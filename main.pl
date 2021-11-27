@@ -10,7 +10,7 @@
 :- include('market.pl').
 
 :- include('randomevent.pl').
-:- include('house.pl'). /* BUG: Terkadang masih suka return no saat sleep */
+:- include('house.pl').
 
 :- include('quest.pl').
 
