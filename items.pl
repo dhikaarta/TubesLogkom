@@ -1,3 +1,6 @@
+:- include('player.pl').
+:- include('exploration.pl').
+
 :- dynamic(items/2).
 :- dynamic(priceitems/2).
 :- dynamic(equip/4).
@@ -60,6 +63,13 @@ items(fish,'Cacing Besar Alaska').
 items(fish,'Teri Biasa Aja').
 items(fish,'Trash').
 
+items(potion,'fishing potion').
+items(potion,'ranching potion').
+items(potion,'farming potion').
+items(potion,'EXP potion').
+items(potion,'teleport potion').
+items(potion,'Gamble potion').
+
 /* EQUIPMENT ada tambahan level sama exp equipment, dan max exp per level*/
 items(equip,'fishing rod').
 items(equip,'watering').
@@ -69,6 +79,27 @@ equip('fishing rod',1,0,50).
 equip('watering',1,0,50).
 equip('shovel',1,0,50).
 equip('ranch equip',1,0,50).
+
+usepotion('fishing potion') :-
+    addExp(200,2).
+
+usepotion('ranching potion') :-
+    addExp(200,3).
+
+usepotion('farming potion') :-
+    addExp(200,1).
+
+usepotion('EXP potion') :-
+    addExp(200,0).
+
+usepotion('teleport potion') :-
+    teleport(5,5).
+
+usepotion('Gamble potion') :-
+    random(0,2,X),
+    ( X =:= 0, loseGold(500);
+    addGold(500)), !.
+
 
 /* PRICE ITEM */
 priceitems('bayamSeed',5).
@@ -123,7 +154,7 @@ priceitems('ranch equip',50).
 /* Level Up TOOL */
 levelupTool(Name) :- 
     equip(Name,Lvl,Expnow,Expmax), !,
-    Expnow > Expmax,
+    Expnow > Expmax, !,
     Lvlup is Lvl + 1,
     Newexp is Expnow mod Expmax,
     Newmax is Expmax + 50,

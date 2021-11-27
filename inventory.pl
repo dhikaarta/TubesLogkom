@@ -25,6 +25,22 @@ totalItems(X) :-
     currentInventory(Inv),
     countInvUtil(Inv,X),!.
 
+countInvUtilType([],_,0).
+countInvUtilType([H|T],Type,X) :-
+    items(Type2,H),
+    Type2 \= Type, !,
+    countInvUtilType(T,Type,X), !.
+
+countInvUtilType([H|T],Type,X) :-
+    items(Type2,H),
+    Type2 = Type, !,
+    countInvUtilType(T,Type,Y),
+    X is (1+Y),!.
+
+totalItemsType(X,Type) :-
+    currentInventory(Inv),
+    countInvUtilType(Inv,Type,X),!.
+
 /*Write item in Inventorty */
 writeInv(1,[]) :-
     write('Inventory is empty.\n'), !.
@@ -182,9 +198,6 @@ sellitem(Item,Amount) :-
     retractall(currentInventory(_)),
     assertz(currentInventory(InvNow)),
     priceitems(Item,X),
-    player(A,B,C,D,E,F,G,H,I,J,Gold,L),
-    GoldNow is Gold + X,
-    retractall(player(_,_,_,_,_,_,_,_,_,_,_,_)),
-    assertz(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
+    addGold(X),
     AmountNow is Amount - 1,
     sellitem(Item,AmountNow), !. 

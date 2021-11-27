@@ -63,6 +63,57 @@ shopequip('watering',spring,2,75,4).
 shopequip('watering',fall,3,125,4).
 shopequip('watering',winter,3,125,4).
 
+shoppotion('fishing potion',1,500).
+shoppotion('ranching potion',2,500).
+shoppotion('farming potion',3,500).
+shoppotion('EXP potion',4,500).
+shoppotion('teleport potion',5,500).
+shoppotion('Gamble potion',6,500).
+
+alchemist :-
+    random(0,5,X),
+    ( X < 3, write('No Alchemist here, comeback later.\n');
+    buyalchemist),!.
+
+buyalchemist :-
+    write('Hello, i am alchemist, do you want to buy something?(y/n)\n'),
+    read(X),
+    (X = n -> write('ヽ(ಠ_ಠ)ノ\n');
+    X = y -> write('what do you want to buy?\n'), marketpotion(6,1),
+    read(X),
+    buypotion(X);
+    write('No such option, please try again.\n'),buyalchemist), !.
+
+marketpotion(Y,Y) :-
+    shoppotion(Name,Y,Price),
+    format('~d. ~w (~d golds)\n',[Y,Name,Price]), !.   
+    
+marketpotion(Y,Iterate) :-
+    shoppotion(Name,Iterate,Price),
+    format('~d. ~w (~d golds)\n',[Iterate,Name,Price]),
+    IterateNow is Iterate+1,
+    marketpotion(Y,IterateNow), !.
+
+buypotion(X) :-
+    X < 1, !,
+    write('You type wrong number.\n'), fail.
+
+buypotion(X) :-
+    X > 6, !,
+    write('You type wrong number.\n'), fail.
+
+buypotion(X) :-
+    player(_,_,_,_,_,_,_,_,_,_,Gold,_),
+    shoppotion(_,X,Price),
+    Price > Gold, !,
+    write('You dont have enough gold, comeback later!\n'), fail.
+
+buypotion(X) :-
+    shoppotion(Name,X,Price),
+    loseGold(Price),
+    write('You have bought ~w.\n',[Name]),
+    usepotion(Name), !.
+
 sell :-
     totalItems(X),
     X =:= 0,
@@ -154,10 +205,7 @@ buyItem(X,Y,Z) :-
     Type = animal,!,
     priceitems(Name,Price),
     PriceTotal is Price*Z,
-    player(A,B,C,D,E,F,G,H,I,J,Gold,L),
-    GoldNow is Gold-PriceTotal,
-    retractall(player(_,_,_,_,_,_,_,_,_,_,_,_)),
-    assertz(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
+    loseGold(PriceTotal),
     /* add To Ranch Inventory */ 
     format('You have bought ~d ~w.\n',[Z,Name]), 
     format('You are charged ~d.\n',[PriceTotal]), !.
@@ -166,10 +214,7 @@ buyItem(X,Y,Z) :-
     shopitem(Name,X,Y),
     priceitems(Name,Price),
     PriceTotal is Price*Z,
-    player(A,B,C,D,E,F,G,H,I,J,Gold,L),
-    GoldNow is Gold-PriceTotal,
-    retractall(player(_,_,_,_,_,_,_,_,_,_,_,_)),
-    assertz(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
+    loseGold(PriceTotal),
     addItem(Name,Z), 
     format('You have bought ~d ~w.\n',[Z,Name]), 
     format('You are charged ~d.\n',[PriceTotal]), !.
@@ -192,10 +237,7 @@ buyequip(X,Y) :-
 
 buyequip(X,Y) :-
     shopequip(Name,X,Lvl,Price,Y),
-    player(A,B,C,D,E,F,G,H,I,J,Gold,L),
-    GoldNow is Gold-Price,
-    retractall(player(_,_,_,_,_,_,_,_,_,_,_,_)),
-    assertz(player(A,B,C,D,E,F,G,H,I,J,GoldNow,L)),
+    loseGold(Price),
     changePrice(Name,Price),
     Expmax is Lvl*50,
     changeStats(Name,Lvl,Expmax),
