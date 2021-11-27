@@ -57,3 +57,5 @@ writeDiary :-  day(X), write('Masukkan entri untuk Day '), write(X), nl, read(Di
 
 readDiary :- write('Here are the list of your entries :'), nl,forall(diary(X,_), format('- Day ~d\n', [X])), read(CC),
              diary(CC,Output), write(Output), nl,nl, houseloop.
+
+changeDay(X) :- retractall(day(CurrentDay)), assertz(day(X)). 

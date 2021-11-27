@@ -26,7 +26,8 @@ status :- player(A,B,C,D,E,F,G,H,I,J,K,L),energy(CurrEnergy,MaxEnergy),
 
 
 
-initPlayer :- write('Welcome to Strukdat Valley ! List of jobs here:'),nl,
+initPlayer :- random(1,366,X),retractall(birthday(Birthday)),assertz(birthday(X)), 
+write('Welcome to Strukdat Valley ! List of jobs here:'),nl,
 write('1. Farmer'),nl,
 write('2. Rancher'),nl,
 write('3. Fisher'),nl,
@@ -100,7 +101,7 @@ addExp(X,Y) :- player(A,B,C,D,E,F,G,H,I,J,K,L),  % Y = 0 for general exp, Y = 1 
                 
                 
 
-restoreEnergy :- energy(CurrEnergy,Max),retractall(energy(CurrEnergy,Max)), assertz(energy(Max,Max)), retractall(isExhausted).
+restoreEnergy :- energy(CurrEnergy,Max),retractall(energy(CurrEnergy,Max)), assertz(energy(Max,Max)), write('Your stamina has been restored !'),retractall(isExhausted).
 
 addEnergy(X) :- energy(A,Max), Anew is A + X,
                 (Anew > Max -> restoreEnergy, Anew is Max;
