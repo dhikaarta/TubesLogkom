@@ -59,3 +59,7 @@ readDiary :- write('Here are the list of your entries :'), nl,forall(diary(X,_),
              diary(CC,Output), write(Output), nl,nl, houseloop.
 
 changeDay(X) :- retractall(day(CurrentDay)), assertz(day(X)). 
+
+periTidur :- random(1,101,X), X < 10, write('A dream dairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,
+             write('1. Water'),nl,write('2. Quest'),nl, write('3. Ranch'),nl,
+             write('4. Marketplace'), read(CC).

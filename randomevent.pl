@@ -12,7 +12,7 @@ isBirthday :- day(Day), birthday(Birthday), Day =:= Birthday,
              write('The man brought you 150 gold ! HAPPY BIRTHDAY '), nl, addGold(150)).
 
 
-
+fishAccident :-  
 
 
 
