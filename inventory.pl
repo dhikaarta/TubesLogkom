@@ -57,7 +57,7 @@ writeInv(1,[H|T]) :-
 writeInv(1,[H|T]) :-
     currentInventory(_),
     items(Type,H),
-    Type = equip,
+    Type == equip,
     equip(H,Lvl,_,_),
     format('~w Level ~w ~w\n',[1,Lvl,H]),
     writeInv(0,T),!.
@@ -73,7 +73,7 @@ writeInv(0,[H|T]) :-
 writeInv(0,[H|T]) :-
     currentInventory(_),
     items(Type,H),
-    Type = equip,
+    Type == equip,
     equip(H,Lvl,_,_),
     format('~w Level ~w ~w\n',[1,Lvl,H]),
     writeInv(0,T),!.
@@ -86,7 +86,7 @@ writeInvType(0,_,[]) :- !.
 writeInvType(1,Type,[H|T]) :-
     currentInventory(Inv),
     items(Type1,H),
-    Type1 = Type,
+    Type1 == Type,
     totalperItem(H,Inv,Quantity),
     format('~w ~w\n',[Quantity,H]),
     writeInvType(0,Type,T),!.
@@ -94,7 +94,7 @@ writeInvType(1,Type,[H|T]) :-
 writeInvType(0,Type,[H|T]) :-
     currentInventory(Inv),
     items(Type1,H),
-    Type1 = Type,
+    Type1 == Type,
     totalperItem(H,Inv,Quantity),
     format('~w ~w\n',[Quantity,H]),
     writeInvType(0,Type,T),!.
@@ -108,6 +108,37 @@ writeInvType(0,Type,[H|T]) :-
     items(Type1,H),
     Type1 \= Type,
     writeInvType(0,Type,T),!.
+
+writeInvSell(1,[]) :-
+    write('Inventory is empty.\n'), !.
+
+writeInvSell(0,[]) :- !.
+
+writeInvSell(1,[H|T]) :-
+    currentInventory(Inv),
+    items(Type1,H),
+    Type1 \= equip,
+    totalperItem(H,Inv,Quantity),
+    format('~w ~w\n',[Quantity,H]),
+    writeInvSell(0,T),!.
+
+writeInvSell(0,[H|T]) :-
+    currentInventory(Inv),
+    items(Type1,H),
+    Type1 \= equip,
+    totalperItem(H,Inv,Quantity),
+    format('~w ~w\n',[Quantity,H]),
+    writeInvSell(0,T),!.
+
+writeInvSell(1,[H|T]) :-
+    items(Type1,H),
+    Type1 == equip,
+    writeInvSell(0,T),!.
+
+writeInvSell(0,[H|T]) :-
+    items(Type1,H),
+    Type1 == equip,
+    writeInvSell(0,T),!.
 
 addItem(_,0).
 
@@ -179,6 +210,8 @@ throwItem(Item,Amount) :-
     AmountNow is Amount - 1,
     throwItem(Item,AmountNow), !.
 
+sellitem(_,0).
+
 sellitem(Item,_) :-
     currentInventory(Inv),
     \+ member(Item,Inv), !,
@@ -190,14 +223,23 @@ sellitem(Item,Amount) :-
     Amount > Total, !,
     format('You don\'t have enough ~w !\n', [Item] ), fail.
 
-sellitem(_,0) :- !.
-
 sellitem(Item,Amount) :-
     currentInventory(Inv),
     remover(Item,Inv,InvNow),
     retractall(currentInventory(_)),
     assertz(currentInventory(InvNow)),
     priceitems(Item,X),
-    addGold(X),
     AmountNow is Amount - 1,
-    sellitem(Item,AmountNow), !. 
+    sellitemRec(Item,AmountNow),
+    TotalGold is X*Amount,
+    addGold(TotalGold), !. 
+
+sellitemRec(_,0).
+
+sellitemRec(Item,Amount) :-
+    currentInventory(Inv),
+    remover(Item,Inv,InvNow),
+    retractall(currentInventory(_)),
+    assertz(currentInventory(InvNow)),
+    AmountNow is Amount - 1,
+    sellitemRec(Item,AmountNow), !. 
