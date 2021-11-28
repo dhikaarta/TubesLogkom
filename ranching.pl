@@ -83,10 +83,20 @@ ranch :-
     All is CountChicken + CountCow + CountSheep,
     \+ (All =:= 0),
 
+    equip('ranch equip', EquipLvl, EquipXPNow, EquipXPMax),
+    AddEquipXP is (EquipLvl * 7),
+    AddEquipGoldReward is (EquipLvl * 6),
+
     write('Here are a list of your available livestocks!'), nl, 
     livestock, currentRanch(Livestock, Produce, Time, _), nl,
 
     format('Great, now let\'s care for it.', [Livestock]), nl, pat, nl,
+
+    format('Ranch Equip XP +~D', [AddEquipXP]), nl, addGold(AddEquipGoldReward), CurEquipXP is EquipXPNow + AddEquipXP,
+    changeStats('ranch equip', EquipLvl, CurEquipXP, EquipXPMax),
+    (   CurEquipXP >= EquipXPMax -> nl, levelupTool('ranch equip'), nl, nl ;
+        nl, nl ),
+
     format('Come back in ~d day(s) to get your ~w', [Time, Produce]), nl,
     write('You can do this by typing <collect> in the main menu'), 
     
@@ -184,7 +194,7 @@ pat :-
 
     write('How many times would you like to pat the animal?'), nl, read(Pat), nl,
     write('You pat the animal '), write(Pat), write(' time(s).'), nl, nl,
-    (   Pat =:= N -> write('The animal seems pleased. Somehow, it gave you some gold as a reward.'), nl, addGold(G) ;
+    (   Pat =:= N -> write('The animal seems pleased. Somehow, it gave you some gold as a reward. '), addGold(G) ;
         write('The animal seems unbothered by your action. It almost looks uncomfortable.')   ), nl,
     write('========================================================'), nl, !.
 
@@ -230,7 +240,7 @@ processCow :- write('These are the products you can gain from raising sapi:'), n
 processSheep :- write('These are the products you can gain from raising kambing:'), nl,
     write('1. Wol\n2. Sheep Meat\n\nWhich product will you choose?'), nl,
     write('(each kambing you own will produce one product)'), nl,
-    prodtime('kambing', Time), read(Choice), kambing(CountSheep, _),
+    prodtime('kambing', Time), read(Choice), sheep(CountSheep, _),
     (   Choice =:= 1 -> retractall(currentRanch(_, _, _, _)), 
                         assertz(currentRanch('kambing', 'wol', Time, 0)) ;
         Choice =:= 2 -> nl, format('How many kambing(s) will you butcher? (Limit: ~d)', [CountSheep]), nl,

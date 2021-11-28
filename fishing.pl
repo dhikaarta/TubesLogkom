@@ -4,14 +4,19 @@ hploss(LevelFish, HPLoss) :-
     (   LevelFish > 10 -> HPLoss is 10 ;
         HPLoss is 20 - LevelFish  ), !.
 
-fish :-
+fish :- \+ (totalItemsType(Z, bait), Z =:= 0),
     isPlayerTile(A, B),
     isTepiAirTile(A, B),
     \+ isExhausted,
     player(Job, Level, _, _, LevelFish, ExpFish, _, _, _, _, _, _),
     energy(HP, MaxEnergy), hploss(LevelFish, HPLoss), CurHP is HP - HPLoss,
     (CurHP >= 0), nl, 
-    /* validasi fishing rod + bait */
+
+    throwItem('bait', 1),
+    equip('fishing rod', EquipLvl, EquipXPNow, EquipXPMax),
+    AddEquipXP is (EquipLvl * 5),
+    AddEquipGoldReward is (EquipLvl * 4),
+
     write('Attaching bait to fishing rod...  '), nl,
     write('Casting the fishing rod!          '), nl, nl,
     write('Reeling in...                     '), nl,
@@ -34,6 +39,11 @@ fish :-
         write('You caught a fish! It\'s '), write(Type), nl, 
         format('You can sell this ~w for ~d Golds in the marketplace', [Type, Price]), nl   ), nl,
 
+    format('Fishing Rod XP +~D', [AddEquipXP]), nl, addGold(AddEquipGoldReward), CurEquipXP is EquipXPNow + AddEquipXP,
+    changeStats('fishing rod', EquipLvl, CurEquipXP, EquipXPMax),
+    (   CurEquipXP >= EquipXPMax -> nl, levelupTool('fishing rod'), nl, nl ;
+        nl, nl ),
+
     NewExpFish is (10 * (LevelFish)),
     NewExp is (2 * Level),
     CurExpFish is NewExpFish + ExpFish,
@@ -54,6 +64,9 @@ fish :-
     random(1, 101, Chance),
     (   Chance > 91 -> nl, nl, fishAccident, nl ;
         nl  ), !.
+
+fish :- (totalItemsType(Z, bait), Z =:= 0),
+    write('You don\'t have any bait. Buy it first in the marketplace.'), !.
 
 fish :- 
     isPlayerTile(A, B),

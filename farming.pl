@@ -9,6 +9,11 @@ croptime('kangkung Seed', 'kangkung', 3).
 croptime('kentang Seed', 'kentang', 3).
 
 dig :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
+    
+    equip('shovel', EquipLvl, EquipXPNow, EquipXPMax),
+    AddEquipXP is (EquipLvl * 5),
+    AddEquipGoldReward is (EquipLvl * 5), 
+
     write('Let\'s dig this patch of tile right here!'), nl, nl,
     write('Type <\'PLZ DIG\'>  to dig a hole in this tile'), nl,
     write('(P.S.: Don\'t forget to type the apostrophe (\')'), nl,
@@ -27,8 +32,13 @@ dig :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
         write('You\'re gonna end up digging your own grave if you keep digging like that.'), nl,
         write('Try typing <\'PLZ DIG\'> again. Do NOT forget the apostrophe.'), nl, fail), nl, nl,
     digtile,
-    write('Phew, that was a lot of work. You lost 10 stamina while digging the hole.'), nl, depleteEnergy(10), nl, nl,
-    write('Now that this tile is digged, you can plant your seed(s) here by typing <plant> in the main menu.'), nl,
+    addGold(AddEquipGoldReward), nl, format('Shovel XP +~D', [AddEquipXP]), CurEquipXP is EquipXPNow + AddEquipXP,
+    changeStats('shovel', EquipLvl, CurEquipXP, EquipXPMax),
+    (   CurEquipXP >= EquipXPMax -> nl, levelupTool('shovel'), nl, nl ;
+        nl, nl ),
+    write('Phew, that was a lot of work. You lost 10 stamina while digging the hole. '), depleteEnergy(10), nl,
+    write('Now that this tile is digged, you can plant your seed(s) here by typing <plant> in the main menu'), nl,
+
     
     random(1, 101, Chance),
     (   Chance > 91 -> nl, farmAccident, nl ;
@@ -41,6 +51,11 @@ dig :- isPlayerTile(X, Y), (isDiggedTile(X, Y)),
     write('This tile is already digged. Try <plant> instead.'), !.
 
 plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTile(X, Y)), 
+    
+    equip('watering', EquipLvl, EquipXPNow, EquipXPMax),
+    AddEquipXP is (EquipLvl * 5),
+    AddEquipGoldReward is (EquipLvl * 4), 
+
     write('Here are a list of seeds in your inventory: '), nl, 
     write('================='), nl, inventory(seed), write('================='), nl,
     write('Which seed would you like to pick?'), nl,
@@ -70,6 +85,12 @@ plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTil
     write('=============================================================='), nl, nl,
     
     croptime(Seed, Produce, Time), sow(Seed, Time), nl,
+    
+    addGold(AddEquipGoldReward), nl, format('Watering XP +~D', [AddEquipXP]), CurEquipXP is EquipXPNow + AddEquipXP,
+    changeStats('watering', EquipLvl, CurEquipXP, EquipXPMax),
+    (   CurEquipXP >= EquipXPMax -> nl, levelupTool('watering'), nl, nl ;
+        nl, nl ),
+
     write('While planting, you lost 5 stamina. '), depleteEnergy(5), nl, nl, 
     format('Come back in ~d day(s) to get your ~w', [Time, Produce]), nl,
     write('You can do this by typing <harvest> in the main menu'), !.

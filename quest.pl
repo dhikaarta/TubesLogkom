@@ -17,7 +17,7 @@ quest :-
 quest :-
     isPlayerTile(A, B),
     isQuestTile(A, B),
-    isQuest(X), write(X),
+    isQuest(_),
     questNeeded(CountFarm, Farm, CountFish, Fish, CountRanch, Ranch),
     currentInventory(Inv),
     totalperItem(Farm, Inv, QuantityFarm), QuantityFarm >= CountFarm, 
@@ -52,9 +52,9 @@ quest :-
     totalperItem(Farm, Inv, QuantityFarm), 
     totalperItem(Fish, Inv, QuantityFish), 
     totalperItem(Ranch, Inv, QuantityRanch),
-    (QuantityFarm < CountFarm -> format('~w: ~w/~w', [Farm, QuantityFarm, CountFarm]), nl),
-    (QuantityFish < CountFish -> format('~w: ~w/~w', [Fish, QuantityFish, CountFish]), nl),
-    (QuantityRanch < CountRanch -> format('~w: ~w/~w', [Ranch, QuantityRanch, CountRanch]), nl), nl,
+    format('~w: ~w/~w', [Farm, QuantityFarm, CountFarm]), nl,
+    format('~w: ~w/~w', [Fish, QuantityFish, CountFish]), nl,
+    format('~w: ~w/~w', [Ranch, QuantityRanch, CountRanch]), nl, nl,
     write('Finish your quest first before adding new ones!'), !.
 
 listQuest :- write('1. Menaklukkan Sapi Gila'), nl, write('2. Menunggang Lele Raksasa'), nl, write('3. Menanam Bunga Sangat Imut'), nl, !.
@@ -69,7 +69,7 @@ quest1 :-
     write('that makes it crave human flesh.'), nl, nl,
     write('The only way to stop this crazy cow from going all berserk-zombie mode is to create'), nl,
     write('a certain potion which requires:'), nl,
-    format('~w Bayam(s)\n~w Cupang Menggemaskan(s)\n~w Wol(s)\n', [CountFarm, CountFish, CountRanch]), nl, nl,
+    format('~w Bayam(s)\n~w Cupang Menggemaskan(s)\n~w Wol(s)\n', [CountFarm, CountFish, CountRanch]), nl,
     write('Find those items and type <quest> to turn in the necessary items.'), nl, !.
 
 quest2 :- 
@@ -96,12 +96,12 @@ quest3 :-
     write('The only way to stop the children from dying is to give them'), nl,
     write('a special elixir made out of the primordial Anti-UWU Flower.'), nl, nl,
     write('These are the ingredients needed to plant the flower and create the elixir: '), nl,
-    format('~w Kentang(s)\n~w Teri Biasa Aja(s)\n~w Milk\n', [CountFarm, CountFish, CountRanch]), nl, nl,
+    format('~w Kentang(s)\n~w Teri Biasa Aja(s)\n~w Milk\n', [CountFarm, CountFish, CountRanch]), nl,
     write('Find those items and type <quest> to turn in the necessary items.'), nl, !.
 
 endingQuest1 :-
     write('You brew the potions quickly and shoved it into the cow\'s mouth.'), nl,
-    write('It immediately started chewing grass again. Phew, nice work.'), nl, nl, !.
+    write('It immediately started chewing grass again. Phew, nice work.'), nl, !.
 
 endingQuest2 :-
     write('You threw the offerings onto the sea while shouting "YAYOYOYAYE", just like what the scroll said.'), nl,
