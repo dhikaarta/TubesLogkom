@@ -93,9 +93,9 @@ usepotion('EXP potion') :-
 
 usepotion('teleport potion') :-
     write('where do you want to teleport?\n'),
-    write('X coordinate(1-16)\n'),
+    write('X coordinate(1-16) :'),
     read(X),
-    write('Y coordinate(1-19)\n'),
+    write('Y coordinate(1-19) :'),
     read(Y),
     teleport(X,Y),!.
 

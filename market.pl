@@ -130,6 +130,7 @@ alchemist :-
 buyalchemist :-
     write('Hello, i am alchemist, what do you want to buy?\n'),
     marketpotion(6,1),
+    write('Plz Write Number.\n'),
     read(X),
     buypotion(X), !.
 
@@ -176,11 +177,11 @@ sell :-
 sell :-
     isPlayerTile(A, B),
     isMarketplaceTile(A, B),
-    write('What do you want to sell?\n'),
     currentInventory(Inv),
     write('What do you want to sell?\n'),
     sort(Inv,Inv2), 
     writeInvSell(1,Inv2), 
+    write('Plz write in format <\'Name Item\'>\n'),
     read(Y), 
     write('amount : \n'), 
     read(Z),
@@ -193,6 +194,7 @@ buy :-
     currentSeason(X),
     write('What do you want to buy?\n'),
     market(X),
+    write('Plz Write Number.\n'),
     read(Y),
     write('How many do you want to buy?\n'),
     read(Z),
@@ -205,6 +207,7 @@ upgradeEquipment :-
     currentSeason(X),
     write('What do you want to upgrade?\n'),
     marketequip(X),
+    write('Plz Write Number.\n'),
     read(Y),
     buyequip(X,Y), !.
 
