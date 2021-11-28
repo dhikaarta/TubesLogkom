@@ -101,7 +101,9 @@ usepotion('teleport potion') :-
 
 usepotion('Gamble potion') :-
     random(0,2,X),
-    ( X =:= 0, loseGold(1500);
+    write('Choose head or tail? (1 for head, 0 for tail)\n'),
+    read(Y),
+    ( X \= Y, loseGold(1500);
     addGold(2000)), !.
 
 
