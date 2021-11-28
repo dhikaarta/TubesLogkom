@@ -157,23 +157,23 @@ priceitems('ranch equip',50).
 
 /* Level Up TOOL */
 levelupTool(Name) :- 
-    equip(Name,Lvl,Expnow,Expmax), !,
-    Expnow >= Expmax, !,
+    equip(Name,Lvl,Expnow,Expmax),
+    Expnow >= Expmax,
     Lvlup is Lvl + 1,
-    Newexp is Expnow mod Expmax,
+    Newexp is Expnow - Expmax,
     Newmax is Expmax + 50,
     priceitems(Name,Price),
     PriceNow is Price+50,
     changePrice(Name,PriceNow),
-    retract(equip(Name,Lvl,Expnow,Expmax)),
-    assertz(equip(Name,Lvlup,Newexp,Newmax)),
+    changeStats(Name,Lvlup,Newexp,Newmax),
     write('LL      EEEEEEE VV     VV EEEEEEE LL         UU   UU PPPPPP     !!! !!!'),nl,
     write('LL      EE      VV     VV EE      LL         UU   UU PP   PP    !!! !!!'),nl,
     write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
     write('LL      EE        VV VV   EE      LL         UU   UU PP                '),nl,
     write('LLLLLLL EEEEEEE    VVV    EEEEEEE LLLLLLL     UUUUU  PP         !!! !!!'),nl,nl,
-    write('You have leveled up ! '), write(Lvl), write('->'), write(Lvlup), nl, levelupTool(Name), !.
+    format('Your ~w have leveled up ! ',[Name]), write(Lvl), write('->'), write(Lvlup), nl, levelupTool(Name), !.
 
+levelupTool(_) :- !.
 /* Function to change Price */
 changePrice(Item,Price) :-
     items(_,Item), !,
