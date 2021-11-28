@@ -41,7 +41,7 @@ dig :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
 
     
     random(1, 101, Chance),
-    (   Chance > 91 -> nl, farmAccident, nl ;
+    (   Chance > 95 -> nl, nl, farmAccident, nl ;
         nl  ), !.
 
 dig :- isPlayerTile(X, Y), isCropTile(X, Y, _, _),
@@ -68,7 +68,7 @@ plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTil
     throwItem(Seed, 1),
  
     repeat,
-    write('Type <\'PLZ BLESS\'> to gain the harvest god\'s blessing. '),
+    write('Let\'s water the plant. Type <\'PLZ BLESS\'> to gain the harvest god\'s blessing. '),
     write('Once again, DO NOT forget the apostrophe (\'). Plz.'), nl,
     nl, read(Plant), nl, nl,
     (   Plant == 'PLZ BLESS' -> 
@@ -80,7 +80,7 @@ plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTil
         write('|__|                                   |_____|         '), nl ;
 
         write('Are you trying to offend the god of harvest? Please try again.'), nl, nl, fail), nl,
-    format('You shouted "~w" at the top of your lungs', [Plant]), nl,
+    format('You watered the plant while shouting "~w" at the top of your lungs', [Plant]), nl,
     write('Hopefully the god of harvest will hear your thunderous prayers'), nl,
     write('=============================================================='), nl, nl,
     
