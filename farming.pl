@@ -8,7 +8,7 @@ croptime('bawang merah Seed', 'bawang merah', 3).
 croptime('kangkung Seed', 'kangkung', 3).
 croptime('kentang Seed', 'kentang', 3).
 
-dig :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
+dig :- isPlayerTile(X, Y), isNormalTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
     
     equip('shovel', EquipLvl, EquipXPNow, EquipXPMax),
     AddEquipXP is (EquipLvl * 5),
@@ -49,6 +49,9 @@ dig :- isPlayerTile(X, Y), isCropTile(X, Y, _, _),
 
 dig :- isPlayerTile(X, Y), (isDiggedTile(X, Y)),
     write('This tile is already digged. Try <plant> instead.'), !.
+
+dig :- isPlayerTile(X, Y), \+ isNormalTile(X, Y),
+    write('You can\'t dig in special tiles.'), !.
 
 plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTile(X, Y)), 
     
