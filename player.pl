@@ -24,7 +24,7 @@ status :- player(A,B,C,D,E,F,G,H,I,J,K,L),energy(CurrEnergy,MaxEnergy),
     write('Stamina        : '), write(CurrEnergy), write('/') , write(MaxEnergy),nl,!.
 
 initPlayer :- random(1,366,X),retractall(birthday(_)),assertz(birthday(X)), 
-write('Welcome to Strukdat Valley ! List of jobs here:'),nl,
+write('List of jobs here:'),nl,
 write('1. Farmer'),nl,
 write('2. Rancher'),nl,
 write('3. Fisher'),nl,
