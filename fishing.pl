@@ -4,6 +4,10 @@ hploss(LevelFish, HPLoss) :-
     (   LevelFish > 10 -> HPLoss is 10 ;
         HPLoss is 20 - LevelFish  ), !.
 
+fish :- isPlayerTile(A, B), \+ isTepiAirTile(A, B),
+    write('You can only fish when you are on the edge of the water.'), nl,
+    write('Try moving closer to the water tile.'), !.
+
 fish :- \+ (totalItemsType(Z, bait), Z =:= 0),
     isPlayerTile(A, B),
     isTepiAirTile(A, B),
