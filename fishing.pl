@@ -62,7 +62,7 @@ fish :- \+ (totalItemsType(Z, bait), Z =:= 0),
     retractall(currentFish(Type)), 
     
     random(1, 101, Chance),
-    (   Chance > 91 -> nl, nl, fishAccident, nl ;
+    (   Chance > 95 -> nl, nl, fishAccident, nl ;
         nl  ), !.
 
 fish :- (totalItemsType(Z, bait), Z =:= 0),

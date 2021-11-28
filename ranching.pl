@@ -101,7 +101,7 @@ ranch :-
     write('You can do this by typing <collect> in the main menu'), 
     
     random(1, 101, Chance),
-    (   Chance > 91 -> nl, nl, nl, ranchAccident, nl ;
+    (   Chance > 95 -> nl, nl, ranchAccident, nl ;
         nl  ), !.
 
 ranch :- 
