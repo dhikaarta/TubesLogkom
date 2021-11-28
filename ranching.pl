@@ -9,6 +9,38 @@ prodtime('kambing', 5).
 
 initLivestock :- assertz(chicken(0, 28)), assertz(cow(0, 35)), assertz(sheep(0, 21)), assertz(currentRanch('NULL', 0, 0, 0)), !.
 
+ranch :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    write('Here are the available activities you can do in the ranch:'), nl, nl,
+    write('- raise              : produce animal products'), nl, 
+    write('- collect            : collect finished produce'), nl, 
+    write('- feed               : feed current livestock(s) to extend lifespan'), nl, 
+    write('- healthstatus       : check lifespan of current livestock(s) '), nl, nl,
+    write('What do you want to do?'), nl,
+    repeat,
+    read(Choice),
+    (   Choice == 'raise' -> write('-----------------------------'), nl, raise, nl ;
+        Choice == 'collect' -> write('-----------------------------'), nl, collect, nl ;
+        Choice == 'feed' -> write('-----------------------------'), nl, feed, nl ;
+        Choice == 'healthstatus' -> write('-----------------------------'), nl, healthstatus, nl ;
+        nl, write('You can\'t do that. Try again'), nl, fail ), !.
+    
+healthstatus :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    chicken(CountChicken, DeathChicken),
+    cow(CountCow, DeathCow),
+    sheep(CountSheep, DeathSheep),
+    write('Here are your livestock\'s status:'), nl,
+
+    (   CountChicken =:= 0 -> write('You don\'t have any ayam(s)') ;
+        format('Ayam (~dx): will be dead in ~d day(s)', [CountChicken, DeathChicken])   ), nl,
+    (   CountSheep =:= 0 -> write('You don\'t have any kambing(s)') ;
+        format('Kambing (~dx): will be dead in ~d day(s)', [CountSheep, DeathSheep])   ), nl,
+    (   CountCow =:= 0 -> write('You don\'t have any sapi(s)') ;
+        format('Sapi (~dx): will be dead in ~d day(s)', [CountCow, DeathCow])   ), !. 
+
 checkDeath :- 
     chicken(CountChicken, DeathChicken), cow(CountCow, DeathCow), sheep(CountSheep, DeathSheep), 
     NewDeathChicken is DeathChicken - 1, NewDeathCow is DeathCow - 1, NewDeathSheep is DeathSheep - 1,
@@ -67,13 +99,13 @@ feed :-
         format('You added 4 more days to your ~w(s)\' life.', [Animal]), nl,
         format('Don\'t forget to feed them, for they will die in ~d day(s)', [NewDeath])), !.
 
-ranch :- 
+raise :- 
     isPlayerTile(A, B),
     isRanchTile(A, B),
     currentRanch(Check, _, _, _), \+ (Check == 'NULL'),
-    write('Shouldn\'t you be typing <\'collect\'> instead of <\'ranch\'> ?'), !.
+    write('Shouldn\'t you be typing <\'collect\'> instead of <\'raise\'> ?'), !.
 
-ranch :- 
+raise :- 
     isPlayerTile(A, B),
     isRanchTile(A, B),
     currentRanch(Check, _, _, _), Check == 'NULL',
@@ -104,14 +136,12 @@ ranch :-
     (   Chance > 95 -> nl, nl, ranchAccident, nl ;
         nl  ), !.
 
-ranch :- 
+raise :- 
     isPlayerTile(A, B),
     isRanchTile(A, B),
     cow(CountCow, _), sheep(CountSheep, _), chicken(CountChicken, _), 
     All is CountChicken + CountCow + CountSheep, All =:= 0, 
     write('You don\'t have any animals. Try buying it first in the marketplace.'), !.
-
-/*ranch :- */
 
 collect :- 
     isPlayerTile(A, B),
