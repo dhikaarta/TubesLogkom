@@ -186,7 +186,7 @@ ranchxpmoney :-
         Livestock == 'kambing' -> sheep(Count, _)    ),
 
     write('Finally... It is time.'), nl,  priceitems(Produce, Price),
-    (   Death =:= 0 -> format('You gently collected the ~w from the ~w. ', [Produce, Livestock]), Gain is Count ;
+    (   Death =:= 0 -> format('You gently collected the ~w from the ~w. ', [Produce, Livestock]), Gain is (Count * 2) ;
         format('With tears in your eyes, you butchered ~d of your ~w(s). ', [Death, Livestock]),
         (   Livestock == 'ayam' -> deleteChicken(Death), Gain is Death ;
             Livestock == 'sapi' -> deleteCow(Death), Gain is Death ;
