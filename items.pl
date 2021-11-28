@@ -167,7 +167,7 @@ levelupTool(Name) :-
     priceitems(Name,Price),
     PriceNow is (Price*Lvlup)/Lvl,
     changePrice(Name,PriceNow),
-    changeStats(Name,Lvlup,Newexp,Newmax),
+    changeStats(Name,Lvlup,Newexp,Newmax), nl,
     write('LL      EEEEEEE VV     VV EEEEEEE LL         UU   UU PPPPPP     !!! !!!'),nl,
     write('LL      EE      VV     VV EE      LL         UU   UU PP   PP    !!! !!!'),nl,
     write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
