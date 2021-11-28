@@ -31,7 +31,7 @@ introduction :-
     help.
 
 help :-
-    write('Available Command: '), nl,
+    write('Available Commands: '), nl,
     write('1. start     : type \"start.\" to begin your adventure in Harvest Star.'), nl,
     write('2. map       : type \"map.\" to display the map of Harvest Star.'), nl,
     write('3. status    : type \"status\" to display your current status.'), nl,
@@ -39,7 +39,7 @@ help :-
     write('5. a         : type \"a\" to move west.'), nl,
     write('6. s         : type \"s\" to move south.'), nl,
     write('7. d         : type \"d\" to move east.'), nl, 
-    write(''), nl.
+    write('8. help      : type \"help\" to view available commands.'), nl, nl.
 
 quit :-
     halt(0).

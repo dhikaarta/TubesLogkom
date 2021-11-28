@@ -8,9 +8,9 @@ house :-
     isPlayerTile(A, B),
     isHouseTile(A, B),
     isLocked, 
-    write('Your house is locked, write 1. to unlock it'),
+    write('Your house is locked, write 1. to unlock it: '),
     read(CC), 
-    (CC == 1 -> unlock).
+    (CC == 1 -> unlock), !.
 
 house :- 
     isPlayerTile(A, B),
@@ -18,7 +18,7 @@ house :-
     \+ isLocked,
     write('What do you want to do?'),nl,
     write('- sleep'),nl, write('- writeDiary'),nl, write('- readDiary'),nl, 
-    write('- lock'),nl,read(CC),
+    write('- lock'),nl, write('- unlock'), nl, read(CC),
     (CC == 'sleep' -> sleep;
      CC == 'writeDiary' -> writeDiary;
      CC == 'readDiary' -> readDiary;
@@ -36,24 +36,24 @@ wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,wh
           currentWeather(CurWeather), format('\nSeason : ~w\nWeather : ~w\n\n', [CurSeason,CurWeather]), checkDeath, countCroppedTile(CountCrop), updateCrop(CountCrop), updateRanch,!.
 
 robbery :- 
-    \+ isLocked,random(1,101,X),nl, (X<10 -> write('Youve been robbed !\n')),unconsiousGold(100),!.
+    \+ isLocked,random(1,101,X),nl, (X<10 -> write('Youve been robbed!\n')), unconsiousGold(100),!.
 robbery :- !.
 robbery :- isLocked,!.
 
 lock :- 
     isPlayerTile(A, B),
     isHouseTile(A, B),
-    \+ isLocked, assertz(isLocked),write('You locked your house'),nl,nl,!.
+    \+ isLocked, assertz(isLocked),write('You locked your house.'),nl,nl,!.
 
 lock :- 
     isPlayerTile(A, B),
     isHouseTile(A, B),
-    isLocked, write('Youve already locked the door'),nl,nl,!.
+    isLocked, write('You\'ve already locked the door.'),nl,nl,!.
 
 unlock :- 
     isPlayerTile(A, B),
     isHouseTile(A, B),
-    \+ isLocked, write('Your house is not locked'),nl,nl,!.
+    \+ isLocked, write('Your house is not locked.'),nl,nl,!.
 
 unlock :- 
     isPlayerTile(A, B),

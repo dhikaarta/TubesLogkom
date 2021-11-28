@@ -15,6 +15,12 @@ w :-
 
 w :-
     isPlayerTile(X, Y),
+    isHouseTile(X, Y), !,
+    isLocked,
+    write('You are locked in your house! Please unlock your door!'), nl.
+
+w :-
+    isPlayerTile(X, Y),
     XNew is X,
     YNew is Y - 1,
     \+ (isWaterTile(XNew, YNew)),
@@ -29,6 +35,12 @@ a :-
     YNew is Y,
     isWaterTile(XNew, YNew), !,
     write('You can\'t get into water!'), nl.
+
+a :-
+    isPlayerTile(X, Y),
+    isHouseTile(X, Y), !,
+    isLocked,
+    write('You are locked in your house! Please unlock your door!'), nl.
 
 a :-
     isPlayerTile(X, Y),
@@ -63,6 +75,12 @@ s :-
 
 s :-
     isPlayerTile(X, Y),
+    isHouseTile(X, Y), !,
+    isLocked,
+    write('You are locked in your house! Please unlock your door!'), nl.
+
+s :-
+    isPlayerTile(X, Y),
     XNew is X,
     YNew is Y + 1,
     \+ (isWaterTile(XNew, YNew)),
@@ -84,6 +102,12 @@ d :-
     YNew is Y,
     isFenceTile(XNew, YNew), !,
     write('You can\'t walk past fence!'), nl.
+
+d :-
+    isPlayerTile(X, Y),
+    isHouseTile(X, Y), !,
+    isLocked,
+    write('You are locked in your house! Please unlock your door!'), nl.
 
 d :-
     isPlayerTile(X, Y),
