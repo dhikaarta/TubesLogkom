@@ -38,7 +38,8 @@ help :-
     write('4. w         : type \"w\" to move north.'), nl,
     write('5. a         : type \"a\" to move west.'), nl,
     write('6. s         : type \"s\" to move south.'), nl,
-    write('7. d         : type \"d\" to move east.'), nl, nl.
+    write('7. d         : type \"d\" to move east.'), nl, 
+    write(''), nl.
 
 quit :-
     halt(0).

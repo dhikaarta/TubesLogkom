@@ -9,7 +9,8 @@ prodtime('kambing', 5).
 
 initLivestock :- assertz(chicken(0, 28)), assertz(cow(0, 35)), assertz(sheep(0, 21)), assertz(currentRanch('NULL', 0, 0, 0)), !.
 
-checkDeath :- chicken(CountChicken, DeathChicken), cow(CountCow, DeathCow), sheep(CountSheep, DeathSheep), 
+checkDeath :- 
+    chicken(CountChicken, DeathChicken), cow(CountCow, DeathCow), sheep(CountSheep, DeathSheep), 
     NewDeathChicken is DeathChicken - 1, NewDeathCow is DeathCow - 1, NewDeathSheep is DeathSheep - 1,
     (   CountChicken =:= 0 -> abolishChicken ;
                                 (NewDeathChicken =:= 0 ->   nl, write('Your chicken(s) died of starvation. This is what you get for not feeding your chicken(s).'), nl,
@@ -28,10 +29,16 @@ checkDeath :- chicken(CountChicken, DeathChicken), cow(CountCow, DeathCow), shee
                                                         retractall(sheep(CountSheep, DeathSheep)),
                                                         assertz(sheep(CountSheep, NewDeathSheep))) ), !.                       
 
-feed :- (totalItemsType(Z, feed), Z =:= 0),
+feed :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    (totalItemsType(Z, feed), Z =:= 0),
     write('You don\'t have any animal food. Buy it first in the marketplace.'), !.
 
-feed :- inventory(feed), nl,
+feed :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    inventory(feed), nl,
     write('Which animal food would you like to pick?'), nl,
     repeat,
     write('Type food name inside apostrophes <\'food_name\'>'), nl, nl,
@@ -60,10 +67,16 @@ feed :- inventory(feed), nl,
         format('You added 4 more days to your ~w(s)\' life.', [Animal]), nl,
         format('Don\'t forget to feed them, for they will die in ~d day(s)', [NewDeath])), !.
 
-ranch :- currentRanch(Check, _, _, _), \+ (Check == 'NULL'),
+ranch :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    currentRanch(Check, _, _, _), \+ (Check == 'NULL'),
     write('Shouldn\'t you be typing <\'collect\'> instead of <\'ranch\'> ?'), !.
 
-ranch :- currentRanch(Check, _, _, _), Check == 'NULL',
+ranch :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    currentRanch(Check, _, _, _), Check == 'NULL',
     cow(CountCow, _),
     sheep(CountSheep, _),
     chicken(CountChicken, _), 
@@ -81,21 +94,33 @@ ranch :- currentRanch(Check, _, _, _), Check == 'NULL',
     (   Chance > 91 -> nl, nl, nl, ranchAccident, nl ;
         nl  ), !.
 
-ranch :- cow(CountCow, _), sheep(CountSheep, _), chicken(CountChicken, _), 
+ranch :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    cow(CountCow, _), sheep(CountSheep, _), chicken(CountChicken, _), 
     All is CountChicken + CountCow + CountSheep, All =:= 0, 
     write('You don\'t have any animals. Try buying it first in the marketplace.'), !.
 
 /*ranch :- */
 
-collect :- currentRanch(Check, _, _, _), Check == 'NULL', 
+collect :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    currentRanch(Check, _, _, _), Check == 'NULL', 
     write('You tried collecting eggs from a nearby chicken...'), nl,
     write('...but all you got was chicken poop.'), nl, nl,
     write('That\'s what you get for not ranching first.'), !.
 
-collect :- currentRanch(_, Produce, Time, _), (Time > 0),
+collect :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    currentRanch(_, Produce, Time, _), (Time > 0),
     format('Come back in ~d day(s) to get your ~w', [Time, Produce]), !.
 
-collect :- currentSeason(X), X == winter, random(0, 10, N), currentRanch(Livestock, _, _, _),
+collect :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    currentSeason(X), X == winter, random(0, 10, N), currentRanch(Livestock, _, _, _),
     (   N < 6 -> write('You forgot to give scarfs and hand-warmers to your animal(s).'), nl,
     write('Because of this, your animal(s) were unable to produce.'), nl,
     write('Also, one of your ~w(s) died in the middle of the winter. You lost one ~w', [Livestock, Livestock]), nl, nl,
@@ -107,9 +132,13 @@ collect :- currentSeason(X), X == winter, random(0, 10, N), currentRanch(Livesto
     assertz(currentRanch('NULL', 0, 0, 0)) ;
     ranchxpmoney   ), !.
 
-collect :- ranchxpmoney, !.
+collect :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    ranchxpmoney, !.
 
-ranchxpmoney :- currentRanch(Livestock, Produce, _, Death),
+ranchxpmoney :- 
+    currentRanch(Livestock, Produce, _, Death),
     player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, _, _, _, _), 
     (   Livestock == 'ayam' -> chicken(Count, _) ;
         Livestock == 'sapi' -> cow(Count, _) ;
@@ -145,7 +174,10 @@ loop(1) :- write('*PAT* '), nl, !.
 
 loop(X) :- write('*PAT* '), Y is X - 1, loop(Y).
 
-pat :- random(1, 11, N), random(1, 16, G), nl,
+pat :- 
+    isPlayerTile(A, B),
+    isRanchTile(A, B),
+    random(1, 11, N), random(1, 16, G), nl,
     write('========================================================'), nl,
     write('You can take care of your animal by patting it like this'), 
     nl, nl, loop(N), nl, nl,
@@ -260,4 +292,3 @@ updateRanch :- currentRanch(Check, Produce, Time, Death), \+ (Check == 'NULL'),
     assertz(currentRanch(Check, Produce, NewTime, Death)), !.
 
 updateRanch :- currentRanch(Check, _, _, _), Check == 'NULL'.
-
