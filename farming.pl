@@ -113,10 +113,10 @@ plant :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)
 harvest :- isPlayerTile(X, Y), \+ isCropTile(X, Y, _, _), \+ (isDiggedTile(X, Y)),
     write('You haven\'t even digged this tile. Try <dig> followed by <plant>'), !.
 
-harvest :- playerTile(X, Y), \+ (isCropTile(X, Y, _, _)), isDiggedTile(X, Y),
+harvest :- isPlayerTile(X, Y), \+ (isCropTile(X, Y, _, _)), isDiggedTile(X, Y),
     write('You haven\'t planted anything in this digged tile. Try <plant>.'), !.
 
-harvest :- playerTile(X, Y), isCropTile(X, Y, Seed, Time), (Time > 0),
+harvest :- isPlayerTile(X, Y), isCropTile(X, Y, Seed, Time), (Time > 0),
     format('Come back in ~d day(s) to get your ~w', [Time, Seed]), !.
 
 harvest :- currentSeason(X), X == winter, random(0, 10, N), reap, nl,
@@ -128,15 +128,15 @@ harvest :- currentSeason(X), X == winter, random(0, 10, N), reap, nl,
 harvest :- farmxpmoney, reap, nl, !.
 
 % nanti nambah XP + XP Farming di harvest yg ini + tambahin di inv
-farmxpmoney :- playerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Price),
-    croptime(Seed, _, Time),
+farmxpmoney :- isPlayerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Price),
+    croptime(_, Seed, Time),
     player(Job, Level, LevelFarm, ExpFarm, _, _, _, _, _, _, _, _),
     write('The time has come for you to reap what you sow... Literally.'), nl, nl,
     write('You got '), write(Seed), nl,
     format('You can sell this ~w for ~d Golds in the marketplace', [Seed, Price]), nl,
 
-    NewExpFarm is ((15 * Time) + (5 * LevelFarm)),
-    NewExp is ((25 * Time) + (15 * Level)),
+    NewExpFarm is ((15 * LevelFarm) + 10) * Time,
+    NewExp is ((15 * Level) + 20) * Time,
     CurExpFarm is NewExpFarm + ExpFarm,
     (   Job == 'Farmer' ->  write('You were paid for working as a farmer'), nl,
                             Salary is (LevelFarm * 5),

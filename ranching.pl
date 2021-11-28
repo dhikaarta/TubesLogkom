@@ -123,7 +123,7 @@ raise :-
     write('Here are a list of your available livestocks!'), nl, 
     livestock, currentRanch(Livestock, Produce, Time, _), nl,
 
-    format('Great, now let\'s care for it.', [Livestock]), nl, pat, nl,
+    write('Great, now let\'s care for it.'), nl, pat, nl,
 
     CurEquipXP is EquipXPNow + AddEquipXP, changeStats('ranch equip', EquipLvl, CurEquipXP, EquipXPMax),
     format('[Ranch Equip XP (+~d), XP Ranching (+~d)]', [AddEquipXP, AddEquipXPRanch]), nl, 
@@ -196,8 +196,8 @@ ranchxpmoney :-
     format('You can sell each ~w for ~d Golds in the marketplace', [Produce, Price]), nl,
 
     prodtime(Livestock, Time),
-    NewExp is ((25 * Time) + (15 * Level) + (5 * Gain)),
-    NewExpRanch is ((20 * Time) + (10 * LevelRanch) + (3 * Gain)),
+    NewExp is ((15 * Level) + 10 + Gain) * Time,
+    NewExpRanch is ((15 * LevelRanch) + 5 + Gain) * Time,
     CurExpRanch is NewExpRanch + ExpRanch,
     (   Job == 'Rancher' ->  write('You were paid for working as a rancher'), nl,
                             Salary is (LevelRanch * 5),

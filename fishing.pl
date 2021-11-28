@@ -1,8 +1,8 @@
 :- dynamic(currentFish/1).
 
 hploss(LevelFish, HPLoss) :- 
-    (   LevelFish > 10 -> HPLoss is 10 ;
-        HPLoss is 20 - LevelFish  ), !.
+    (   LevelFish > 10 -> HPLoss is 20 ;
+        HPLoss is 30 - LevelFish  ), !.
 
 fish :- isPlayerTile(A, B), \+ isTepiAirTile(A, B),
     write('You can only fish when you are on the edge of the water.'), nl,
@@ -49,9 +49,9 @@ fish :- \+ (totalItemsType(Z, bait), Z =:= 0),
     (   CurEquipXP >= EquipXPMax -> nl, levelupTool('fishing rod'), nl, nl ;
         nl, nl ),
 
-    NewExpFish is (10 + (5 * LevelFish)),
-    NewExp is (25 + (10 * Level)),
-    CurExpFish is NewExpFish + ExpFish,
+    NewExpFish is (5 + (5 * LevelFish)),
+    NewExp is (10 + (5 * Level)),
+    CurExpFish is NewExpFish + ExpFish, 
     (   Job == 'Fisher' ->  write('You were paid for working as a fisher'), nl,
                             Salary is (LevelFish * 5),
                             addGold(Salary), nl  ;
@@ -144,4 +144,3 @@ pickfish :- player(_, _, _, _, LevelFish, _, _, _, _, _, _, _),
         (   LevelFish < 4 -> nooblevel ;
             LevelFish < 8 -> avglevel ;
             prolevel     ), !.
-            
