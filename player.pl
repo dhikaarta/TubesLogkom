@@ -23,7 +23,7 @@ status :- player(A,B,C,D,E,F,G,H,I,J,K,L),energy(CurrEnergy,MaxEnergy),
     write('Gold           : '), write(K), nl,
     write('Stamina        : '), write(CurrEnergy), write('/') , write(MaxEnergy),nl,!.
 
-initPlayer :- random(2,366,X),random(2,366,Y),retractall(birthday(_)),assertz(birthday(Y)), 
+initPlayer :- random(2,366,_),random(2,366,Y),retractall(birthday(_)),assertz(birthday(Y)), 
 write('List of jobs here:'),nl,
 write('1. Farmer'),nl,
 write('2. Rancher'),nl,
