@@ -1,3 +1,4 @@
+/* FACT item shop */
 shopitem('bait',summer,1).
 shopitem('bait',spring,1).
 shopitem('chicken feed',summer,2).
@@ -43,6 +44,7 @@ shopitem('kambing',fall,11).
 shopitem('kambing',winter,10).
 shopitem('kambing',spring,11).
 
+/*Fact equipment item shop*/
 shopequip('ranch equip',summer,3,150,1).
 shopequip('ranch equip',spring,3,150,1).
 shopequip('ranch equip',fall,2,100,1).
@@ -60,6 +62,7 @@ shopequip('watering',spring,2,75,4).
 shopequip('watering',fall,3,125,4).
 shopequip('watering',winter,3,125,4).
 
+/*Fact potion shop*/
 shoppotion('fishing potion',1,500).
 shoppotion('ranching potion',2,500).
 shoppotion('farming potion',3,500).
@@ -67,6 +70,7 @@ shoppotion('EXP potion',4,500).
 shoppotion('teleport potion',5,500).
 shoppotion('Gamble potion',6,500).
 
+/*Command to meet Alchemist*/
 alchemist :-
     isPlayerTile(A, B),
     isMarketplaceTile(A, B),
@@ -74,12 +78,14 @@ alchemist :-
     ( X < 3 -> write('No Alchemist here, comeback later.\n');
     buyalchemist),!.
 
+/*Buy Item from alchemist*/
 buyalchemist :-
     write('Hello, i am alchemist, what do you want to buy?\n'),
     marketpotion(6,1),
     read(X),
     buypotion(X), !.
 
+/*Function to write Potion in Shop*/
 marketpotion(Y,Y) :-
     shoppotion(Name,Y,Price),
     format('~d. ~w (~d golds)\n',[Y,Name,Price]), !.   
@@ -90,6 +96,7 @@ marketpotion(Y,Iterate) :-
     IterateNow is Iterate+1,
     marketpotion(Y,IterateNow), !.
 
+/*Function to buy potion*/
 buypotion(X) :-
     X < 1,!,
     write('You type wrong number.\n'), fail.
@@ -110,6 +117,7 @@ buypotion(X) :-
     format('You have bought ~w.\n',[Name]),
     usepotion(Name), !.
 
+/*Command to Sell Item */
 sell :-
     isPlayerTile(A, B),
     isMarketplaceTile(A, B),
@@ -130,6 +138,7 @@ sell :-
     read(Z),
     sellitem(Y,Z),!.
 
+/* Command to buy item */
 buy :-
     isPlayerTile(A, B),
     isMarketplaceTile(A, B),
@@ -141,6 +150,7 @@ buy :-
     read(Z),
     buyItem(X,Y,Z), !.
 
+/* Command to buy equipment */
 buyEquipment :-
     isPlayerTile(A, B),
     isMarketplaceTile(A, B),
@@ -150,12 +160,14 @@ buyEquipment :-
     read(Y),
     buyequip(X,Y), !.
 
+/* Utility to count how much item/equip in shop per season*/ 
 check(X,Y) :-
     findall(1, shopitem(_,X,_), List), length(List, Y).
 
 checkequip(X,Y) :-
     findall(1,shopequip(_,X,_,_,_),List), length(List,Y).
 
+/*Write all item available for shop per season */
 market(X) :-
     check(X,Y),
     market(X,Y,1), !.
@@ -172,6 +184,7 @@ market(X,Y,Iterate) :-
     IterateNow is Iterate+1,
     market(X,Y,IterateNow), !.
 
+/*Write all equipment available for shop per season */
 marketequip(X) :-
     checkequip(X,Y),
     marketequip(X,Y,1), !.
@@ -186,6 +199,7 @@ marketequip(X,Y,Iterate) :-
     IterateNow is Iterate+1,
     marketequip(X,Y,IterateNow), !.
 
+/* Function to buy Item */
 buyItem(_,_,Z) :-
     totalItems(Total),
     Total + Z > 100,!,
@@ -224,6 +238,7 @@ buyItem(X,Y,Z) :-
     addItem(Name,Z), 
     format('You have bought ~d ~w.\n',[Z,Name]), !.
 
+/*Function to buy equipment */
 buyequip(_,_) :-
     totalItems(X),
     X == 100, !,

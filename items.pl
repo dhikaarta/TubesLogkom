@@ -1,4 +1,6 @@
 :- dynamic(items/2).
+:- dynamic(equip/4).
+:- dynamic(priceitems/2).
 
 /* SEED */
 items(seed,'bayam Seed').
@@ -27,7 +29,7 @@ items(feed,'chicken feed').
 items(feed,'cow feed').
 items(feed,'sheep feed').
 
-/* ITEM TERNAK */
+/* HEWAN TERNAK */
 items(animal,'ayam').
 items(animal,'sapi').
 items(animal,'kambing').
@@ -58,6 +60,7 @@ items(fish,'Cacing Besar Alaska').
 items(fish,'Teri Biasa Aja').
 items(fish,'Trash').
 
+/* ITEM POTION */
 items(potion,'fishing potion').
 items(potion,'ranching potion').
 items(potion,'farming potion').
@@ -70,27 +73,31 @@ items(equip,'fishing rod').
 items(equip,'watering').
 items(equip,'shovel').
 items(equip,'ranch equip').
-
-:- dynamic(equip/4).
 equip('fishing rod',1,0,50).
 equip('watering',1,0,50).
 equip('shovel',1,0,50).
 equip('ranch equip',1,0,50).
 
+/* Function to use potion */
 usepotion('fishing potion') :-
-    addExp(200,2).
+    addExp(300,2).
 
 usepotion('ranching potion') :-
-    addExp(200,3).
+    addExp(300,3).
 
 usepotion('farming potion') :-
-    addExp(200,1).
+    addExp(300,1).
 
 usepotion('EXP potion') :-
-    addExp(200,0).
+    addExp(300,0).
 
 usepotion('teleport potion') :-
-    teleport(5,5).
+    write('where do you want to teleport?\n'),
+    write('X coordinate(1-16)\n'),
+    read(X),
+    write('Y coordinate(1-19)\n'),
+    read(Y),
+    teleport(X,Y),!.
 
 usepotion('Gamble potion') :-
     random(0,2,X),
@@ -99,7 +106,6 @@ usepotion('Gamble potion') :-
 
 
 /* PRICE ITEM */
-:- dynamic(priceitems/2).
 priceitems('bayam Seed',5).
 priceitems('wortel Seed',10).
 priceitems('kentang Seed',20).
@@ -168,14 +174,17 @@ levelupTool(Name) :-
     write('LLLLLLL EEEEEEE    VVV    EEEEEEE LLLLLLL     UUUUU  PP         !!! !!!'),nl,nl,
     write('You have leveled up ! '), write(Lvl), write('->'), write(Lvlup), nl, levelupTool(Name), !.
 
+/* Function to change Price */
 changePrice(Item,Price) :-
     items(_,Item), !,
     retractall(priceitems(Item,_)),
     assertz(priceitems(Item,Price)).
 
+/*Function to change Stats Equipment*/
 changeStats(Item,Lvl,Expmax) :-
     retractall(equip(Item,_,_,_)),
     assertz(equip(Item,Lvl,0,Expmax)).
 
+/*Function to check Level Equipment*/
 checkLevel(Item,X) :-
     equip(Item,X,_,_).
