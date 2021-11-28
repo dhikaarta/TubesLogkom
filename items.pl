@@ -152,7 +152,7 @@ priceitems('ranch equip',50).
 /* Level Up TOOL */
 levelupTool(Name) :- 
     equip(Name,Lvl,Expnow,Expmax), !,
-    Expnow > Expmax, !,
+    Expnow >= Expmax, !,
     Lvlup is Lvl + 1,
     Newexp is Expnow mod Expmax,
     Newmax is Expmax + 50,
