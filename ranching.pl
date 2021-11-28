@@ -70,6 +70,9 @@ feed :-
 feed :- 
     isPlayerTile(A, B),
     isRanchTile(A, B),
+    write('Your animals have a certain lifespan. Feeding them regularly can help extend their lifespan,'), nl,
+    write('as it can increase your animal\'s lifespan for up to 4 days'), nl, nl,
+    write('Here is a list of animal food in your inventory:'), nl,
     inventory(feed), nl,
     write('Which animal food would you like to pick?'), nl,
     repeat,
@@ -77,26 +80,26 @@ feed :-
     read(Choice), currentInventory(Inv),
     (   (\+ member(Choice, Inv), \+ items(feed, Choice)) -> write('You don\'t have that. Try again'), nl, fail ;
         nl  ),
-    throwItem(Choice, 1), 
+    throwItem(Choice, 1),
     (   Choice == 'chicken feed'  ->  chicken(Count, Death), Animal = 'ayam',
-                                    (Death < 24 -> NewDeath is Death + 4 ;
-                                    NewDeath is 28 ),
+                                    (Death < 24 -> NewDeath is Death + 4, Add is 4 ;
+                                    NewDeath is 28, Add is 28 - Death ),
                                     retractall(chicken(Count, Death)),
                                     assertz(chicken(Count, NewDeath)) ;
 
         Choice == 'cow feed'      ->   cow(Count, Death), Animal = 'sapi',
-                                    (Death < 31 -> NewDeath is Death + 4 ;
-                                    NewDeath is 35 ),
+                                    (Death < 31 -> NewDeath is Death + 4, Add is 4 ;
+                                    NewDeath is 35, Add is 35 - Death ),
                                     retractall(cow(Count, Death)),
                                     assertz(cow(Count, NewDeath)) ;
 
         Choice == 'sheep feed'    ->  sheep(Count, Death), Animal = 'kambing',
-                                    (Death < 27 -> NewDeath is Death + 4 ;
-                                    NewDeath is 27 ),
+                                    (Death < 21 -> NewDeath is Death + 4, Add is 4 ;
+                                    NewDeath is 21, Add is 21 - Death ),
                                     retractall(sheep(Count, Death)),
                                     assertz(sheep(Count, NewDeath)) ),
     (   Count =:= 0 -> format('You don\'t own any ~w. You ended up wasting your ~w.', [Animal, Choice]) ; 
-        format('You added 4 more days to your ~w(s)\' life.', [Animal]), nl,
+        format('You added ~d more day(s) to your ~w(s)\' life.', [Add, Animal]), nl,
         format('Don\'t forget to feed them, for they will die in ~d day(s)', [NewDeath])), !.
 
 raise :- 
