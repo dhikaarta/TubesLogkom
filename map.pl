@@ -10,6 +10,7 @@
 :- dynamic(diggedTile/2).
 :- dynamic(playerTile/2).
 :- dynamic(cropTile/4).
+:- dynamic(countCroppedTile/1).
 
 /* FACT */ 
 createMap :-
@@ -323,24 +324,39 @@ sow(S, T) :-
 
         S == 'kangkung Seed'    -> Snew = 'kangkung' ),
 
-    assertz(cropTile(X, Y, Snew, T)), !,
+    assertz(cropTile(X, Y, Snew, T)), !, 
+    addCountCroppedTile,
     format('You planted a ~w.', [S]).
 
 reap :-
     isPlayerTile(X, Y),
     isCropTile(X, Y, S, T),
     retract(cropTile(X, Y, S, T)), !,
+    delCountCroppedTile,
     assertz(diggedTile(X, Y)), !.
 
-updateCrop :- /* BERPOTENSI BACKTRACKING BANYAK */
-    isCropTile(_, _, _, _),
+countCroppedTile(0).
+
+addCountCroppedTile :- countCroppedTile(X),
+    CurX is X + 1,
+    retractall(countCroppedTile(_)),
+    assertz(countCroppedTile(CurX)), !.
+
+delCountCroppedTile :- countCroppedTile(X),
+    CurX is X - 1,
+    retractall(countCroppedTile(_)),
+    assertz(countCroppedTile(CurX)), !.
+
+updateCrop(0).
+
+updateCrop(Count) :-
     cropTile(X, Y, S, T),
     (   T =:= 0 -> TNew is T;
         T =\= 0 -> TNew is T - 1),
     retract(cropTile(X, Y, S, T)),
-    assertz(cropTile(X, Y, S, TNew)).
-
-updateCrop :- \+ (isCropTile(_, _, _, _)).
+    assertz(cropTile(X, Y, S, TNew)),
+    CurCount is Count - 1,
+    updateCrop(CurCount), !. 
 
 /* FISHING */
 isTepiAirTile(X, Y):-

@@ -33,7 +33,7 @@ sleep :-
 
 
 wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,whatSeasonIsIt(X),weatherRandomizer,currentSeason(CurSeason),
-          currentWeather(CurWeather), format('\nSeason : ~w\nWeather : ~w\n\n', [CurSeason,CurWeather]), checkDeath, updateCrop, updateRanch.
+          currentWeather(CurWeather), format('\nSeason : ~w\nWeather : ~w\n\n', [CurSeason,CurWeather]), checkDeath, countCroppedTile(CountCrop), updateCrop(CountCrop), updateRanch.
 
 robbery :- 
     \+ isLocked,random(1,101,X),nl, (X<10 -> write('Youve been robbed !\n')),unconsiousGold(100),!.
