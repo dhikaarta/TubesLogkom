@@ -23,7 +23,7 @@ status :- player(A,B,C,D,E,F,G,H,I,J,K,L),energy(CurrEnergy,MaxEnergy),
     write('Gold           : '), write(K), nl,
     write('Stamina        : '), write(CurrEnergy), write('/') , write(MaxEnergy),nl,!.
 
-initPlayer :- random(1,366,X),retractall(birthday(_)),assertz(birthday(X)), 
+initPlayer :- random(2,366,X),random(2,366,Y),retractall(birthday(_)),assertz(birthday(Y)), 
 write('List of jobs here:'),nl,
 write('1. Farmer'),nl,
 write('2. Rancher'),nl,
@@ -31,9 +31,9 @@ write('3. Fisher'),nl,
 chooseJob.
 
 chooseJob :- write('Choose a Job (1/2/3) : '), read(CC),nl,
-(CC =:= 1 -> assertz(player('Farmer', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0, 100)), write('You are a farmer ! Good Luck '), nl ;
-CC =:= 2 -> assertz(player('Rancher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0, 100)), write('You are a rancher ! Good Luck '), nl  ;
-CC =:= 3 -> assertz(player('Fisher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0 , 100)), write('You are a fisher ! Good Luck '), nl  ;
+(CC =:= 1 -> assertz(player('Farmer', 1, 1, 0, 1, 0, 1, 0, 0, 300, 100, 100)), write('You are a farmer ! Good Luck '), nl ;
+CC =:= 2 -> assertz(player('Rancher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 200, 100)), write('You are a rancher ! Good Luck '), nl  ;
+CC =:= 3 -> assertz(player('Fisher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 100 , 100)), write('You are a fisher ! Good Luck '), nl  ;
 write('No such job ! Choose again'), nl, chooseJob).
 
 levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), I >= J,
@@ -247,6 +247,6 @@ winCondition(X) :- X >= 20000,nl,nl,nl,
     write('                               |   /|\\    |     /\\   ___\\o   \\o    |    o/    o/__   /\\     |    /|\\   |'),nl,
     write('                               |   / \\   / \\   | \\  /)  |    ( \\  /o\\  / )    |  (\\  / |   / \\   / \\   |'),nl,
     write('                               |-----------------------------------------------------------------------|'),nl,nl,nl,
-    write('Would you like to continue playing the Game ? y/n '), nl, read(CC), (CC == 'y' -> !;abort).
+    write('Would you like to continue playing the Game ? y/n '), nl, read(CC), (CC == 'y' -> !;quit).
 
 winCondition(X) :- X < 20000, !.

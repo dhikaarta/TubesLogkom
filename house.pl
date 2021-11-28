@@ -36,7 +36,8 @@ wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,wh
           currentWeather(CurWeather), format('\nSeason : ~w\nWeather : ~w\n\n', [CurSeason,CurWeather]), checkDeath, countCroppedTile(CountCrop), updateCrop(CountCrop), updateRanch,!.
 
 robbery :- 
-    \+ isLocked,random(1,101,X),nl, (X<10 -> write('Youve been robbed !\n')), unconsiousGold(100),!.
+    \+ isLocked,random(1,101,X),nl, (X<10 -> write('Youve been robbed ! Don\'t forget to lock your door next time \n')), 
+    player(A,B,C,D,E,F,G,H,I,J,K,L),Robbed is K * 10 // 100,unconsiousGold(Robbed),!.
 robbery :- !.
 robbery :- isLocked,!.
 

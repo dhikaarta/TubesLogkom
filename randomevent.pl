@@ -11,7 +11,7 @@ isBirthday :- day(Day), birthday(Birthday), Day =:= Birthday,
             write('The man brought 5 boxes and told you that 4 of them have a prize inside, choose a number between 1-5'),nl,
             read(CC), random(1,6,X), 
             (CC =:= X -> write('BOOM, the box exploded right in front of your face, unlucky even on your birthday huh\n');
-             write('The man brought you 150 gold ! HAPPY BIRTHDAY '), nl, addGold(150)).
+             write('The man brought you 1000 gold ! HAPPY BIRTHDAY '), nl, addGold(1000)).
 
 isBirthday :- day(Day), birthday(Birthday), Day =\= Birthday,  !.
 
