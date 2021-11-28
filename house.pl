@@ -32,7 +32,7 @@ sleep :-
     restoreEnergy,robbery, periTidur,wakeUp.
 
 
-wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,whatSeasonIsIt(X),weatherRandomizer,currentSeason(CurSeason),
+wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,whatSeasonIsIt(X),weatherRandomizer,priceSurge,currentSeason(CurSeason),
           currentWeather(CurWeather), format('\nSeason : ~w\nWeather : ~w\n\n', [CurSeason,CurWeather]), checkDeath, countCroppedTile(CountCrop), updateCrop(CountCrop), updateRanch,!.
 
 robbery :- 
@@ -75,7 +75,7 @@ changeDay(X) :-
     retractall(day(_)), assertz(day(X)). 
 
 periTidur :- 
-    random(1,101,X),X < 3,nl, write('A dream fairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,
+    random(1,101,X),X < 6,nl, write('A dream fairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,
              write('1. Water'),nl,write('2. Quest'),nl, write('3. Ranch'),nl,
              write('4. Marketplace'), nl,read(CC),
              (CC=:=1 -> write('Wish granted ! Youll wake up beside the water! Go fish\n'),teleport(4,8) ;
