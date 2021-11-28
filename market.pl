@@ -118,6 +118,18 @@ shoppotion('EXP potion',4,500).
 shoppotion('teleport potion',5,500).
 shoppotion('Gamble potion',6,500).
 
+/*Command Market*/
+market :- 
+    isPlayerTile(A, B),
+    isMarketplaceTile(A, B),
+    write('What do you want to do?'),nl,
+    write('- alchemist(meet alchemist if u lucky)'),nl, write('- sell(sell item in your inventory)'),nl, write('- buy(buy item from marketplace)'),nl, 
+    write('- upgradeEquipment(upgrade your equipment)'),nl,read(CC),
+    (CC == 'alchemist' -> alchemist;
+     CC == 'sell' -> sell;
+     CC == 'buy' -> buy;
+     CC == 'upgradeEquipment' -> upgradeEquipment).
+
 /*Command to meet Alchemist*/
 alchemist :-
     isPlayerTile(A, B),
