@@ -21,7 +21,7 @@ status :- player(A,B,C,D,E,F,G,H,I,J,K,L),energy(CurrEnergy,MaxEnergy),
     write('Exp ranching   : '), write(H), write('/') , write(MaxExpRanching),nl,
     write('Exp            : '), write(I), write('/'), write(J) ,nl,
     write('Gold           : '), write(K), nl,
-    write('Stamina        : '), write(CurrEnergy), write('/') , write(MaxEnergy),nl.
+    write('Stamina        : '), write(CurrEnergy), write('/') , write(MaxEnergy),nl,!.
 
 initPlayer :- random(1,366,X),retractall(birthday(_)),assertz(birthday(X)), 
 write('Welcome to Strukdat Valley ! List of jobs here:'),nl,
@@ -36,19 +36,21 @@ CC =:= 2 -> assertz(player('Rancher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0, 100)), wri
 CC =:= 3 -> assertz(player('Fisher', 1, 1, 0, 1, 0, 1, 0, 0, 300, 0 , 100)), write('You are a fisher ! Good Luck ')  ;
 write('No such job ! Choose again'), nl, chooseJob).
 
-levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), I > J,
+levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), I >= J,
             NewLevel is B + 1,
             NewExp is I - J,
             NewMax is J + 100,
+            energy(CurEnergy,Max), NewMaxEnergy is Max + 5,
+            retract(energy(CurEnergy,Max)), assertz(energy(NewMaxEnergy,NewMaxEnergy)),
             retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,NewLevel,C,D,E,F,G,H,NewExp,NewMax,K,L)),
             write('LL      EEEEEEE VV     VV EEEEEEE LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE      VV     VV EE      LL         UU   UU PP   PP    !!! !!!'),nl,
             write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE        VV VV   EE      LL         UU   UU PP                '),nl,
             write('LLLLLLL EEEEEEE    VVV    EEEEEEE LLLLLLL     UUUUU  PP         !!! !!!'),nl,nl,
-            write('You have leveled up ! '), write(B), write('->'), write(NewLevel), nl, levelUp, !.
+            write('You have leveled up ! Your stamina has increased ! '), write(B), write('->'), write(NewLevel), nl, levelUp, !.
 
-levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), D > (L + (50*C)),  
+levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), D >= (L + (50*C)),  
             NewLevel is C + 1,
             NewExp is D - (L + (50*C)),
             retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,NewLevel,NewExp,E,F,G,H,I,J,K,L)),
@@ -57,9 +59,9 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), D > (L + (50*C)),
             write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE        VV VV   EE      LL         UU   UU PP                '),nl,
             write('LLLLLLL EEEEEEE    VVV    EEEEEEE LLLLLLL     UUUUU  PP         !!! !!!'),nl,nl,
-            write('Your farming skillz leveled up ! '), write(C), write('->'), write(NewLevel), nl,farmPriceUp, levelUp, !.
+            write('Your farming skillz leveled up ! Your produce will sell at a higher price now '), write(C), write('->'), write(NewLevel), nl,farmPriceUp, levelUp, !.
 
-levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), F > L + (50*E), 
+levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), F >= L + (50*E), 
             NewLevel is E + 1,
             NewExp is F - (L + (50*E)) ,
             retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,NewLevel,NewExp,G,H,I,J,K,L)),
@@ -70,7 +72,7 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), F > L + (50*E),
             write('LLLLLLL EEEEEEE    VVV    EEEEEEE LLLLLLL     UUUUU  PP         !!! !!!'),nl,nl,
             write('Your fishing skillz leveled up ! '), write(E), write('->'), write(NewLevel), nl, levelUp, !.
 
-levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), H > L + (50*G), 
+levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), H >= L + (50*G), 
             NewLevel is G + 1,
             NewExp is H - (L + (50*G)),
             retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,NewLevel,NewExp,I,J,K,L)),
@@ -113,7 +115,7 @@ levelDown :- !.
 addGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
               NewGold is K + X,
               retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
-              write('You gained '), write(X), write(' Gold !'), nl.
+              write('You gained '), write(X), write(' Gold !'),winCondition(NewGold),!.
 
 loseGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
               NewGold is K - X,NewGold >= 0,
@@ -128,12 +130,12 @@ loseGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
 unconsiousGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
                      NewGold is K - X, NewGold >0,
                      retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
-                     write('You lost '), write(X), write(' Gold !'), nl.
+                     write('You lost '), write(X), write(' Gold !'), nl,!.
 
 unconsiousGold(X) :- player(A,B,C,D,E,F,G,H,I,J,K,L),
                      NewGold is K - X, NewGold<0,
                      retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,G,H,I,J,0,L)),
-                     write('You lost '), write(K), write(' Gold !'), nl.
+                     write('You lost '), write(K), write(' Gold !'), nl,!.
 
 
 addExp(X,Y) :- player(A,B,C,D,E,F,G,H,I,J,K,L),  % Y = 0 for general exp, Y = 1 for farming exp, Y=2 for fishing xp, Y =3 for ranching exp
@@ -181,3 +183,21 @@ ranchPriceUp :-
     priceitems('cow meat',D), Dnew is D + 3,changePrice('cow meat',Dnew),
     priceitems('sheep meat',E), Enew is E+ 3,changePrice('sheep meat',Enew),
     priceitems('chicken meat',F), Fnew is F + 3,changePrice('chicken meat',Fnew).
+
+winCondition(X) :- X >= 20000,nl,nl,nl,
+    write('   ____   U  ___ u  _   _     ____     ____        _       _____    _____  '),nl,
+    write('U /"___|   \\/"_ \\/ | \\ |"| U /"___|uU |  _"\\ u U  /"\\  u  |_ " _|  |"_  /u '),nl,
+    write('\\| | u     | | | |<|  \\| |>\\| |  _ / \\| |_) |/  \\/ _ \\/     | |    U / //  '),nl,
+    write(' | |/__.-,_| |_| |U| |\\  |u | |_| |   |  _ <    / ___ \\    /| |\\   \\/ /_   '),nl,
+    write('  \\____|\\_)-\\___/  |_| \\_|   \\____|   |_| \\_\\  /_/   \\_\\  u |_|U   /____|  '),nl,
+    write(' _// \\\\      \\\\    ||   \\\\,-._)(|_    //   \\\\_  \\\\    >>  _// \\\\_  _//<<,- '),nl,
+    write('(__)(__)    (__)   (_")  (_/(__)__)  (__)  (__)(__)  (__)(__) (__)(__) (_/ '),nl,nl,
+    write('CONGRATULATION! YOU\'RE FINALLY FREE FROM YOUR DEBT, GOOD JOB , YOU SHOWERED THE DEBT COLLECTOR WITH 20000 GOLD, YOU DANCED WITH HAPPINESS'),nl,
+    write('                               |-----------------------------------------------------------------------|'),nl,
+    write('                               |    o   \\ o /  _ o         __|    \\ /     |__        o _  \\ o /   o    |'),nl,
+    write('                               |   /|\\    |     /\\   ___\\o   \\o    |    o/    o/__   /\\     |    /|\\   |'),nl,
+    write('                               |   / \\   / \\   | \\  /)  |    ( \\  /o\\  / )    |  (\\  / |   / \\   / \\   |'),nl,
+    write('                               |-----------------------------------------------------------------------|'),nl,nl,nl,
+    write('Would you like to continue playing the Game ? y/n '), nl, read(CC), (CC == 'y' -> !;abort).
+
+winCondition(X) :- X < 20000, !.
