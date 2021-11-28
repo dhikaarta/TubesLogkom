@@ -103,7 +103,7 @@ usepotion('Gamble potion') :-
     random(0,2,X),
     write('Choose head or tail? (1 for head, 0 for tail)\n'),
     read(Y),
-    ( X \= Y, loseGold(1500);
+    ( X \= Y, unconsiousGold(1000);
     addGold(2000)), !.
 
 
