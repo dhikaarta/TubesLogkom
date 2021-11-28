@@ -347,16 +347,16 @@ delCountCroppedTile :- countCroppedTile(X),
     retractall(countCroppedTile(_)),
     assertz(countCroppedTile(CurX)), !.
 
-updateCrop(0).
+updateCrop(0) :- !.
 
 updateCrop(Count) :-
-    cropTile(X, Y, S, T),
+    isCropTile(X, Y, S, T),
     (   T =:= 0 -> TNew is T;
         T =\= 0 -> TNew is T - 1),
     retract(cropTile(X, Y, S, T)),
     assertz(cropTile(X, Y, S, TNew)),
     CurCount is Count - 1,
-    updateCrop(CurCount), !. 
+    updateCrop(CurCount), !.
 
 /* FISHING */
 isTepiAirTile(X, Y):-
