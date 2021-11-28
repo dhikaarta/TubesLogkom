@@ -12,7 +12,7 @@ dig :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
     
     equip('shovel', EquipLvl, EquipXPNow, EquipXPMax),
     AddEquipXP is (EquipLvl * 5),
-    AddEquipGoldReward is (EquipLvl * 5), 
+    AddEquipGoldReward is (EquipLvl * 3), 
 
     write('Let\'s dig this patch of tile right here!'), nl, nl,
     write('Type <\'PLZ DIG\'>  to dig a hole in this tile'), nl,
@@ -54,7 +54,7 @@ plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTil
     
     equip('watering', EquipLvl, EquipXPNow, EquipXPMax),
     AddEquipXP is (EquipLvl * 5),
-    AddEquipGoldReward is (EquipLvl * 4), 
+    AddEquipGoldReward is (EquipLvl * 3), 
 
     write('Here are a list of seeds in your inventory: '), nl, 
     write('================='), nl, inventory(seed), write('================='), nl,

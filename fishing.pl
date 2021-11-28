@@ -15,7 +15,7 @@ fish :- \+ (totalItemsType(Z, bait), Z =:= 0),
     throwItem('bait', 1),
     equip('fishing rod', EquipLvl, EquipXPNow, EquipXPMax),
     AddEquipXP is (EquipLvl * 5),
-    AddEquipGoldReward is (EquipLvl * 4),
+    AddEquipGoldReward is (EquipLvl * 5),
 
     write('Attaching bait to fishing rod...  '), nl,
     write('Casting the fishing rod!          '), nl, nl,

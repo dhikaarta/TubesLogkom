@@ -84,8 +84,8 @@ ranch :-
     \+ (All =:= 0),
 
     equip('ranch equip', EquipLvl, EquipXPNow, EquipXPMax),
-    AddEquipXP is (EquipLvl * 7),
-    AddEquipGoldReward is (EquipLvl * 6),
+    AddEquipXP is (EquipLvl * 5),
+    AddEquipGoldReward is (EquipLvl * 5),
 
     write('Here are a list of your available livestocks!'), nl, 
     livestock, currentRanch(Livestock, Produce, Time, _), nl,
