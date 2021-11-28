@@ -37,7 +37,7 @@ wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,wh
 
 robbery :- 
     \+ isLocked,random(1,101,X),nl, (X<10 -> write('Youve been robbed ! Don\'t forget to lock your door next time \n')), 
-    player(A,B,C,D,E,F,G,H,I,J,K,L),Robbed is K * 10 // 100,unconsiousGold(Robbed),!.
+    player(_,_,_,_,_,_,_,_,_,_,K,_),Robbed is K * 10 // 100,unconsiousGold(Robbed),!.
 robbery :- !.
 robbery :- isLocked,!.
 

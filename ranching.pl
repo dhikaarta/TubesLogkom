@@ -121,7 +121,7 @@ raise :-
     addExp(AddEquipXPRanch, 3),
 
     write('Here are a list of your available livestocks!'), nl, 
-    livestock, currentRanch(Livestock, Produce, Time, _), nl,
+    livestock, currentRanch(_, Produce, Time, _), nl,
 
     write('Great, now let\'s care for it.'), nl, pat, nl,
 
