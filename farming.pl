@@ -11,8 +11,9 @@ croptime('kentang Seed', 'kentang', 3).
 dig :- isPlayerTile(X, Y), isNormalTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
     
     equip('shovel', EquipLvl, EquipXPNow, EquipXPMax),
-    AddEquipXP is (EquipLvl * 5),
-    AddEquipGoldReward is (EquipLvl * 3), 
+    AddEquipXPFarm is (EquipLvl * 5), 
+    AddEquipXP is (EquipLvl * 15),
+    addExp(AddEquipXPFarm, 1), 
 
     write('Let\'s dig this patch of tile right here!'), nl, nl,
     write('Type <\'PLZ DIG\'>  to dig a hole in this tile'), nl,
@@ -32,8 +33,9 @@ dig :- isPlayerTile(X, Y), isNormalTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCr
         write('You\'re gonna end up digging your own grave if you keep digging like that.'), nl,
         write('Try typing <\'PLZ DIG\'> again. Do NOT forget the apostrophe.'), nl, fail), nl, nl,
     digtile,
-    addGold(AddEquipGoldReward), nl, format('Shovel XP +~D', [AddEquipXP]), CurEquipXP is EquipXPNow + AddEquipXP,
-    changeStats('shovel', EquipLvl, CurEquipXP, EquipXPMax),
+
+    CurEquipXP is EquipXPNow + AddEquipXP, changeStats('shovel', EquipLvl, CurEquipXP, EquipXPMax),
+    format('[Shovel XP (+~d), XP Farming (+~d)]', [AddEquipXP, AddEquipXPFarm]), nl,
     (   CurEquipXP >= EquipXPMax -> nl, levelupTool('shovel'), nl, nl ;
         nl, nl ),
     write('Phew, that was a lot of work. You lost 10 stamina while digging the hole. '), depleteEnergy(10), nl,
@@ -56,8 +58,9 @@ dig :- isPlayerTile(X, Y), \+ isNormalTile(X, Y),
 plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTile(X, Y)), 
     
     equip('watering', EquipLvl, EquipXPNow, EquipXPMax),
-    AddEquipXP is (EquipLvl * 5),
-    AddEquipGoldReward is (EquipLvl * 3), 
+    AddEquipXPFarm is (EquipLvl * 5),
+    AddEquipXP is (EquipLvl * 15),
+    addExp(AddEquipXPFarm, 1), 
 
     write('Here are a list of seeds in your inventory: '), nl, 
     write('================='), nl, inventory(seed), write('================='), nl,
@@ -88,9 +91,9 @@ plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTil
     write('=============================================================='), nl, nl,
     
     croptime(Seed, Produce, Time), sow(Seed, Time), nl,
-    
-    addGold(AddEquipGoldReward), nl, format('Watering XP +~D', [AddEquipXP]), CurEquipXP is EquipXPNow + AddEquipXP,
-    changeStats('watering', EquipLvl, CurEquipXP, EquipXPMax),
+
+    CurEquipXP is EquipXPNow + AddEquipXP, changeStats('watering', EquipLvl, CurEquipXP, EquipXPMax),
+    format('[Watering XP (+~d), XP Farming (+~d)]', [AddEquipXP, AddEquipXPFarm]), 
     (   CurEquipXP >= EquipXPMax -> nl, levelupTool('watering'), nl, nl ;
         nl, nl ),
 
@@ -126,13 +129,14 @@ harvest :- farmxpmoney, reap, nl, !.
 
 % nanti nambah XP + XP Farming di harvest yg ini + tambahin di inv
 farmxpmoney :- playerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Price),
+    croptime(Seed, _, Time),
     player(Job, Level, LevelFarm, ExpFarm, _, _, _, _, _, _, _, _),
     write('The time has come for you to reap what you sow... Literally.'), nl, nl,
     write('You got '), write(Seed), nl,
     format('You can sell this ~w for ~d Golds in the marketplace', [Seed, Price]), nl,
 
-    NewExpFarm is (20 * (LevelFarm)),
-    NewExp is (25 * Level),
+    NewExpFarm is ((15 * Time) + (5 * LevelFarm)),
+    NewExp is ((25 * Time) + (15 * Level)),
     CurExpFarm is NewExpFarm + ExpFarm,
     (   Job == 'Farmer' ->  write('You were paid for working as a farmer'), nl,
                             Salary is (LevelFarm * 5),

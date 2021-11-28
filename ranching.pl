@@ -116,16 +116,17 @@ raise :-
     \+ (All =:= 0),
 
     equip('ranch equip', EquipLvl, EquipXPNow, EquipXPMax),
-    AddEquipXP is (EquipLvl * 5),
-    AddEquipGoldReward is (EquipLvl * 5),
+    AddEquipXPRanch is (EquipLvl * 10),
+    AddEquipXP is (EquipLvl * 15),
+    addExp(AddEquipXPRanch, 3),
 
     write('Here are a list of your available livestocks!'), nl, 
     livestock, currentRanch(Livestock, Produce, Time, _), nl,
 
     format('Great, now let\'s care for it.', [Livestock]), nl, pat, nl,
 
-    format('Ranch Equip XP +~D', [AddEquipXP]), nl, addGold(AddEquipGoldReward), CurEquipXP is EquipXPNow + AddEquipXP,
-    changeStats('ranch equip', EquipLvl, CurEquipXP, EquipXPMax),
+    CurEquipXP is EquipXPNow + AddEquipXP, changeStats('ranch equip', EquipLvl, CurEquipXP, EquipXPMax),
+    format('[Ranch Equip XP (+~d), XP Ranching (+~d)]', [AddEquipXP, AddEquipXPRanch]), nl, 
     (   CurEquipXP >= EquipXPMax -> nl, levelupTool('ranch equip'), nl, nl ;
         nl, nl ),
 
@@ -193,9 +194,10 @@ ranchxpmoney :-
 
     format('You gained ~w (~dx)', [Produce, Gain]), nl, nl,
     format('You can sell each ~w for ~d Golds in the marketplace', [Produce, Price]), nl,
-    
-    NewExpRanch is (20 * (LevelRanch)),
-    NewExp is (25 * Level),
+
+    prodtime(Livestock, Time),
+    NewExp is ((25 * Time) + (15 * Level) + (5 * Gain)),
+    NewExpRanch is ((20 * Time) + (10 * LevelRanch) + (3 * Gain)),
     CurExpRanch is NewExpRanch + ExpRanch,
     (   Job == 'Rancher' ->  write('You were paid for working as a rancher'), nl,
                             Salary is (LevelRanch * 5),

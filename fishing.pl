@@ -18,8 +18,9 @@ fish :- \+ (totalItemsType(Z, bait), Z =:= 0),
 
     throwItem('bait', 1),
     equip('fishing rod', EquipLvl, EquipXPNow, EquipXPMax),
-    AddEquipXP is (EquipLvl * 5),
-    AddEquipGoldReward is (EquipLvl * 5),
+    AddEquipXPFish is (EquipLvl * 10),
+    AddEquipXP is (EquipLvl * 15),
+    addExp(AddEquipXPFish, 2),
 
     write('Attaching bait to fishing rod...  '), nl,
     write('Casting the fishing rod!          '), nl, nl,
@@ -43,13 +44,13 @@ fish :- \+ (totalItemsType(Z, bait), Z =:= 0),
         write('You caught a fish! It\'s '), write(Type), nl, 
         format('You can sell this ~w for ~d Golds in the marketplace', [Type, Price]), nl   ), nl,
 
-    format('Fishing Rod XP +~D', [AddEquipXP]), nl, addGold(AddEquipGoldReward), CurEquipXP is EquipXPNow + AddEquipXP,
-    changeStats('fishing rod', EquipLvl, CurEquipXP, EquipXPMax),
+    CurEquipXP is EquipXPNow + AddEquipXP, changeStats('fishing rod', EquipLvl, CurEquipXP, EquipXPMax),
+    format('[Fishing Rod XP (+~d), XP Fishing (+~d)', [AddEquipXP, AddEquipXPFish]), nl, 
     (   CurEquipXP >= EquipXPMax -> nl, levelupTool('fishing rod'), nl, nl ;
         nl, nl ),
 
-    NewExpFish is (10 * (LevelFish)),
-    NewExp is (25 * Level),
+    NewExpFish is (10 + (5 * LevelFish)),
+    NewExp is (25 + (10 * Level)),
     CurExpFish is NewExpFish + ExpFish,
     (   Job == 'Fisher' ->  write('You were paid for working as a fisher'), nl,
                             Salary is (LevelFish * 5),
@@ -143,3 +144,4 @@ pickfish :- player(_, _, _, _, LevelFish, _, _, _, _, _, _, _),
         (   LevelFish < 4 -> nooblevel ;
             LevelFish < 8 -> avglevel ;
             prolevel     ), !.
+            

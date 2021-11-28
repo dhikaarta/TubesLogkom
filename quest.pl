@@ -32,8 +32,8 @@ quest :-
     priceitems(Farm, PriceFarm),
     priceitems(Fish, PriceFish),
     priceitems(Ranch, PriceRanch),
-    NewGold is (PriceFarm * (CountFarm + 1) + (PriceFish * (CountFish + 1)) + (PriceRanch * (CountRanch + 1)) + 20),
-    NewExp is ((5 * Level) * (CountFarm + CountFish + CountRanch)),
+    NewExp is ((30 * Level) * (CountFarm + CountFish + CountRanch)),
+    NewGold is ((PriceFarm * (CountFarm + 1)) + (PriceFish * (CountFish + 2)) + (PriceRanch * (CountRanch + 2)) + 20),
     addGold(NewGold),
     addExp(NewExp, 0),
 
