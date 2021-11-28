@@ -15,6 +15,7 @@
 
 start :-
     createMap,
+    initLivestock,
     initPlayer.
 
 quit :-

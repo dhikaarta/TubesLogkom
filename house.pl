@@ -33,7 +33,7 @@ sleep :-
 
 
 wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,whatSeasonIsIt(X),weatherRandomizer,currentSeason(CurSeason),
-          currentWeather(CurWeather), format('\nSeason : ~w\nWeather : ~w\n\n', [CurSeason,CurWeather]).
+          currentWeather(CurWeather), format('\nSeason : ~w\nWeather : ~w\n\n', [CurSeason,CurWeather]), checkDeath, updateCrop, updateRanch.
 
 robbery :- 
     \+ isLocked,random(1,101,X),nl, (X<10 -> write('Youve been robbed !\n')),unconsiousGold(100),!.
@@ -86,6 +86,6 @@ periTidur :-
 periTidur :- !.
 
 unconsious(X) :- 
-    write('Youre unconsious! Well, atleast youre resting\n\n'),
-                 day(Day), NewDay is Day + X, retract(day(_)), assertz(day(NewDay)), wakeUp.
+    write('You are unconscious for who knows how long. Well, at least you\'re resting...\n\n'),
+                 day(Day), NewDay is Day + X, retract(day(_)), assertz(day(NewDay)), nl, wakeUp.
                  

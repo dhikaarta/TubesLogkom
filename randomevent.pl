@@ -13,16 +13,22 @@ isBirthday :- day(Day), birthday(Birthday), Day =:= Birthday,
 
 isBirthday :- day(Day), birthday(Birthday), Day =\= Birthday,  !.
 
-fishAccident :-  write('While you were trying to cast the reel, you slipped and hit your head !'),nl,unconsious(1), loseExp(50,2),
-                unconsiousGold(20) ,!.
+fishAccident :- write('==============================================================================='), nl,
+                write('You almost caught another fish, but the fish slapped you in the face and left.'),nl,unconsious(1), loseExp(50,2),
+                unconsiousGold(20) ,
+                write('==============================================================================='), nl, !.
 
 
-ranchAccident :-  write('While you were trying to pet your animals, a giant bird pooped on your head, you fainted from the shock!'),nl,unconsious(1), loseExp(50,3),
-                  unconsiousGold(20) ,!.
+ranchAccident :- write('======================================================================================================'), nl,  
+                write('You went to the storage room only to find that your animals are starting a cult. They anesthetized you.'),nl,unconsious(1), loseExp(50,3),
+                unconsiousGold(20) ,
+                write('======================================================================================================='), nl, !.
 
 
-farmAccident :-  write('Your shovel bounced and hit you on your head, you fainted !'), nl,unconsious(1),loseExp(50,1),
-                 unconsiousGold(20),!.
+farmAccident :- write('========================================================================='), nl,
+                write('Your recklessness caused you to hit yourself with a shovel. You fainted.'), nl,unconsious(1),loseExp(50,1),
+                unconsiousGold(20),
+                write('========================================================================='), nl, !.
 
 
 

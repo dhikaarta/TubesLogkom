@@ -330,15 +330,17 @@ reap :-
     isPlayerTile(X, Y),
     isCropTile(X, Y, S, T),
     retract(cropTile(X, Y, S, T)), !,
-    assertz(diggedTile(X, Y)), !,
-    format('You harvested ~w.', [S]).
+    assertz(diggedTile(X, Y)), !.
 
 updateCrop :- /* BERPOTENSI BACKTRACKING BANYAK */
+    isCropTile(_, _, _, _),
     cropTile(X, Y, S, T),
     (   T =:= 0 -> TNew is T;
         T =\= 0 -> TNew is T - 1),
     retract(cropTile(X, Y, S, T)),
     assertz(cropTile(X, Y, S, TNew)).
+
+updateCrop :- \+ (isCropTile(_, _, _, _)).
 
 /* FISHING */
 isTepiAirTile(X, Y):-

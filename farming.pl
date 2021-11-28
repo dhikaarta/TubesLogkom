@@ -1,4 +1,12 @@
-:- dynamic(farm/3).
+croptime('bayam Seed', 'bayam', 1).
+croptime('wortel Seed', 'wortel', 1).
+croptime('padi Seed', 'padi', 1).
+croptime('cabe Seed', 'cabe', 2).
+croptime('bawang putih Seed', 'bawang putih', 2).
+croptime('jagung Seed', 'jagung', 2).
+croptime('bawang merah Seed', 'bawang merah', 3).
+croptime('kangkung Seed', 'kangkung', 3).
+croptime('kentang Seed', 'kentang', 3).
 
 dig :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
     write('Let\'s dig this patch of tile right here!'), nl, nl,
@@ -19,8 +27,12 @@ dig :- isPlayerTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCropTile(X, Y, _, _)),
         write('You\'re gonna end up digging your own grave if you keep digging like that.'), nl,
         write('Try typing <\'PLZ DIG\'> again. Do NOT forget the apostrophe.'), nl, fail), nl, nl,
     digtile,
-    write('Phew, that was a lot of work. You lost 10 stamina while digging the hole.'), depleteEnergy(10), nl, nl,
-    write('Now that this tile is digged, you can plant your seed(s) here by typing <plant> in the main menu.'), !.
+    write('Phew, that was a lot of work. You lost 10 stamina while digging the hole.'), nl, depleteEnergy(10), nl, nl,
+    write('Now that this tile is digged, you can plant your seed(s) here by typing <plant> in the main menu.'), nl,
+    
+    random(1, 101, Chance),
+    (   Chance > 91 -> nl, farmAccident, nl ;
+        nl  ), !.
 
 dig :- isPlayerTile(X, Y), isCropTile(X, Y, _, _),
     write('This is a cropped tile! Are you trying to ruin it?'), !.
@@ -30,14 +42,22 @@ dig :- isPlayerTile(X, Y), (isDiggedTile(X, Y)),
 
 plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTile(X, Y)), 
     write('Here are a list of seeds in your inventory: '), nl, 
-    nl, seeds,
+    write('================='), nl, inventory(seed), write('================='), nl,
+    write('Which seed would you like to pick?'), nl,
+
+    repeat,
+    write('Type seed name inside apostrophe <\'seed_name\'>'), nl, nl,
+    read(Seed), currentInventory(Inv),
+    (   \+ member(Seed, Inv) -> write('You don\'t have that. Try again'), nl, fail ;
+        format('You chose ~w. Weird choice, but alright.', [Seed]), nl, nl  ),
+    throwItem(Seed, 1),
  
     repeat,
-    write('Type <\'PLZ BLESS\'> to gain the harvest god\'s blessing.'), nl,
+    write('Type <\'PLZ BLESS\'> to gain the harvest god\'s blessing. '),
     write('Once again, DO NOT forget the apostrophe (\'). Plz.'), nl,
-    nl, read(Plant), nl,
+    nl, read(Plant), nl, nl,
     (   Plant == 'PLZ BLESS' -> 
-
+        write('=============================================================='), nl,
         write('        __               __   __                       '), nl,
         write('._____.|  |.___._._____.|  |_|__|._____._____.         '), nl,
         write('|  _  ||  ||  _  |     ||   _|  ||     |  _  |__ __ __ '), nl,
@@ -46,11 +66,12 @@ plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTil
 
         write('Are you trying to offend the god of harvest? Please try again.'), nl, nl, fail), nl,
     format('You shouted "~w" at the top of your lungs', [Plant]), nl,
-    write('Hopefully the god of harvest will hear your thunderous prayers'), nl, nl,
+    write('Hopefully the god of harvest will hear your thunderous prayers'), nl,
+    write('=============================================================='), nl, nl,
     
-    write('While planting, you lost 5 stamina. '), depleteEnergy(5), nl, nl, sow(Seed, 0),
-    playerTile(X, Y), isCropTile(X, Y, Seed, Time),
-    nl, nl, format('Come back in ~d seconds to get your ~w', [Time, Seed]), nl,
+    croptime(Seed, Produce, Time), sow(Seed, Time), nl,
+    write('While planting, you lost 5 stamina. '), depleteEnergy(5), nl, nl, 
+    format('Come back in ~d day(s) to get your ~w', [Time, Produce]), nl,
     write('You can do this by typing <harvest> in the main menu'), !.
 
 plant :- (totalItemsType(X, seed), X =:= 0),
@@ -69,7 +90,7 @@ harvest :- playerTile(X, Y), \+ (isCropTile(X, Y, _, _)), isDiggedTile(X, Y),
     write('You haven\'t planted anything in this digged tile. Try <plant>.'), !.
 
 harvest :- playerTile(X, Y), isCropTile(X, Y, Seed, Time), (Time > 0),
-    write('Come back in ~d seconds to get your ~w', [Time, Seed]), !.
+    format('Come back in ~d day(s) to get your ~w', [Time, Seed]), !.
 
 harvest :- currentSeason(X), X == winter, random(0, 10, N), reap, nl,
     (   N < 6 -> write('You come back to find your crops have turned into blocks of ice.'), nl,
@@ -98,12 +119,3 @@ farmxpmoney :- playerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Pri
     addExp(NewExp, 0),
     addExp(NewExpFarm, 1), !.
 
-seeds :- 
-    inventory(seed), nl,
-    write('Which seed would you like to pick?'), nl,
-    repeat,
-    write('Type seed name inside apostrophes <\'seed_name\'>'), nl, nl,
-    read(Seed), currentInventory(Inv),
-    (   \+ member(Seed, Inv) -> write('That\'s not a valid seed name. Try again'), nl, fail ;
-        format('You chose ~w. Weird choice, but alright.', [Seed]), nl, nl  ),
-    throwItem(Seed, 1), !.

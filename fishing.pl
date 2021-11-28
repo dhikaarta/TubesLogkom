@@ -29,7 +29,7 @@ fish :-
 
     pickfish, currentFish(Type), priceitems(Type, Price),
     (   Type == 'Trash' ->  write('A fish fell prey to your bait, but was able to get away.'), nl,
-                            write('However, you managed to land a nice pile of Trash.'), 
+                            write('However, you managed to land a nice pile of Trash. '), 
                             write('Congrats on keeping the lake clean.'), nl ;
         write('You caught a fish! It\'s '), write(Type), nl, 
         format('You can sell this ~w for ~d Golds in the marketplace', [Type, Price]), nl   ), nl,
@@ -49,7 +49,11 @@ fish :-
     addExp(NewExp, 0),
     addExp(NewExpFish,2),
     depleteEnergy(HPLoss),
-    retractall(currentFish(Type)), !.
+    retractall(currentFish(Type)), 
+    
+    random(1, 101, Chance),
+    (   Chance > 91 -> nl, nl, fishAccident, nl ;
+        nl  ), !.
 
 fish :- 
     isPlayerTile(A, B),
