@@ -19,9 +19,10 @@ quest :-
     isQuestTile(A, B),
     isQuest(X), write(X),
     questNeeded(CountFarm, Farm, CountFish, Fish, CountRanch, Ranch),
-    totalperItem(Farm, _, QuantityFarm), QuantityFarm >= CountFarm, 
-    totalperItem(Fish, _, QuantityFish), QuantityFish >= CountFish,
-    totalperItem(Ranch, _, QuantityRanch), QuantityRanch >= CountRanch, 
+    currentInventory(Inv),
+    totalperItem(Farm, Inv, QuantityFarm), QuantityFarm >= CountFarm, 
+    totalperItem(Fish, Inv, QuantityFish), QuantityFish >= CountFish,
+    totalperItem(Ranch, Inv, QuantityRanch), QuantityRanch >= CountRanch, 
 
     (   isQuest(1) -> endingQuest1 ;
         isQuest(2) -> endingQuest2 ;
@@ -47,9 +48,10 @@ quest :-
     isQuestTile(A, B),
     write('You have an on-going quest which lacks:'), nl,
     questNeeded(CountFarm, Farm, CountFish, Fish, CountRanch, Ranch),
-    totalperItem(Farm, _, QuantityFarm), 
-    totalperItem(Fish, _, QuantityFish), 
-    totalperItem(Ranch, _, QuantityRanch),
+    currentInventory(Inv),
+    totalperItem(Farm, Inv, QuantityFarm), 
+    totalperItem(Fish, Inv, QuantityFish), 
+    totalperItem(Ranch, Inv, QuantityRanch),
     (QuantityFarm < CountFarm -> format('~w: ~w/~w', [Farm, QuantityFarm, CountFarm]), nl),
     (QuantityFish < CountFish -> format('~w: ~w/~w', [Fish, QuantityFish, CountFish]), nl),
     (QuantityRanch < CountRanch -> format('~w: ~w/~w', [Ranch, QuantityRanch, CountRanch]), nl), nl,
