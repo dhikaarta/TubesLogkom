@@ -70,7 +70,7 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), F >= L + (50*E),
             write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE        VV VV   EE      LL         UU   UU PP                '),nl,
             write('LLLLLLL EEEEEEE    VVV    EEEEEEE LLLLLLL     UUUUU  PP         !!! !!!'),nl,nl,
-            write('Your fishing skillz leveled up ! '), write(E), write('->'), write(NewLevel), nl, levelUp, !.
+            write('Your fishing skillz leveled up ! There might be new fishes you could catch and your catch will sell at a higher price '), write(E), write('->'), write(NewLevel), nl,fishPriceUp, levelUp, !.
 
 levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), H >= L + (50*G), 
             NewLevel is G + 1,
@@ -81,7 +81,7 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), H >= L + (50*G),
             write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE        VV VV   EE      LL         UU   UU PP                '),nl,
             write('LLLLLLL EEEEEEE    VVV    EEEEEEE LLLLLLL     UUUUU  PP         !!! !!!'),nl,nl,
-            write('Your ranching skillz leveled up ! '), write(G), write('->'), write(NewLevel), nl,ranchPriceUp,levelUp, !.
+            write('Your ranching skillz leveled up ! Your animals produce will sell at a higher price now'), write(G), write('->'), write(NewLevel), nl,ranchPriceUp,levelUp, !.
 
 levelUp :- !.
 
@@ -89,6 +89,8 @@ levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), I < 0,
             NewLevel is B - 1,
             NewMax is J - 100,
             NewExp is NewMax + I,
+            energy(CurEnergy,Max), NewMaxEnergy is Max - 5,
+            retract(energy(CurEnergy,Max)), assertz(energy(NewMaxEnergy,NewMaxEnergy)),
             retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,NewLevel,C,D,E,F,G,H,NewExp,NewMax,K,L)),
             write('You lost a level '), write(B), write('->'), write(NewLevel), nl, levelDown, !.
 
@@ -96,19 +98,19 @@ levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), D < 0,
             NewLevel is C - 1,
             NewExp is (L + (50*NewLevel) + D),
             retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,NewLevel,NewExp,E,F,G,H,I,J,K,L)),
-            write('Your farming skillz got worse '), write(C), write('->'), write(NewLevel), nl, levelDown, !.
+            write('Your farming skillz got worse, who would buy vegetables from you now huh? '), write(C), write('->'), write(NewLevel), nl,farmPriceDown, levelDown, !.
 
 levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), F < 0, 
             NewLevel is E - 1,
             NewExp is (L + (50*NewLevel) + F) ,
             retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,NewLevel,NewExp,G,H,I,J,K,L)),
-            write('Your fishing skillz got worse '), write(E), write('->'), write(NewLevel), nl, levelDown, !.
+            write('Your fishing skillz got worse , your catch is now worth less '), write(E), write('->'), write(NewLevel), nl,fishPriceDown, levelDown, !.
 
 levelDown :- player(A,B,C,D,E,F,G,H,I,J,K,L), H < 0, 
             NewLevel is G - 1,
             NewExp is (L + (50*NewLevel) + H),
             retractall(player(A,B,C,D,E,F,G,H,I,J,K,L)), assertz(player(A,B,C,D,E,F,NewLevel,NewExp,I,J,K,L)),
-            write('Your ranching skillz got worse ! '), write(G), write('->'), write(NewLevel), nl, levelDown, !.
+            write('Your ranching skillz got worse ! your produce looks worse now '), write(G), write('->'), write(NewLevel), nl,ranchPriceDown, levelDown, !.
 
 levelDown :- !.
 
@@ -183,6 +185,53 @@ ranchPriceUp :-
     priceitems('cow meat',D), Dnew is D + 3,changePrice('cow meat',Dnew),
     priceitems('sheep meat',E), Enew is E+ 3,changePrice('sheep meat',Enew),
     priceitems('chicken meat',F), Fnew is F + 3,changePrice('chicken meat',Fnew).
+
+fishPriceUp :-
+    priceitems('Lele Raksasa',A), Anew is A + 3, changePrice('Lele Raksasa',Anew),
+    priceitems('Paus Uwu',B), Bnew is B + 3,changePrice('Paus Uwu',Bnew),
+    priceitems('Teri Mikroskopis',C), Cnew is C + 3,changePrice('Teri Mikroskopis',Cnew),
+    priceitems('Ayah Nemo',D), Dnew is D + 3,changePrice('Ayah Nemo',Dnew),
+    priceitems('Sarden Badan Licin',E), Enew is E+ 3,changePrice('Sarden Badan Licin',Enew),
+    priceitems('Cupang Menggemaskan',F), Fnew is F + 3,changePrice('Cupang Menggemaskan',Fnew),
+    priceitems('Geri Si Gurame',G), Gnew is G + 3,changePrice('Geri Si Gurame',Gnew),
+    priceitems('Kakap Corak Batik khas Nusantara',H), Hnew is H + 3,changePrice('Kakap Corak Batik khas Nusantara',Hnew),
+    priceitems('Teri Mini',I), Inew is I + 3,changePrice('Teri Mini',Inew),
+    priceitems('Salmon Kulit Crispy Daging Kenyal',J), Jnew is J + 3,changePrice('Salmon Kulit Crispy Daging Kenyal',Jnew),
+    priceitems('Cacing Besar Alaska',K), Knew is K + 3,changePrice('Cacing Besar Alaska',Knew),
+    priceitems('Teri Biasa Aja',L), Lnew is L + 3,changePrice('Teri Biasa Aja',Lnew).
+
+farmPriceDown :- 
+    priceitems('bayam',A), Anew is A - 3, changePrice('bayam',Anew),
+    priceitems('wortel',B), Bnew is B - 3,changePrice('wortel',Bnew),
+    priceitems('kentang',C), Cnew is C - 3,changePrice('kentang',Cnew),
+    priceitems('jagung',D), Dnew is D - 3,changePrice('jagung',Dnew),
+    priceitems('cabe',E), Enew is E- 3,changePrice('cabe',Enew),
+    priceitems('bawang merah',F), Fnew is F - 3,changePrice('bawang merah',Fnew),
+    priceitems('bawang putih',G), Gnew is G - 3,changePrice('bawang putih',Gnew),
+    priceitems('padi',H), Hnew is H - 3,changePrice('padi',Hnew),
+    priceitems('kangkung',I), Inew is I - 3,changePrice('kangkung',Inew).
+
+ranchPriceDown :- 
+    priceitems('egg',A), Anew is A - 3, changePrice('egg',Anew),
+    priceitems('milk',B), Bnew is B - 3,changePrice('milk',Bnew),
+    priceitems('wol',C), Cnew is C - 3,changePrice('wol',Cnew),
+    priceitems('cow meat',D), Dnew is D - 3,changePrice('cow meat',Dnew),
+    priceitems('sheep meat',E), Enew is E- 3,changePrice('sheep meat',Enew),
+    priceitems('chicken meat',F), Fnew is F - 3,changePrice('chicken meat',Fnew).
+
+fishPriceDown :-
+    priceitems('Lele Raksasa',A), Anew is A - 3, changePrice('Lele Raksasa',Anew),
+    priceitems('Paus Uwu',B), Bnew is B - 3,changePrice('Paus Uwu',Bnew),
+    priceitems('Teri Mikroskopis',C), Cnew is C - 3,changePrice('Teri Mikroskopis',Cnew),
+    priceitems('Ayah Nemo',D), Dnew is D - 3,changePrice('Ayah Nemo',Dnew),
+    priceitems('Sarden Badan Licin',E), Enew is E- 3,changePrice('Sarden Badan Licin',Enew),
+    priceitems('Cupang Menggemaskan',F), Fnew is F - 3,changePrice('Cupang Menggemaskan',Fnew),
+    priceitems('Geri Si Gurame',G), Gnew is G - 3,changePrice('Geri Si Gurame',Gnew),
+    priceitems('Kakap Corak Batik khas Nusantara',H), Hnew is H - 3,changePrice('Kakap Corak Batik khas Nusantara',Hnew),
+    priceitems('Teri Mini',I), Inew is I - 3,changePrice('Teri Mini',Inew),
+    priceitems('Salmon Kulit Crispy Daging Kenyal',J), Jnew is J - 3,changePrice('Salmon Kulit Crispy Daging Kenyal',Jnew),
+    priceitems('Cacing Besar Alaska',K), Knew is K - 3,changePrice('Cacing Besar Alaska',Knew),
+    priceitems('Teri Biasa Aja',L), Lnew is L - 3,changePrice('Teri Biasa Aja',Lnew).
 
 winCondition(X) :- X >= 20000,nl,nl,nl,
     write('   ____   U  ___ u  _   _     ____     ____        _       _____    _____  '),nl,
