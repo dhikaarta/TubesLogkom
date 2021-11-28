@@ -18,8 +18,8 @@ fish :- \+ (totalItemsType(Z, bait), Z =:= 0),
 
     throwItem('bait', 1),
     equip('fishing rod', EquipLvl, EquipXPNow, EquipXPMax),
-    AddEquipXPFish is (EquipLvl * 10),
-    AddEquipXP is (EquipLvl * 15),
+    AddEquipXPFish is (EquipLvl * 2),
+    AddEquipXP is (EquipLvl * 3),
     addExp(AddEquipXPFish, 2),
 
     write('Attaching bait to fishing rod...  '), nl,

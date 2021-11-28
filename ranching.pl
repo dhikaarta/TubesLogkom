@@ -116,8 +116,8 @@ raise :-
     \+ (All =:= 0),
 
     equip('ranch equip', EquipLvl, EquipXPNow, EquipXPMax),
-    AddEquipXPRanch is (EquipLvl * 10),
-    AddEquipXP is (EquipLvl * 15),
+    AddEquipXPRanch is (EquipLvl * 30),
+    AddEquipXP is (EquipLvl * 40),
     addExp(AddEquipXPRanch, 3),
 
     write('Here are a list of your available livestocks!'), nl, 

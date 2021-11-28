@@ -12,7 +12,7 @@ dig :- isPlayerTile(X, Y), isNormalTile(X, Y), \+ (isDiggedTile(X, Y)), \+ (isCr
     
     equip('shovel', EquipLvl, EquipXPNow, EquipXPMax),
     AddEquipXPFarm is (EquipLvl * 5), 
-    AddEquipXP is (EquipLvl * 15),
+    AddEquipXP is (EquipLvl * 5),
     addExp(AddEquipXPFarm, 1), 
 
     write('Let\'s dig this patch of tile right here!'), nl, nl,
@@ -58,7 +58,7 @@ dig :- isPlayerTile(X, Y), \+ isNormalTile(X, Y),
 plant :- \+ (totalItemsType(Z, seed), Z =:= 0), isPlayerTile(X, Y), (isDiggedTile(X, Y)), 
     
     equip('watering', EquipLvl, EquipXPNow, EquipXPMax),
-    AddEquipXPFarm is (EquipLvl * 5),
+    AddEquipXPFarm is (EquipLvl * 8),
     AddEquipXP is (EquipLvl * 15),
     addExp(AddEquipXPFarm, 1), 
 
