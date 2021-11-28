@@ -211,8 +211,8 @@ buyItem(X,Y,Z) :-
     priceitems(Name,Price),
     PriceTotal is Price*Z,
     loseGold(PriceTotal),
-    (   Name == 'ayam' -> addChicken(Z),
-        Name == 'sapi' -> addCow(Z),
+    (   Name == 'ayam' -> addChicken(Z) ;
+        Name == 'sapi' -> addCow(Z) ;
         Name == 'kambing' -> addSheep(Z)),
     format('You have bought ~d ~w.\n',[Z,Name]), !.
 

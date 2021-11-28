@@ -63,21 +63,21 @@ fish :-
     write('Not enough HP.'), !.
 
 % DUMMY FISH TYPES
-% unlocked at level 0-30
+% unlocked at level 0-3
 noobfish :- random(0, 4, X),
         (   X =:= 0 -> assertz(currentFish('Trash')) ;
             X =:= 1 -> assertz(currentFish('Teri Biasa Aja')) ; 
             X =:= 2 -> assertz(currentFish('Teri Mini')) ; 
             X =:= 3 -> assertz(currentFish('Teri Mikroskopis'))     ), !.
 
-% unlocked at level 31-70
+% unlocked at level 4-7
 avgfish :- random(0, 4, X),
         (   X =:= 0 -> assertz(currentFish('Trash')) ;
             X =:= 1 -> assertz(currentFish('Sarden Badan Licin')) ; 
             X =:= 2 -> assertz(currentFish('Salmon Kulit Crispy Daging Kenyal')) ; 
             X =:= 3 -> assertz(currentFish('Cupang Menggemaskan'))     ), !.
 
-% unlocked at level 71
+% unlocked at level 8
 profish :- random(1, 4, X),  
         (   X =:= 1 -> assertz(currentFish('Cacing Besar Alaska')) ; 
             X =:= 2 -> assertz(currentFish('Ayah Nemo')) ; 
@@ -108,8 +108,8 @@ pickfish :- currentSeason(X), X == summer,
         player(_, _, _, _, LevelFish, _, _, _, _, _, _, _),
         random(0, 21, ZZ),
         (   ZZ > 17 -> summerfish ;
-            (   LevelFish < 8 -> nooblevel ;
-                LevelFish < 15 -> avglevel ;
+            (   LevelFish < 4 -> nooblevel ;
+                LevelFish < 8 -> avglevel ;
                 prolevel    )   ), !.
 
 % winter
@@ -117,12 +117,12 @@ pickfish :- currentSeason(X), X == winter,
         player(_, _, _, _, LevelFish, _, _, _, _, _, _, _),
         random(0, 21, ZZ),
         (   ZZ < 13 -> assertz(currentFish('Trash')) ;
-            (   LevelFish < 8 -> nooblevel ;
-                LevelFish < 15 -> avglevel ;
+            (   LevelFish < 4 -> nooblevel ;
+                LevelFish < 8 -> avglevel ;
                 prolevel    )   ), !.
 
 % spring & fall
 pickfish :- player(_, _, _, _, LevelFish, _, _, _, _, _, _, _),
-        (   LevelFish < 8 -> nooblevel ;
-            LevelFish < 15 -> avglevel ;
+        (   LevelFish < 4 -> nooblevel ;
+            LevelFish < 8 -> avglevel ;
             prolevel     ), !.
