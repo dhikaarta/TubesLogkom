@@ -128,8 +128,8 @@ farmxpmoney :- playerTile(X, Y), isCropTile(X, Y, Seed, _), priceitems(Seed, Pri
     write('You got '), write(Seed), nl,
     format('You can sell this ~w for ~d Golds in the marketplace', [Seed, Price]), nl,
 
-    NewExpFarm is (13 * (LevelFarm)),
-    NewExp is (3 * Level),
+    NewExpFarm is (20 * (LevelFarm)),
+    NewExp is (25 * Level),
     CurExpFarm is NewExpFarm + ExpFarm,
     (   Job == 'Farmer' ->  write('You were paid for working as a farmer'), nl,
                             Salary is (LevelFarm * 5),

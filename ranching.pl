@@ -164,8 +164,8 @@ ranchxpmoney :-
     format('You gained ~w (~dx)', [Produce, Gain]), nl, nl,
     format('You can sell each ~w for ~d Golds in the marketplace', [Produce, Price]), nl,
     
-    NewExpRanch is (13 * (LevelRanch)),
-    NewExp is (3 * Level),
+    NewExpRanch is (20 * (LevelRanch)),
+    NewExp is (25 * Level),
     CurExpRanch is NewExpRanch + ExpRanch,
     (   Job == 'Rancher' ->  write('You were paid for working as a rancher'), nl,
                             Salary is (LevelRanch * 5),

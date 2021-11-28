@@ -45,7 +45,7 @@ fish :- \+ (totalItemsType(Z, bait), Z =:= 0),
         nl, nl ),
 
     NewExpFish is (10 * (LevelFish)),
-    NewExp is (2 * Level),
+    NewExp is (25 * Level),
     CurExpFish is NewExpFish + ExpFish,
     (   Job == 'Fisher' ->  write('You were paid for working as a fisher'), nl,
                             Salary is (LevelFish * 5),
