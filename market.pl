@@ -260,7 +260,7 @@ buyequip(X,Y) :-
     loseGold(Price),
     changePrice(Name,Price),
     Expmax is Lvl*50,
-    changeStats(Name,Lvl,Expmax),
+    changeStats(Name,Lvl,0,Expmax),
     throwItem(Name,1),
     addItem(Name,1),
     format('You have bought 1 ~w.\n',[Name]), !.

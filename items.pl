@@ -181,9 +181,9 @@ changePrice(Item,Price) :-
     assertz(priceitems(Item,Price)).
 
 /*Function to change Stats Equipment*/
-changeStats(Item,Lvl,Expmax) :-
+changeStats(Item,Lvl,ExpNow,Expmax) :-
     retractall(equip(Item,_,_,_)),
-    assertz(equip(Item,Lvl,0,Expmax)).
+    assertz(equip(Item,Lvl,ExpNow,Expmax)).
 
 /*Function to check Level Equipment*/
 checkLevel(Item,X) :-
