@@ -108,48 +108,48 @@ usepotion('Gamble potion') :-
 
 
 /* PRICE ITEM */
-priceitems('bayam Seed',5).
-priceitems('wortel Seed',10).
-priceitems('kentang Seed',20).
-priceitems('jagung Seed',15).
-priceitems('cabe Seed',12).
-priceitems('bawang merah Seed',17).
-priceitems('bawang putih Seed',12).
-priceitems('padi Seed',7).
-priceitems('kangkung Seed',22).
-priceitems('bayam',20).
-priceitems('wortel',35).
-priceitems('kentang',75).
-priceitems('jagung',63).
-priceitems('cabe',50).
-priceitems('bawang merah',87).
-priceitems('bawang putih',63).
-priceitems('padi',25).
-priceitems('kangkung',87).
-priceitems('chicken feed',5).
+priceitems('bayam Seed',10).
+priceitems('wortel Seed',20).
+priceitems('kentang Seed',40).
+priceitems('jagung Seed',30).
+priceitems('cabe Seed',25).
+priceitems('bawang merah Seed',35).
+priceitems('bawang putih Seed',25).
+priceitems('padi Seed',15).
+priceitems('kangkung Seed',45).
+priceitems('bayam',50).
+priceitems('wortel',70).
+priceitems('kentang',150).
+priceitems('jagung',125).
+priceitems('cabe',100).
+priceitems('bawang merah',175).
+priceitems('bawang putih',125).
+priceitems('padi',50).
+priceitems('kangkung',175).
+priceitems('chicken feed',2).
 priceitems('cow feed',10).
-priceitems('sheep feed',8).
-priceitems('egg',35).
-priceitems('milk',40).
-priceitems('wol',60).
+priceitems('sheep feed',5).
+priceitems('egg',25).
+priceitems('milk',75).
+priceitems('wol',50).
 priceitems('cow meat',250).
-priceitems('sheep meat',170).
-priceitems('chicken meat',90).
-priceitems('ayam',80).
-priceitems('sapi',320).
-priceitems('kambing',240).
-priceitems('bait',1).
-priceitems('Lele Raksasa',250).
-priceitems('Paus Uwu',170).
-priceitems('Teri Mikroskopis',2).
-priceitems('Ayah Nemo',75).
-priceitems('Sarden Badan Licin',60).
-priceitems('Cupang Menggemaskan',30).
-priceitems('Kakap Corak Batik khas Nusantara',150).
-priceitems('Geri Si Gurame',105).
-priceitems('Teri Mini',5).
-priceitems('Salmon Kulit Crispy Daging Kenyal',45).
-priceitems('Cacing Besar Alaska',90).
+priceitems('sheep meat',200).
+priceitems('chicken meat',150).
+priceitems('ayam',50).
+priceitems('sapi',150).
+priceitems('kambing',100).
+priceitems('bait',2).
+priceitems('Lele Raksasa',300).
+priceitems('Paus Uwu',200).
+priceitems('Teri Mikroskopis',5).
+priceitems('Ayah Nemo',90).
+priceitems('Sarden Badan Licin',75).
+priceitems('Cupang Menggemaskan',50).
+priceitems('Kakap Corak Batik khas Nusantara',200).
+priceitems('Geri Si Gurame',150).
+priceitems('Teri Mini',10).
+priceitems('Salmon Kulit Crispy Daging Kenyal',60).
+priceitems('Cacing Besar Alaska',135).
 priceitems('Teri Biasa Aja',15).
 priceitems('Trash',0).
 priceitems('fishing rod',50).
@@ -165,7 +165,7 @@ levelupTool(Name) :-
     Newexp is Expnow - Expmax,
     Newmax is Expmax + 50,
     priceitems(Name,Price),
-    PriceNow is Price+50,
+    PriceNow is (Price*Lvlup)/Lvl,
     changePrice(Name,PriceNow),
     changeStats(Name,Lvlup,Newexp,Newmax),
     write('LL      EEEEEEE VV     VV EEEEEEE LL         UU   UU PPPPPP     !!! !!!'),nl,

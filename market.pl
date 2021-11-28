@@ -45,22 +45,70 @@ shopitem('kambing',winter,10).
 shopitem('kambing',spring,11).
 
 /*Fact equipment item shop*/
-shopequip('ranch equip',summer,3,150,1).
-shopequip('ranch equip',spring,3,150,1).
-shopequip('ranch equip',fall,2,100,1).
-shopequip('ranch equip',winter,2,100,1).
-shopequip('fishing rod',summer,3,150,2).
-shopequip('fishing rod',spring,3,150,2).
-shopequip('fishing rod',fall,2,100,2).
-shopequip('fishing rod',winter,2,100,2).
-shopequip('shovel',summer,2,75,3).
-shopequip('shovel',spring,2,75,3).
-shopequip('shovel',fall,3,125,3).
-shopequip('shovel',winter,3,125,3).
-shopequip('watering',summer,2,75,4).
-shopequip('watering',spring,2,75,4).
-shopequip('watering',fall,3,125,4).
-shopequip('watering',winter,3,125,4).
+shopequip('ranch equip',summer,X,Y,1) :-
+    equip('ranch equip',Lvl,_,_),
+    X is Lvl + 2,
+    Y is (2*Lvl+1)*30.
+shopequip('ranch equip',spring,X,Y,1) :-
+    equip('ranch equip',Lvl,_,_),
+    X is Lvl + 2,
+    Y is (2*Lvl+1)*30.
+shopequip('ranch equip',fall,X,Y,1) :-
+    equip('ranch equip',Lvl,_,_),
+    X is Lvl + 1,
+    Y is Lvl*30.
+shopequip('ranch equip',winter,X,Y,1) :-
+    equip('ranch equip',Lvl,_,_),
+    X is Lvl + 1,
+    Y is Lvl*30.
+shopequip('fishing rod',summer,X,Y,2) :-
+    equip('fishing rod',Lvl,_,_),
+    X is Lvl + 2,
+    Y is (2*Lvl+1)*30.
+shopequip('fishing rod',spring,X,Y,2) :-
+    equip('fishing rod',Lvl,_,_),
+    X is Lvl + 2,
+    Y is (2*Lvl+1)*30.
+shopequip('fishing rod',fall,X,Y,2) :-
+    equip('fishing rod',Lvl,_,_),
+    X is Lvl + 1,
+    Y is Lvl*30.
+shopequip('fishing rod',winter,X,Y,2) :-
+    equip('fishing rod',Lvl,_,_),
+    X is Lvl + 1,
+    Y is Lvl*30.
+shopequip('shovel',summer,X,Y,3) :-
+    equip('shovel',Lvl,_,_),
+    X is Lvl + 1,
+    Y is Lvl*15.
+shopequip('shovel',spring,X,Y,3) :-
+    equip('shovel',Lvl,_,_),
+    X is Lvl + 1,
+    Y is Lvl*15.
+shopequip('shovel',fall,X,Y,3) :-
+    equip('shovel',Lvl,_,_),
+    X is Lvl + 2,
+    Y is (2*Lvl+1)*15.
+shopequip('shovel',winter,X,Y,3) :-
+    equip('shovel',Lvl,_,_),
+    X is Lvl + 2,
+    Y is (2*Lvl+1)*15.
+shopequip('watering',summer,X,Y,4) :-
+    equip('watering',Lvl,_,_),
+    X is Lvl + 1,
+    Y is Lvl*15.
+shopequip('watering',spring,X,Y,4) :-
+    equip('watering',Lvl,_,_),
+    X is Lvl + 1,
+    Y is Lvl*15.
+shopequip('watering',fall,X,Y,4) :-
+    equip('watering',Lvl,_,_),
+    X is Lvl + 2,
+    Y is (2*Lvl+1)*15.
+shopequip('watering',winter,X,Y,4) :-
+    equip('watering',Lvl,_,_),
+    X is Lvl + 2,
+    Y is (2*Lvl+1)*15.
 
 /*Fact potion shop*/
 shoppotion('fishing potion',1,500).
@@ -151,11 +199,11 @@ buy :-
     buyItem(X,Y,Z), !.
 
 /* Command to buy equipment */
-buyEquipment :-
+upgradeEquipment :-
     isPlayerTile(A, B),
     isMarketplaceTile(A, B),
     currentSeason(X),
-    write('What do you want to buy?\n'),
+    write('What do you want to upgrade?\n'),
     marketequip(X),
     read(Y),
     buyequip(X,Y), !.
@@ -257,10 +305,13 @@ buyequip(X,Y) :-
 
 buyequip(X,Y) :-
     shopequip(Name,X,Lvl,Price,Y),
+    equip(Name,LvlNow,_,_),
+    priceitems(Name,PriceNow),
     loseGold(Price),
-    changePrice(Name,Price),
+    PriceUpgrade is (PriceNow*Lvl)/LvlNow,
+    changePrice(Name,PriceUpgrade),
     Expmax is Lvl*50,
     changeStats(Name,Lvl,0,Expmax),
     throwItem(Name,1),
     addItem(Name,1),
-    format('You have bought 1 ~w.\n',[Name]), !.
+    format('You have upgraded ~w.\n',[Name]), !.
