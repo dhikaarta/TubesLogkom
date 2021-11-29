@@ -38,6 +38,12 @@ items(animal,'kambing').
 items(ranching,'egg').
 items(ranching,'milk').
 items(ranching,'wol').
+items(ranching,'omega 3 egg').
+items(ranching,'protein infused milk').
+items(ranching,'beluga wol').
+items(ranching,'cemani egg').
+items(ranching,'A5 milk').
+items(ranching,'super anti villain wol').
 items(ranching,'cow meat').
 items(ranching,'sheep meat').
 items(ranching,'chicken meat').
@@ -137,6 +143,12 @@ priceitems('sheep feed',5).
 priceitems('egg',25).
 priceitems('milk',75).
 priceitems('wol',50).
+priceitems('omega 3 egg',50).
+priceitems('protein infused milk',150).
+priceitems('beluga wol',100).
+priceitems('cemani egg',100).
+priceitems('A5 milk',250).
+priceitems('super anti villain wol',200).
 priceitems('cow meat',250).
 priceitems('sheep meat',200).
 priceitems('chicken meat',150).

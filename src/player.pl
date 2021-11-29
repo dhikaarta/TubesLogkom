@@ -81,7 +81,7 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), H >= L + (50*G),
             write('LL      EEEEE    VV   VV  EEEEE   LL         UU   UU PPPPPP     !!! !!!'),nl,
             write('LL      EE        VV VV   EE      LL         UU   UU PP                '),nl,
             write('LLLLLLL EEEEEEE    VVV    EEEEEEE LLLLLLL     UUUUU  PP         !!! !!!'),nl,nl,
-            write('Your ranching skillz leveled up ! Your animals produce will sell at a higher price now'), write(G), write('->'), write(NewLevel), nl,ranchPriceUp,levelUp, !.
+            write('Your ranching skillz leveled up !  Your animals might produce better goods now! and they will sell at a higher price in the market '), write(G), write('->'), write(NewLevel), nl,ranchPriceUp,levelUp, !.
 
 levelUp :- !.
 
@@ -184,7 +184,13 @@ ranchPriceUp :-
     priceitems('wol',C), Cnew is C + 3,changePrice('wol',Cnew),
     priceitems('cow meat',D), Dnew is D + 3,changePrice('cow meat',Dnew),
     priceitems('sheep meat',E), Enew is E+ 3,changePrice('sheep meat',Enew),
-    priceitems('chicken meat',F), Fnew is F + 3,changePrice('chicken meat',Fnew).
+    priceitems('chicken meat',F), Fnew is F + 3,changePrice('chicken meat',Fnew),
+    priceitems('omega 3 egg',G), Gnew is G + 3, changePrice('omega 3 egg',Gnew),
+    priceitems('protein infused milk',H), Hnew is H + 3,changePrice('protein infused milk',Hnew),
+    priceitems('beluga wol',I), Inew is I + 3,changePrice('beluga wol',Inew),
+    priceitems('cemani egg',J), Jnew is J + 3, changePrice('cemani egg',Jnew),
+    priceitems('A5 milk',K), Knew is K + 3,changePrice('A5 milk',Knew),
+    priceitems('super anti villain wol',L), Lnew is L + 3,changePrice('super anti villain wol',Lnew).
 
 fishPriceUp :-
     priceitems('Lele Raksasa',A), Anew is A + 3, changePrice('Lele Raksasa',Anew),
@@ -217,7 +223,13 @@ ranchPriceDown :-
     priceitems('wol',C), Cnew is C - 3,changePrice('wol',Cnew),
     priceitems('cow meat',D), Dnew is D - 3,changePrice('cow meat',Dnew),
     priceitems('sheep meat',E), Enew is E- 3,changePrice('sheep meat',Enew),
-    priceitems('chicken meat',F), Fnew is F - 3,changePrice('chicken meat',Fnew).
+    priceitems('chicken meat',F), Fnew is F - 3,changePrice('chicken meat',Fnew),
+    priceitems('omega 3 egg',G), Gnew is G - 3, changePrice('omega 3 egg',Gnew),
+    priceitems('protein infused milk',H), Hnew is H - 3,changePrice('protein infused milk',Hnew),
+    priceitems('beluga wol',I), Inew is I - 3,changePrice('beluga wol',Inew),
+    priceitems('cemani egg',J), Jnew is J - 3, changePrice('cemani egg',Jnew),
+    priceitems('A5 milk',K), Knew is K - 3,changePrice('A5 milk',Knew),
+    priceitems('super anti villain wol',L), Lnew is L - 3,changePrice('super anti villain wol',Lnew).
 
 fishPriceDown :-
     priceitems('Lele Raksasa',A), Anew is A - 3, changePrice('Lele Raksasa',Anew),

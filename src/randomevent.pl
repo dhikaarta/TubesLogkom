@@ -49,7 +49,13 @@ surgeranchPriceUp :-
     priceitems('wol',C), Cnew is C * 2,changePrice('wol',Cnew),
     priceitems('cow meat',D), Dnew is D * 2,changePrice('cow meat',Dnew),
     priceitems('sheep meat',E), Enew is E* 2,changePrice('sheep meat',Enew),
-    priceitems('chicken meat',F), Fnew is F * 2,changePrice('chicken meat',Fnew).
+    priceitems('chicken meat',F), Fnew is F * 2,changePrice('chicken meat',Fnew),
+    priceitems('omega 3 egg',G), Gnew is G * 2, changePrice('omega 3 egg',Gnew),
+    priceitems('protein infused milk',H), Hnew is H * 2,changePrice('protein infused milk',Hnew),
+    priceitems('beluga wol',I), Inew is I * 2,changePrice('beluga wol',Inew),
+    priceitems('cemani egg',J), Jnew is J * 2, changePrice('cemani egg',Jnew),
+    priceitems('A5 milk',K), Knew is K * 2,changePrice('A5 milk',Knew),
+    priceitems('super anti villain wol',L), Lnew is L * 2,changePrice('super anti villain wol',Lnew).
 
 surgefishPriceUp :-
     priceitems('Lele Raksasa',A), Anew is A * 2, changePrice('Lele Raksasa',Anew),
@@ -82,7 +88,13 @@ surgeranchPriceDown :-
     priceitems('wol',C), Cnew is C // 2,changePrice('wol',Cnew),
     priceitems('cow meat',D), Dnew is D // 2,changePrice('cow meat',Dnew),
     priceitems('sheep meat',E), Enew is E// 2,changePrice('sheep meat',Enew),
-    priceitems('chicken meat',F), Fnew is F // 2,changePrice('chicken meat',Fnew).
+    priceitems('chicken meat',F), Fnew is F // 2,changePrice('chicken meat',Fnew),
+    priceitems('omega 3 egg',G), Gnew is G // 2, changePrice('omega 3 egg',Gnew),
+    priceitems('protein infused milk',H), Hnew is H // 2,changePrice('protein infused milk',Hnew),
+    priceitems('beluga wol',I), Inew is I // 2,changePrice('beluga wol',Inew),
+    priceitems('cemani egg',J), Jnew is J // 2, changePrice('cemani egg',Jnew),
+    priceitems('A5 milk',K), Knew is K // 2,changePrice('A5 milk',Knew),
+    priceitems('super anti villain wol',L), Lnew is L // 2,changePrice('super anti villain wol',Lnew).
 
 surgefishPriceDown :-
     priceitems('Lele Raksasa',A), Anew is A // 2, changePrice('Lele Raksasa',Anew),
@@ -101,7 +113,7 @@ surgefishPriceDown :-
 priceSurge :- isSurge, write('Prices has gone back to normal , how much did you get yesterday ?'),nl,
               surgefarmPriceDown,surgefishPriceDown,surgeranchPriceDown, retract(isSurge),!.
 
-priceSurge :- \+isSurge,random(1,101,X), X < 6,
+priceSurge :- \+ isSurge,random(1,101,X), X < 6,
               write('HEY IT\'S PRICE SURGE DAY, EVERYTHING YOU SELL IS NOW DOUBLE THE PRICE ,SELL EVERYTHING YOU HAVE NOW!'),nl,
               surgefarmPriceUp,surgefishPriceUp,surgeranchPriceUp, assertz(isSurge),!.
 

@@ -147,13 +147,17 @@ raiseChicken :-
     isPlayerTile(A, B),
     isRanchTile(A, B),
     currentRanchChicken(Check, _, _, _), 
-    
+     player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, _, _, _, _), 
     (   Check == 'NULL' ->  write('These are the products you can gain from raising ayam:'), nl,
                             write('1. Egg\n2. Chicken Meat\n\nWhich product will you choose?'), nl,
                             write('(each ayam you own will produce two products)'), nl,
                             prodtime('ayam', Time), read(Choice), chicken(CountChicken, _),
-                            (   Choice =:= 1 -> retractall(currentRanchChicken(_, _, _, _)), 
+                            (   Choice =:= 1, LevelRanch <5 -> retractall(currentRanchChicken(_, _, _, _)), 
                                                 assertz(currentRanchChicken('ayam', 'egg', Time, 0)) ;
+                                Choice =:= 1, LevelRanch <10 -> retractall(currentRanchChicken(_, _, _, _)), 
+                                                assertz(currentRanchChicken('ayam', 'omega 3 egg', Time, 0)) ;
+                                Choice =:= 1, LevelRanch >9 -> retractall(currentRanchChicken(_, _, _, _)), 
+                                                assertz(currentRanchChicken('ayam', 'cemani egg', Time, 0)) ;
                                 Choice =:= 2 -> nl, format('How many ayam(s) will you butcher? (Limit: ~d)', [CountChicken]), nl,
                                                 repeat,
                                                 read(DeadChicken),
@@ -168,12 +172,17 @@ raiseCow :-
     isPlayerTile(A, B),
     isRanchTile(A, B),
     currentRanchCow(Check, _, _, _), 
+    player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, _, _, _, _), 
     (   Check == 'NULL' ->  write('These are the products you can gain from raising sapi:'), nl,
                             write('1. Milk\n2. Cow Meat\n\nWhich product will you choose?'), nl,
                             write('(each sapi you own will produce two products)'), nl,
                             prodtime('sapi', Time), read(Choice), cow(CountCow, _),
-                            (   Choice =:= 1 -> retractall(currentRanchCow(_, _, _, _)), 
+                            (   Choice =:= 1,LevelRanch <5 -> retractall(currentRanchCow(_, _, _, _)), 
                                                 assertz(currentRanchCow('sapi', 'milk', Time, 0)) ;
+                                Choice =:= 1,LevelRanch <10 -> retractall(currentRanchCow(_, _, _, _)), 
+                                                assertz(currentRanchCow('sapi', 'protein infused milk', Time, 0)) ;
+                                Choice =:= 1,LevelRanch >9 -> retractall(currentRanchCow(_, _, _, _)), 
+                                                assertz(currentRanchCow('sapi', 'A5 milk', Time, 0)) ;
                                 Choice =:= 2 -> nl, format('How many sapi(s) will you butcher? (Limit: ~d)', [CountCow]), nl,
                                                 repeat,
                                                 read(DeadCow),
@@ -188,12 +197,17 @@ raiseSheep :-
     isPlayerTile(A, B),
     isRanchTile(A, B),
     currentRanchSheep(Check, _, _, _), 
+     player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, _, _, _, _), 
     (   Check == 'NULL' ->  write('These are the products you can gain from raising kambing:'), nl,
                             write('1. Wol\n2. Sheep Meat\n\nWhich product will you choose?'), nl,
                             write('(each kambing you own will produce two products)'), nl,
                             prodtime('kambing', Time), read(Choice), sheep(CountSheep, _),
-                            (   Choice =:= 1 -> retractall(currentRanchSheep(_, _, _, _)), 
+                            (   Choice =:= 1,LevelRanch < 5 -> retractall(currentRanchSheep(_, _, _, _)), 
                                                 assertz(currentRanchSheep('kambing', 'wol', Time, 0)) ;
+                                Choice =:= 1,LevelRanch < 10 -> retractall(currentRanchSheep(_, _, _, _)), 
+                                                assertz(currentRanchSheep('kambing', 'beluga wol', Time, 0)) ;
+                                Choice =:= 1,LevelRanch > 9 -> retractall(currentRanchSheep(_, _, _, _)), 
+                                                assertz(currentRanchSheep('kambing', 'super anti villain wol', Time, 0)) ;
                                 Choice =:= 2 -> nl, format('How many kambing(s) will you butcher? (Limit: ~d)', [CountSheep]), nl,
                                                 repeat,
                                                 read(DeadSheep),
