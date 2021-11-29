@@ -250,7 +250,7 @@ ranchReward(Livestock, Produce, Death, Count) :-
 
     prodtime(Livestock, Time),
     NewExp is ((8 * Level) + 3 + Gain) * Time,
-    NewExpRanch is ((8 * LevelRanch) + 2 + Gain) * Time,
+    NewExpRanch is ((10 * LevelRanch) + 2 + Gain) * Time,
     CurExpRanch is NewExpRanch + ExpRanch,
     (   Job == 'Rancher' ->  write('You were paid for working as a rancher'), nl,
                             Salary is (LevelRanch * 5),
