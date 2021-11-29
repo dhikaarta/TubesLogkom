@@ -399,25 +399,32 @@ abolishSheep :- sheep(Count, ExpiryDate),
     retractall(sheep(Count, ExpiryDate)),
     assertz(sheep(0, 21)), !.
 
+setTime(LevelRanch, Time, NewTime) :- 
+    (   LevelRanch > 10 -> Subtract is 2 ;
+        Subtract is 1   ),
+
+    (   Time =:= 0 -> TimeSubtracted is Time ;
+        TimeSubtracted is Time - Subtract  ),
+    
+    (   TimeSubtracted < 0 -> NewTime is 0 ;
+        NewTime is TimeSubtracted   ), !.
+
 updateRanchChicken :- currentRanchChicken(Check, Produce, Time, Death), \+ (Check == 'NULL'),
-    (   Time =:= 0 -> NewTime is Time ;
-        NewTime is Time - 1 ),
+    player(_, _, _, _, _, _, LevelRanch, _, _, _, _, _), setTime(LevelRanch, Time, NewTime),
     retractall(currentRanchChicken(_, _, _, _)),
     assertz(currentRanchChicken(Check, Produce, NewTime, Death)), !.
 
 updateRanchChicken :- currentRanchChicken(Check, _, _, _), Check == 'NULL'.
 
 updateRanchCow :- currentRanchCow(Check, Produce, Time, Death), \+ (Check == 'NULL'),
-    (   Time =:= 0 -> NewTime is Time ;
-        NewTime is Time - 1 ),
+    player(_, _, _, _, _, _, LevelRanch, _, _, _, _, _), setTime(LevelRanch, Time, NewTime),
     retractall(currentRanchCow(_, _, _, _)),
     assertz(currentRanchCow(Check, Produce, NewTime, Death)), !.
 
 updateRanchCow :- currentRanchCow(Check, _, _, _), Check == 'NULL'.
 
 updateRanchSheep :- currentRanchSheep(Check, Produce, Time, Death), \+ (Check == 'NULL'),
-    (   Time =:= 0 -> NewTime is Time ;
-        NewTime is Time - 1 ),
+    player(_, _, _, _, _, _, LevelRanch, _, _, _, _, _), setTime(LevelRanch, Time, NewTime),
     retractall(currentRanchSheep(_, _, _, _)),
     assertz(currentRanchSheep(Check, Produce, NewTime, Death)), !.
 
