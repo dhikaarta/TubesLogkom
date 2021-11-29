@@ -53,7 +53,7 @@ C:.
 
 ## Usage
 * Clone repository ini menggunakan link `https://github.com/dhikaarta/TubesLogkom.git`.
-* Buka aplikasi GNU Prolog Compiler dan ubah directory dari compiler tersebut menjadi directory tempat anda melakukan clone repository. Hal tersebut dapat dilakukan dengan membuka option `File > Change Dir...` dan navigate ke directory clone repository.
+* Buka aplikasi GNU Prolog Compiler dan ubah directory dari compiler tersebut menjadi directory tempat anda melakukan clone repository. Hal tersebut dapat dilakukan dengan membuka option `File > Change Dir...` dan navigate ke folder `src` di dalam directory clone repository.
 * Jalankan perintah `['main.pl'].` untuk melakukan kompilasi seluruh file Prolog pada program.
 * Jalankan perintah `start.` untuk memulai permainan.
 
