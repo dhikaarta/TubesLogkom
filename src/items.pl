@@ -106,9 +106,10 @@ usepotion('teleport potion') :-
     teleport(X,Y),!.
 
 usepotion('Gamble potion') :-
-    player(_,_,_,_,_,_,_,_,_,_,Gold,_),
-    Gold < 1000, !,
-    write('You don\'t have enough money to gambling,\n'), fail.
+    player(A,B,C,D,E,F,G,H,I,J,Gold,L),
+    Gold < 1000, !,NewGold is Gold + 500, 
+    retractall(player(A,B,C,D,E,F,G,H,I,J,Gold,L)),assertz(player(A,B,C,D,E,F,G,H,I,J,NewGold,L)),
+    write('You don\'t have enough money to gambling, you need atleast 1500 gold, your gold has been refunded \n'), fail.
 
 usepotion('Gamble potion') :-
     random(0,2,X),
