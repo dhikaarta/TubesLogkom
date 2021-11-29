@@ -14,11 +14,25 @@ Harvest Star merupakan farm simulator role-playing game yang dibuat menggunakan 
 
 ## Screenshots
 ### Tampilan Start Game
-![Start Game](./test/1.png)
+![Start Game](./test/start.png)
 ### Tampilan Map
-![Map](./test/2.png)
+![Map](./test/map.png)
+### Tampilan Status
+![Status](./test/status.png)
+### Tampilan Market
+![Market](./test/market.png)
+### Tampilan Quest
+![Quest](./test/quest.png)
+### Tampilan House
+![House](./test/house.png)
+### Tampilan Farming
+![Farming](./test/farm.png)
+### Tampilan Fishing
+![Fishing](./test/fish.png)
+### Tampilan Ranching
+![Ranching](./test/ranch.png)
 ### Tampilan End Game
-![End Game](./test/3.png)
+![End Game](./test/end.png)
 
 ## Structures
 ```bash
