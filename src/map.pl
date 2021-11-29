@@ -141,11 +141,11 @@ printSpecialTile :-
     isPlayerTile(X, Y),
     (   (isNormalTile(X, Y), \+ (isTepiAirTile(X, Y)));
         isFenceTile(X, Y);
-        (isMarketplaceTile(X, Y) -> write('You\'re at the market.'), nl, !);
-        (isRanchTile(X, Y) -> write('You\'re at the ranch.'), nl, !);
-        (isHouseTile(X, Y) -> write('You\'re at your own house.'), nl, !);
-        (isQuestTile(X, Y) -> write('You\'re at the quest pick up point.'), nl, !);
-        (isTepiAirTile(X, Y) -> (write('You\'re at the edge of water.'), nl, !));
+        (isMarketplaceTile(X, Y) -> write('You\'re at the market.'),nl,marketArt,nl, nl, !);
+        (isRanchTile(X, Y) -> write('You\'re at the ranch.'),nl,ranchArt,nl, nl, !);
+        (isHouseTile(X, Y) -> write('You\'re at your own house.'),nl,houseArt,nl, nl, !);
+        (isQuestTile(X, Y) -> write('You\'re at the quest pick up point.'),nl,questArt,nl, nl, !);
+        (isTepiAirTile(X, Y) -> (write('You\'re at the edge of water, You can fish here! .'),nl,waterArt,nl, nl, !));
         (isDiggedTile(X, Y) -> write('You\'re at the farm.'), nl, !);
         (isCropTile(X, Y, S, _) -> format('You\'re at a ~w crop.', [S]), nl, !)), !.
 
@@ -378,3 +378,93 @@ isTepiAirTile(X, Y):-
     YPlus is Y + 1,
     YMin is Y - 1,
     (isWaterTile(XPlus, Y); isWaterTile(X, YPlus); isWaterTile(XMin, Y); isWaterTile(X, YMin)), !.
+
+ranchArt :-
+write('                           |RANCH|                '),nl,
+write('                           _,-^-,_    ,--,     '),nl,
+write('                        ,-\'   _   \'-, |__|   '),nl,
+write('                       /     |_|     \\|  |    '),nl,
+write('                      /               \\  |    '),nl,
+write('                     /|     _____     |\\ |    '),nl,
+write('                      |    |==|==|    |  |     '),nl,
+write('  |---|---|---|---|---|    |--|--|    |  |     '),nl,
+write('  |---|---|---|---|---|    |==|==|    |  |     '),nl,
+write(' ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ '),nl.
+
+houseArt :-
+write('                                   /\\                                '),nl,  
+write('                              /\\  //\\\\                               '),nl,  
+write('                       /\\    //\\\\///\\\\\\        /\\                    '),nl,  
+write('                     //\\\\  ///\\////\\\\\\\\  /\\  //\\\\                   '),nl,  
+write('         /\\          /  ^ \\/^ ^/^  ^  ^ \\/^ \\/  ^ \\                  '),nl,  
+write('        / ^\\    /\\  / ^   /  ^/ ^ ^ ^   ^\\ ^/  ^^  \\                 '),nl,  
+write('       /^   \\  / ^\\/ ^ ^   ^ / ^  ^    ^  \\/ ^   ^  \\       *        '),nl,  
+write('      /  ^ ^ \\/^  ^\\ ^ ^ ^   ^  ^   ^   ____  ^   ^  \\     /|\\       '),nl,  
+write('     / ^ ^  ^ \\ ^  _\\___________________|  |_____^ ^  \\   /||o\\      '),nl,  
+write('    / ^^  ^ ^ ^\\  /______________________________\\ ^ ^ \\ /|o|||\\     '),nl,  
+write('   /  ^  ^^ ^ ^  /________________________________\\  ^  /|||||o|\\    '),nl,  
+write('  /^ ^  ^ ^^  ^    ||___|___||||||||||||___|__|||      /||o||||||\\   '),nl,  
+write(' / ^   ^   ^    ^  ||___|___||||||||||||___|__|||          | |       '),nl,  
+write('/ ^ ^ ^  ^  ^  ^   ||||||||||||||||||||||||||||||oooooooooo| |ooooooo'),nl,  
+write('ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo'),nl.  
+
+waterArt :-
+write('                  _.._                                                 '),nl,
+write('     _________....-~    ~-.______                                        '),nl,
+write('  ~~~                            ~~~~-----...___________..--------       '),nl,
+write('                                             |   |     |                 '),nl,
+write('                                             | |   |  ||                 '),nl,
+write('                                             |  |  |   |                 '),nl,
+write('                                             |\'. .\' .`.|               '),nl,
+write('  ___________________________________________|0oOO0oO0o|____________     '),nl,  
+write('   -          -         -       -      -    / \'  \'. ` ` \\    -    -   '),nl,
+write('        --                  --       --   /    \'  . `   ` \\    --      '),nl,
+write('  ---            ---          ---       /  \'                \\ ---      '),nl,
+write('       ----               ----        /       \' \' .    ` `    \\  ---- '),nl,
+write('  -----         -----         ----- /   \'   \'        `      `   \\     '),nl,
+write('       .-~~-.          ------     /          \'    . `     `    `  \\    '),nl.
+
+questArt:-
+write('                                                     ___                          '),nl,
+write('                                               ___..--\'  .`.                       '),nl,
+write('                                      ___...--\'     -  .` `.`.                     '),nl,
+write('                             ___...--\' _      -  _   .` -   `.`.                   '),nl,
+write('                    ___...--\'  -       _   -       .`  `. - _ `.`.                 '),nl,
+write('             __..--\'_______________ -         _  .`  _   `.   - `.`.               '),nl,
+write('          .`    _ /\\    -        .`      _     .`__________`. _  -`.`.             '),nl,
+write('        .` -   _ /  \\_     -   .`  _         .` |Quest Board|`.   - `.`.           '),nl,
+write('      .`-    _  /   /\\   -   .`        _   .`   |___________|  `. _   `.`.         '),nl,
+write('    .`________ /__ /_ \\____.`____________.`     ___       ___  - `._____`|         '),nl,
+write('      |   -  __  -|    | - |  ____  |   | | _  |   |  _  |   |  _ |                 '),nl,
+write('      | _   |  |  | -  |   | |.--.| |___| |    |___|     |___|    |                 '),nl,
+write('      |     |--|  |    | _ | |\'--\'| |---| |   _|---|     |---|_   |               '),nl,
+write('      |   - |__| _|  - |   | |.--.| |   | |    |   |_  _ |   |    |                 '),nl,
+write('   ---``--._      |    |   |=|\'--\'|=|___|=|====|___|=====|___|====|               '),nl,
+write('   -- . \'\'  ``--._| _  |  -|_|.--.|_______|_______________________|               '),nl,
+write('  `--._           \'--- |_  |:|\'--\'|:::::::|:::::::::::::::::::::::|              '),nl,
+write('  _____`--._ \'\'      . \'---\'``--._|:::::::|:::::::::::::::::::::::|             '),nl,
+write('  ----------`--._          \'\'      ``--.._|:::::::::::::::::::::::|               '),nl,
+write('  `--._ _________`--._\'        --     .   \'\'-----..............LGB\'             '),nl,
+write('       `--._----------`--._.  _           -- . :\'\'           -    \'\'            '),nl,
+write('            `--._ _________`--._ :\'              -- . :\'\'      -- . \'\'         '),nl,
+write('   -- . \'\'       `--._ ---------`--._   -- . :\'\'                                '),nl,
+write('            :\'        `--._ _________`--._:\'  -- . \'\'      -- . \'\'            '),nl,
+write('    -- . \'\'     -- . \'\'    `--._----------`--._      -- . \'\'     -- . \'\'    '),nl,
+write('                                `--._ _________`--._                                '),nl,
+write('   -- . \'\'           :\'              `--._ ---------`--._-- . \'\'    -- . \'\'  '),nl,
+write('            -- . \'\'       -- . \'\'         `--._ _________`--._   -- . \'\'      '),nl,
+write('  :\'                 -- . \'\'          -- . \'\'  `--._----------`--._            '),nl.
+
+marketArt :-
+write('  .        _________________________    .            '),nl,
+write('           UUUUUUUU|MARKET|UUUUUUUUU         ()      '),nl,
+write('     .     UUUUUUUUUUUUUUUUUUUUUUUUU ()  () (()      '),nl,
+write('  _________UUUUUUUUUUUUUUUUUUUUUUUUU()())()))()      '),nl,
+write('  UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU))      '),nl,
+write('()UUUUUUUUUU|| ___ || ___ || ___ ||UUUUUUUUUU()      '),nl,
+write('(()|__\\S/__||| ~|~ || ~|~ || ~|~ ||___\\S/__|()(    '),nl, 
+write('))(|-------||| """ || """ || """ ||  _____ |()(      '),nl,
+write('(()|-------||| ___ ||/_º_\\|| ___ ||  ~|~|~ |(()     '),nl,
+write(')))|-------||| ~|~ |||"""||| ~|~ ||  """"" |)()      '),nl,
+write('@@@@¯¯¯¯¯¯¯@||@@@@@|||\'  |||@@@@@||@@@@@@@@@@@@     '),nl,
+write('____  \'`.  ___________| |______________________\'_  '),nl.
