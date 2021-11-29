@@ -60,7 +60,7 @@ unlock :-
 unlock :- 
     isPlayerTile(A, B),
     isHouseTile(A, B),
-    isLocked, retract(isLocked),!.
+    isLocked, retract(isLocked),write('You unlocked your house'),!.
 
 writeDiary :-  
     isPlayerTile(A, B),
