@@ -162,7 +162,7 @@ buyalchemist :-
     write('         .\'   /    b    \'.  \'.'),nl,
     write('     _.-\'    /     Bb     \'-. \'-._ '),nl,
     write(' _.-\'       |      BBb       \'-.  \'-. '),nl,
-    write('(___________\\____.dBBBb.________)____)    ____'),nl, 
+    write('(___________\\____.dBBBb.________)____)    ____'),nl,nl, 
     marketpotion(6,1),
     write('Plz Write Number.\n'),
     read(X),
