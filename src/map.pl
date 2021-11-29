@@ -457,11 +457,11 @@ write('  :\'                 -- . \'\'          -- . \'\'  `--._----------`--._ 
 
 marketArt :-
 write('  .        _________________________    .            '),nl,
-write('           UUUUUUUU|MARKET|UUUUUUUUU         ()      '),nl,
-write('     .     UUUUUUUUUUUUUUUUUUUUUUUUU ()  () (()      '),nl,
-write('  _________UUUUUUUUUUUUUUUUUUUUUUUUU()())()))()      '),nl,
-write('  UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU))      '),nl,
-write('()UUUUUUUUUU|| ___ || ___ || ___ ||UUUUUUUUUU()      '),nl,
+write('           ========|MARKET|=========         ()      '),nl,
+write('     .     ========================= ()  () (()      '),nl,
+write('  _________=========================()())()))()      '),nl,
+write('  ===========================================))      '),nl,
+write('()==========|| ___ || ___ || ___ ||==========()      '),nl,
 write('(()|__\\S/__||| ~|~ || ~|~ || ~|~ ||___\\S/__|()(    '),nl, 
 write('))(|-------||| """ || """ || """ ||  _____ |()(      '),nl,
 write('(()|-------||| ___ ||/_º_\\|| ___ ||  ~|~|~ |(()     '),nl,
