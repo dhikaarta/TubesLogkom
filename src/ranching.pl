@@ -249,8 +249,8 @@ ranchReward(Livestock, Produce, Death, Count) :-
     format('You can sell each ~w for ~d Golds in the marketplace', [Produce, Price]), nl, nl,
 
     prodtime(Livestock, Time),
-    NewExp is ((5 * Level) + 3 + Gain) * Time,
-    NewExpRanch is ((5 * LevelRanch) + 2 + Gain) * Time,
+    NewExp is ((8 * Level) + 3 + Gain) * Time,
+    NewExpRanch is ((8 * LevelRanch) + 2 + Gain) * Time,
     CurExpRanch is NewExpRanch + ExpRanch,
     (   Job == 'Rancher' ->  write('You were paid for working as a rancher'), nl,
                             Salary is (LevelRanch * 5),

@@ -168,15 +168,15 @@ depleteEnergy(X) :- energy(A,Max),
                      A =:= X -> retractall(energy(A,Max)), assertz(energy(0,Max)), assertz(isExhausted), write('You ran out of stamina, you are now exhausted'), nl).   
 
 farmPriceUp :- 
-    priceitems('bayam',A), Anew is A + 3, changePrice('bayam',Anew),
-    priceitems('wortel',B), Bnew is B + 3,changePrice('wortel',Bnew),
-    priceitems('kentang',C), Cnew is C + 3,changePrice('kentang',Cnew),
-    priceitems('jagung',D), Dnew is D + 3,changePrice('jagung',Dnew),
-    priceitems('cabe',E), Enew is E+ 3,changePrice('cabe',Enew),
-    priceitems('bawang merah',F), Fnew is F + 3,changePrice('bawang merah',Fnew),
-    priceitems('bawang putih',G), Gnew is G + 3,changePrice('bawang putih',Gnew),
-    priceitems('padi',H), Hnew is H + 3,changePrice('padi',Hnew),
-    priceitems('kangkung',I), Inew is I + 3,changePrice('kangkung',Inew).
+    priceitems('bayam',A), Anew is A + 5, changePrice('bayam',Anew),
+    priceitems('wortel',B), Bnew is B + 5,changePrice('wortel',Bnew),
+    priceitems('kentang',C), Cnew is C + 5,changePrice('kentang',Cnew),
+    priceitems('jagung',D), Dnew is D + 5,changePrice('jagung',Dnew),
+    priceitems('cabe',E), Enew is E+ 5,changePrice('cabe',Enew),
+    priceitems('bawang merah',F), Fnew is F + 5,changePrice('bawang merah',Fnew),
+    priceitems('bawang putih',G), Gnew is G + 5,changePrice('bawang putih',Gnew),
+    priceitems('padi',H), Hnew is H + 5,changePrice('padi',Hnew),
+    priceitems('kangkung',I), Inew is I + 5,changePrice('kangkung',Inew).
 
 ranchPriceUp :- 
     priceitems('egg',A), Anew is A + 3, changePrice('egg',Anew),

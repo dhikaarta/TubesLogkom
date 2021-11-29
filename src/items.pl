@@ -146,9 +146,9 @@ priceitems('wol',50).
 priceitems('omega 3 egg',50).
 priceitems('protein infused milk',150).
 priceitems('beluga wol',100).
-priceitems('cemani egg',100).
-priceitems('A5 milk',250).
-priceitems('super anti villain wol',200).
+priceitems('cemani egg',75).
+priceitems('A5 milk',200).
+priceitems('super anti villain wol',150).
 priceitems('cow meat',250).
 priceitems('sheep meat',200).
 priceitems('chicken meat',150).
