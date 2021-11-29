@@ -49,7 +49,7 @@ C:.
 ```
 
 ## Setup
-* Pastikan anda telah memiliki GNU Prolog Compiler. Jika Anda belum memiliki GNU Prolog Compiler, Anda dapat download compiler tersebut menggunakan link [berikut](http://www.gprolog.org/){:target="_blank"} dan install pada komputer Anda.
+* Pastikan anda telah memiliki GNU Prolog Compiler. Jika Anda belum memiliki GNU Prolog Compiler, Anda dapat download compiler tersebut menggunakan link [berikut](http://www.gprolog.org/) dan install pada komputer Anda.
 
 ## Usage
 * Clone repository ini menggunakan link `https://github.com/dhikaarta/TubesLogkom.git`.
