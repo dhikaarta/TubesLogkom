@@ -17,7 +17,7 @@ w :-
     isPlayerTile(X, Y),
     isHouseTile(X, Y), !,
     (isLocked -> write('You are locked in your house! Please unlock your door!'), nl ;
-    \+ (isLocked) -> XNew is X, YNew is Y - 1, \+ (isWaterTile(XNew, YNew)), \+ (isFenceTile(XNew, YNew)), retract(playerTile(X, Y)), !, assertz(playerTile(XNew, YNew)), !, write('You moved north.'), nl).
+    \+ (isLocked) -> XNew is X, YNew is Y - 1, \+ (isWaterTile(XNew, YNew)), \+ (isFenceTile(XNew, YNew)), retract(playerTile(X, Y)), !, assertz(playerTile(XNew, YNew)), !, write('You moved north.'), nl, printSpecialTile).
 
 w :-
     isPlayerTile(X, Y),
@@ -27,7 +27,8 @@ w :-
     \+ (isFenceTile(XNew, YNew)),
     retract(playerTile(X, Y)), !,
     assertz(playerTile(XNew, YNew)), !,
-    write('You moved north.'), nl.
+    write('You moved north.'), nl,
+    printSpecialTile.
 
 a :-
     isPlayerTile(X, Y),
@@ -47,7 +48,7 @@ a :-
     isPlayerTile(X, Y),
     isHouseTile(X, Y), !,
     (isLocked -> write('You are locked in your house! Please unlock your door!'), nl ;
-    \+ (isLocked) -> XNew is X - 1, YNew is Y, \+ (isWaterTile(XNew, YNew)), \+ (isFenceTile(XNew, YNew)), retract(playerTile(X, Y)), !, assertz(playerTile(XNew, YNew)), !, write('You moved west.'), nl).
+    \+ (isLocked) -> XNew is X - 1, YNew is Y, \+ (isWaterTile(XNew, YNew)), \+ (isFenceTile(XNew, YNew)), retract(playerTile(X, Y)), !, assertz(playerTile(XNew, YNew)), !, write('You moved west.'), nl, printSpecialTile).
 
 a :-
     isPlayerTile(X, Y),
@@ -57,7 +58,8 @@ a :-
     \+ (isFenceTile(XNew, YNew)),
     retract(playerTile(X, Y)), !,
     assertz(playerTile(XNew, YNew)), !,
-    write('You moved west.'), nl.
+    write('You moved west.'), nl,
+    printSpecialTile.
 
 s :-
     isPlayerTile(X, Y),
@@ -77,7 +79,7 @@ s :-
     isPlayerTile(X, Y),
     isHouseTile(X, Y), !,
     (isLocked -> write('You are locked in your house! Please unlock your door!'), nl ;
-    \+ (isLocked) -> XNew is X, YNew is Y + 1, \+ (isWaterTile(XNew, YNew)), \+ (isFenceTile(XNew, YNew)), retract(playerTile(X, Y)), !, assertz(playerTile(XNew, YNew)), !, write('You moved south.'), nl).
+    \+ (isLocked) -> XNew is X, YNew is Y + 1, \+ (isWaterTile(XNew, YNew)), \+ (isFenceTile(XNew, YNew)), retract(playerTile(X, Y)), !, assertz(playerTile(XNew, YNew)), !, write('You moved south.'), nl, printSpecialTile).
 
 s :-
     isPlayerTile(X, Y),
@@ -87,7 +89,8 @@ s :-
     \+ (isFenceTile(XNew, YNew)),
     retract(playerTile(X, Y)), !,
     assertz(playerTile(XNew, YNew)), !,
-    write('You moved south.'), nl.
+    write('You moved south.'), nl,
+    printSpecialTile.
 
 d :-
     isPlayerTile(X, Y),
@@ -107,7 +110,7 @@ d :-
     isPlayerTile(X, Y),
     isHouseTile(X, Y), !,
     (isLocked -> write('You are locked in your house! Please unlock your door!'), nl ;
-    \+ (isLocked) -> XNew is X + 1, YNew is Y, \+ (isWaterTile(XNew, YNew)), \+ (isFenceTile(XNew, YNew)), retract(playerTile(X, Y)), !, assertz(playerTile(XNew, YNew)), !, write('You moved east.'), nl).
+    \+ (isLocked) -> XNew is X + 1, YNew is Y, \+ (isWaterTile(XNew, YNew)), \+ (isFenceTile(XNew, YNew)), retract(playerTile(X, Y)), !, assertz(playerTile(XNew, YNew)), !, write('You moved east.'), nl, printSpecialTile).
 
 d :-
     isPlayerTile(X, Y),
@@ -117,10 +120,12 @@ d :-
     \+ (isFenceTile(XNew, YNew)),
     retract(playerTile(X, Y)), !,
     assertz(playerTile(XNew, YNew)), !,
-    write('You moved east.'), nl.
+    write('You moved east.'), nl,
+    printSpecialTile.
 
 teleport(A, B) :-
     isPlayerTile(X, Y),
     retract(playerTile(X, Y)), !,
     assertz(playerTile(A, B)), !,
-    write('You teleported.'), nl.
+    write('You teleported.'), nl,
+    printSpecialTile.

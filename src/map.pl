@@ -136,6 +136,19 @@ isPlayerTile(X, Y) :-
 isCropTile(X, Y, S, T) :-
     cropTile(X, Y, S, T), !.
 
+/* SPECIAL TILE */
+printSpecialTile :-
+    isPlayerTile(X, Y),
+    (   (isNormalTile(X, Y), \+ (isTepiAirTile(X, Y)));
+        isFenceTile(X, Y);
+        (isMarketplaceTile(X, Y) -> write('You\'re at the market.'), nl, !);
+        (isRanchTile(X, Y) -> write('You\'re at the ranch.'), nl, !);
+        (isHouseTile(X, Y) -> write('You\'re at your own house.'), nl, !);
+        (isQuestTile(X, Y) -> write('You\'re at the quest pick up point.'), nl, !);
+        (isTepiAirTile(X, Y) -> (write('You\'re at the edge of water.'), nl, !));
+        (isDiggedTile(X, Y) -> write('You\'re at the farm.'), nl, !);
+        (isCropTile(X, Y, S, _) -> format('You\'re at a ~w crop.', [S]), nl, !)), !.
+
 /* OUTPUT */
 printMap(X, Y) :-
     isNormalTile(X, Y),
