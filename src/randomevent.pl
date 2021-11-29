@@ -17,19 +17,19 @@ isBirthday :- day(Day), birthday(Birthday), Day =\= Birthday,  !.
 
 fishAccident :- write('==============================================================================='), nl,
                 write('You almost caught another fish, but the fish slapped you in the face and left.'),nl,unconsious(1), loseExp(50,2),
-                unconsiousGold(20) ,
+                 player(_,_,_,_,_,_,_,_,_,_,K,_), Ilang is K * 25 / 100,unconsiousGold(Ilang) ,
                 write('==============================================================================='), nl, !.
 
 
 ranchAccident :- write('======================================================================================================'), nl,  
                 write('You went to the storage room only to find that your animals are starting a cult. They anesthetized you.'),nl,unconsious(1), loseExp(50,3),
-                unconsiousGold(20) ,
+                player(_,_,_,_,_,_,_,_,_,_,K,_), Ilang is K * 25 / 100,unconsiousGold(Ilang) ,
                 write('======================================================================================================='), nl, !.
 
 
 farmAccident :- write('========================================================================='), nl,
                 write('Your recklessness caused you to hit yourself with a shovel. You fainted.'), nl,unconsious(1),loseExp(50,1),
-                unconsiousGold(20),
+                player(_,_,_,_,_,_,_,_,_,_,K,_), Ilang is K * 25 / 100,unconsiousGold(Ilang) ,
                 write('========================================================================='), nl, !.
 
 surgefarmPriceUp :-

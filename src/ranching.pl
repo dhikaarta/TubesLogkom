@@ -147,7 +147,7 @@ raiseChicken :-
     isPlayerTile(A, B),
     isRanchTile(A, B),
     currentRanchChicken(Check, _, _, _), 
-     player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, _, _, _, _), 
+    player(_, _, _, _, _, _, LevelRanch, _, _, _, _, _), 
     (   Check == 'NULL' ->  write('These are the products you can gain from raising ayam:'), nl,
                             write('1. Egg\n2. Chicken Meat\n\nWhich product will you choose?'), nl,
                             write('(each ayam you own will produce two products)'), nl,
@@ -172,7 +172,7 @@ raiseCow :-
     isPlayerTile(A, B),
     isRanchTile(A, B),
     currentRanchCow(Check, _, _, _), 
-    player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, _, _, _, _), 
+    player(_, _, _, _, _, _, LevelRanch, _, _, _, _, _), 
     (   Check == 'NULL' ->  write('These are the products you can gain from raising sapi:'), nl,
                             write('1. Milk\n2. Cow Meat\n\nWhich product will you choose?'), nl,
                             write('(each sapi you own will produce two products)'), nl,
@@ -197,7 +197,7 @@ raiseSheep :-
     isPlayerTile(A, B),
     isRanchTile(A, B),
     currentRanchSheep(Check, _, _, _), 
-     player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, _, _, _, _), 
+    player(_, _, _, _, _, _, LevelRanch, _, _, _, _, _),  
     (   Check == 'NULL' ->  write('These are the products you can gain from raising kambing:'), nl,
                             write('1. Wol\n2. Sheep Meat\n\nWhich product will you choose?'), nl,
                             write('(each kambing you own will produce two products)'), nl,
@@ -240,7 +240,7 @@ ranchReward(Livestock, Produce, Death, Count) :-
     player(Job, Level, _, _, _, _, LevelRanch, ExpRanch, _, _, _, _), 
     write('----------------------------------------'), nl,
     write('Finally... It is time.'), nl,  priceitems(Produce, Price),
-    (   Death =:= 0 -> format('You gently collected the ~w from the ~w. ', [Produce, Livestock]), Gain is (Count * 2) ;
+    (   Death =:= 0 -> format('You gently collected the ~w from the ~w. ', [Produce, Livestock]), Gain is Count ;
         format('With tears in your eyes, you butchered ~d of your ~w(s). ', [Death, Livestock]),
         (   Livestock == 'ayam' -> deleteChicken(Death), Gain is Death ;
             Livestock == 'sapi' -> deleteCow(Death), Gain is Death ;
