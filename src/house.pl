@@ -37,7 +37,7 @@ wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,wh
           checkDeath, countCroppedTile(CountCrop), updateCrop(CountCrop), updateRanchChicken, updateRanchCow, updateRanchSheep, !.
 
 robbery :- 
-    \+ isLocked,random(1,101,X),nl, (X<50 -> nl,thiefArt,nl,nl,write('Youve been robbed ! Don\'t forget to lock your door next time \n')), 
+    \+ isLocked,random(1,101,X),nl, (X<10 -> nl,thiefArt,nl,nl,write('Youve been robbed ! Don\'t forget to lock your door next time \n')), 
     player(_,_,_,_,_,_,_,_,_,_,K,_),Robbed is K * 10 // 100,unconsiousGold(Robbed),!.
 robbery :- !.
 robbery :- isLocked,!.
