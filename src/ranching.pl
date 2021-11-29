@@ -206,8 +206,8 @@ raiseSheep :-
 
 ranchxpmoney(Produce, Time) :- 
     equip('ranch equip', EquipLvl, EquipXPNow, EquipXPMax),
-    AddEquipXPRanch is (EquipLvl * 30),
-    AddEquipXP is (EquipLvl * 40),
+    AddEquipXPRanch is (EquipLvl * 10),
+    AddEquipXP is (EquipLvl * 13),
     addExp(AddEquipXPRanch, 3),
 
     CurEquipXP is EquipXPNow + AddEquipXP, changeStats('ranch equip', EquipLvl, CurEquipXP, EquipXPMax),
@@ -235,8 +235,8 @@ ranchReward(Livestock, Produce, Death, Count) :-
     format('You can sell each ~w for ~d Golds in the marketplace', [Produce, Price]), nl, nl,
 
     prodtime(Livestock, Time),
-    NewExp is ((15 * Level) + 10 + Gain) * Time,
-    NewExpRanch is ((15 * LevelRanch) + 5 + Gain) * Time,
+    NewExp is ((5 * Level) + 3 + Gain) * Time,
+    NewExpRanch is ((5 * LevelRanch) + 2 + Gain) * Time,
     CurExpRanch is NewExpRanch + ExpRanch,
     (   Job == 'Rancher' ->  write('You were paid for working as a rancher'), nl,
                             Salary is (LevelRanch * 5),

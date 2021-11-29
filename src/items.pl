@@ -100,6 +100,11 @@ usepotion('teleport potion') :-
     teleport(X,Y),!.
 
 usepotion('Gamble potion') :-
+    player(_,_,_,_,_,_,_,_,_,_,Gold,_),
+    Gold < 1000, !,
+    write('You don\'t have enough money to gambling,\n'), fail.
+
+usepotion('Gamble potion') :-
     random(0,2,X),
     write('Choose head or tail? (1 for head, 0 for tail)\n'),
     read(Y),
