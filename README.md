@@ -49,7 +49,16 @@ C:.
 ```
 
 ## Setup
+* Pastikan anda telah memiliki GNU Prolog Compiler. Jika Anda belum memiliki GNU Prolog Compiler, Anda dapat download compiler tersebut menggunakan link [berikut](http://www.gprolog.org/) dan install pada komputer Anda.
 
 ## Usage
+* Clone repository ini menggunakan link `https://github.com/dhikaarta/TubesLogkom.git`.
+* Buka aplikasi GNU Prolog Compiler dan ubah directory dari compiler tersebut menjadi directory tempat anda melakukan clone repository. Hal tersebut dapat dilakukan dengan membuka option `File > Change Dir...` dan navigate ke directory clone repository.
+* Jalankan perintah `['main.pl'].` untuk melakukan kompilasi seluruh file Prolog pada program.
+* Jalankan perintah `start.` untuk memulai permainan.
 
 ## Authors
+* [Rayhan Kinan Muhannad - 13520065](https://github.com/rayhankinan)
+* [Andhika Arta Aryanto - 13520081](https://github.com/dhikaarta)
+* [Sarah Azka Arief - 13520083](https://github.com/azkazkazka)
+* [Aira Thalca Avila Putra - 13520101](https://github.com/airathalca)
