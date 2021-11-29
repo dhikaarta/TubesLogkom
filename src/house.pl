@@ -37,7 +37,7 @@ wakeUp :- day(X),format('Good Morning ! Its now day ~d \n\n', [X]),isBirthday,wh
           checkDeath, countCroppedTile(CountCrop), updateCrop(CountCrop), updateRanchChicken, updateRanchCow, updateRanchSheep, !.
 
 robbery :- 
-    \+ isLocked,random(1,101,X),nl, (X<10 -> write('Youve been robbed ! Don\'t forget to lock your door next time \n')), 
+    \+ isLocked,random(1,101,X),nl, (X<50 -> nl,thiefArt,nl,nl,write('Youve been robbed ! Don\'t forget to lock your door next time \n')), 
     player(_,_,_,_,_,_,_,_,_,_,K,_),Robbed is K * 10 // 100,unconsiousGold(Robbed),!.
 robbery :- !.
 robbery :- isLocked,!.
@@ -77,7 +77,7 @@ changeDay(X) :-
     retractall(day(_)), assertz(day(X)). 
 
 periTidur :- 
-    random(1,101,X),X < 6,nl, write('A dream fairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,
+    random(1,101,X),X < 6,nl,fairyArt,nl,nl, write('A dream fairy has visited you, you can go anywhere you want for tomorrow, where do you want to go?'),nl,
              write('1. Water'),nl,write('2. Quest'),nl, write('3. Ranch'),nl,
              write('4. Marketplace'), nl,read(CC),
              (CC=:=1 -> write('Wish granted ! Youll wake up beside the water! Go fish\n'),teleport(4,8) ;
@@ -107,3 +107,70 @@ loseCondition(X,Y) :- X > 365, Y < 20000,
 
 
 loseCondition(_,_) :- !.
+
+fairyArt :-
+write('      .--.   _,                         '),nl,
+write('    .--;    \\ /(_                        '),nl,
+write('   /    \'.   |   \'-._    . \' .         '),nl,
+write('  |       \\  \\    ,-.)  -= * =-         '),nl,
+write('   \\ /\\_   \'. \\((` .(    \'/. \'      '),nl,
+write('    )\\ /     \\ )\\  _/   _/             '),nl,
+write('   /  \\\\    .-\'   \'--. /_\\           '),nl,
+write('  |    \\\\_.\' ,        \\/||            '),nl,
+write('  \\     \\_.-\';,_) _)\'\\ \\||          '),nl,
+write('   \'.       /`\\   (   \'._/             '),nl,
+write('     `\\   .;  |  . \'.                   '),nl,
+write('       ).\'  )/|      \\                  '),nl,
+write('       `    ` |  \\|   |                  '),nl,
+write('               \\  |   |                  '),nl,
+write('                \'.|   |                  '),nl,
+write('                   \\  \'\\__             '),nl,
+write('                    `-._  \'. _           '),nl,
+write('                       \\`;-.` `._        '),nl,
+write('                        \\ \\ `\'-._\\    '),nl,
+write('                         \\ |             '),nl,
+write('                          \\ )            '),nl, 
+write('                           \\_\\          '),nl.
+
+thiefArt :-
+write('                                                        '),nl,
+write('                      YOU\'VE BEEN ROBBED               '),nl,
+write('                          .-""""-.                      '),nl,
+write('                         / j      \\                    '),nl,
+write('                        :.d;       ;                    '),nl, 
+write('                        $$P        :                    '),nl,
+write('             .m._       $$         :                    '),nl,
+write('            dSMMSSSss.__$$b.    __ :                    '),nl,
+write('           :MMSMMSSSMMMSS$$$b  $$P ;                    '),nl,
+write('           SMMMSMMSMMMSSS$$$$     :b                    '),nl,
+write('          dSMMMSMMMMMMSSMM$$$b.dP SSb.                  '),nl,
+write('         dSMMMMMMMMMMSSMMPT$$=-. /TSSSS.                '),nl,
+write('        :SMMMSMMMMMMMSMMP  `$b_.\'  MMMMSS.             '),nl, 
+write('        SMMMMMSMMMMMMMMM \\  .\'\\    :SMMMSSS.         '),nl,
+write('       dSMSSMMMSMMMMMMMM  \\/\\_/; .\'SSMMMMSSSm        '),nl,
+write('      dSMMMMSMMSMMMMMMMM    :.;\'" :SSMMMMSSMM;         '),nl,
+write('    .MMSSSSSMSSMMMMMMMM;    :.;   MMSMMMMSMMM;          '),nl,
+write('   dMSSMMSSSSSSSMMMMMMM;    ;.;   MMMMMMMSMMM           '),nl,
+write('  :MMMSSSSMMMSSP^TMMMMM     ;.;   MMMMMMMMMMM           '),nl,
+write('  MMMSMMMMSSSSP   `MMMM     ;.;   :MMMMMMMMM;           '),nl,
+write('  "TMMMMMMMMMM      TM;    :`.:    MMMMMMMMM;           '),nl,
+write('     )MMMMMMM;     _/\\\\    :`.:    :MMMMMMMM          '),nl,
+write('    d$SS$$$MMMb.  |._\\\\\\   :`.:     MMMMMMMM         '),nl,
+write('    T$$S$$$$$$$$$$m;O\\\\\\\\"-;`.:_.-  MMMMMMM;        '),nl,
+write('   :$$$$$$$$$$$$$$$b_l./\\\\ ;`.:    mMMSSMMM;          '),nl,
+write('   :$$$$$$$$$$$$$$$$$$$./\\\\;`.:  .$$MSMMMMMM          '),nl,
+write('    $$$$$$$$$$$$$$$$$$$$. \\\\`.:.$$$$SMSSSMMM;         '),nl,
+write('    $$$$$$$$$$$$$$$$$$$$$. \\\\.:$$$$$SSMMMMMMM         '),nl,
+write('    :$$$$$$$$$$$$$$$$$$$$$.//.:$$$$SSSSSSSMM;           '),nl,
+write('    :$$$$$$$$$$$$$$$$$$$$$$.`.:$$SSSSSSSMMMP            '),nl,
+write('     $$$$$$$$$;"^$J "^$$$$;.`.$$P  `SSSMMMM             '),nl, 
+write('     :$$$$$$$$$       :$$$;.`.P\'..   TMMM$$b           '),nl,
+write('     :$$$$$$$$$;      $$$$;.`/ c^\'   d$$$$$S;          '),nl,
+write('     $$$$$S$$$$;      \'^^^:_d$g:___.$$$$$$SSS          '),nl,
+write('     $$$$SS$$$$;            $$$$$$$$$$$$$$SSS;          '),nl,
+write('    :$$$SSSS$$$$            : $$$$$$$$$$$$$SSS          '),nl,
+write('    :$P"TSSSS$$$            ; $$$$$$$$$$$$$SSS;         '),nl,
+write('    j    `SSSSS$           :  :$$$$$$$$$$$$$SS$         '),nl,
+write('   :       "^S^\'           :   $$$$$$$$$$$$$S$;        '),nl,
+write('   ;.____.-;"               "--^$$$$$$$$$$$$$P          '),nl,  
+write('   \'-....-"                       ""^^T$$$$P"          '),nl.
