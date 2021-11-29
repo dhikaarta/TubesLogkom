@@ -41,7 +41,7 @@ C:.
 │   
 ├───src
 │       exploration.pl
-│       farming.pl
+│       farming.pl    
 │       fishing.pl
 │       house.pl
 │       inventory.pl
@@ -57,9 +57,16 @@ C:.
 │       weather.pl
 │
 └───test
-        1.png
-        2.png
-        3.png
+        end.png
+        farm.png
+        fish.png
+        house.png
+        map.png
+        market.png
+        quest.png
+        ranch.png
+        start.png
+        status.png
 ```
 
 ## Setup
